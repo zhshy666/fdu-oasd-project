@@ -5,11 +5,18 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import '../node_modules/element-ui/lib/theme-chalk/index.css'
-import axios from '../node_modules/axios'
 import qs from '../node_modules/qs'
 import store from '../src/store'
 Vue.use(ElementUI);
 Vue.config.productionTip = false
+
+// axios config
+var axios = require('axios')
+// 全局可以使用this.$axios访问
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = '/'
+axios.defaults.withCredentials = true
+axios.defaults.headers.post['Content-Type'] = "application/json;charset=UTF-8"
 
 /* eslint-disable no-new */
 new Vue({
