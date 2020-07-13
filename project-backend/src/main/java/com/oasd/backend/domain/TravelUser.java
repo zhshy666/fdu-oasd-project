@@ -14,46 +14,36 @@ import java.util.Set;
  * @author LBW
  */
 @Entity
-public class User implements UserDetails {
+public class TravelUser implements UserDetails {
 
     private static final long serialVersionUID = -6140085056226164016L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
 
     @Column(unique = true)
     private String username;
 
     private String password;
     private String email;
-    private String organization;
-    private String region;
-    private String fullname;
-    private String authority;
-
-//    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-//    private Set<Conference> conferences = new HashSet<>();
-
-//    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "user")
-//    @JsonManagedReference
-//    private Set<Message> messages = new HashSet<>();
+    private String state;
+    private String dateJoined;
+    private String dateLastModified;
 
 
-    public User() {
+    public TravelUser() {
     }
 
-    public User(String username, String password, String email, String organization, String region, String fullname, String authority) {
-        this.username = username;
-        this.password = password;
+    public TravelUser(int id, String email, String state, String dateJoined, String dateLastModified) {
+        this.id = id;
         this.email = email;
-        this.organization = organization;
-        this.region = region;
-        this.fullname = fullname;
-        this.authority = authority;
+        this.state = state;
+        this.dateJoined = dateJoined;
+        this.dateLastModified = dateLastModified;
     }
 
-    public User(String username, String password) {
+    public TravelUser(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -94,11 +84,11 @@ public class User implements UserDetails {
         return true;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -110,12 +100,32 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public String getAuthority() {
-        return authority;
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getDateJoined() {
+        return dateJoined;
+    }
+
+    public void setDateJoined(String dateJoined) {
+        this.dateJoined = dateJoined;
+    }
+
+    public String getDateLastModified() {
+        return dateLastModified;
+    }
+
+    public void setDateLastModified(String dateLastModified) {
+        this.dateLastModified = dateLastModified;
     }
 
     public String getEmail() {
@@ -126,30 +136,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -157,10 +143,6 @@ public class User implements UserDetails {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", organization='" + organization + '\'' +
-                ", region='" + region + '\'' +
-                ", fullname=" + fullname + '\'' +
-                ", authority=" + authority +
                 '}';
     }
 

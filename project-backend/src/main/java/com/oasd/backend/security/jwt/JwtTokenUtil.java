@@ -1,6 +1,6 @@
 package com.oasd.backend.security.jwt;
 
-import com.oasd.backend.domain.User;
+import com.oasd.backend.domain.TravelUser;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -40,7 +40,7 @@ public class JwtTokenUtil implements Serializable {
      * @param user user info
      * @return token info (string format)
      */
-    public String generateToken(User user) {
+    public String generateToken(TravelUser user) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder().addClaims(claims)
                 .setSubject(user.getUsername())

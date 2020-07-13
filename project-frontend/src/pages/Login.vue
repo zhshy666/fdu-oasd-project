@@ -71,11 +71,11 @@
         rules: {
           username: [
             {required:true,message:"Username is required",blur:"change"},
-            {pattern:/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/,message:"Invalid username",blur:"change"}
+            // {pattern:/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/,message:"Invalid username",blur:"change"}
           ],
           password: [
             {required:true, message:"Password is required", blur:"change"},
-            {pattern:/^[\w-]{6,32}$/, message:"Invalid password",blur:"change"},
+            // {pattern:/^[\w-]{6,32}$/, message:"Invalid password",blur:"change"},
           ]
         },
         loading: false,
@@ -83,7 +83,8 @@
     },
     computed:{
       isDisabled(){
-        return !(/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/.test(this.loginForm.username) && /^[\w-]{6,32}$/.test(this.loginForm.password));
+          return false
+        // return !(/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/.test(this.loginForm.username) && /^[\w-]{6,32}$/.test(this.loginForm.password));
       }
     },
     methods: {
