@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header>
-            Login
+            Register
         </el-header>
         <el-main>
             <el-row :gutter="20">
@@ -9,9 +9,9 @@
                     <el-form 
                     @submit.native.prevent
                     status-icon
-                    :model="loginForm"
+                    :model="registerForm"
                     :rules="rules"
-                    ref="loginForm"
+                    ref="registerForm"
                     label-position="left"
                     label-width="0px"
                     v-loading="loading"
@@ -48,7 +48,7 @@
                             <el-button
                             plain
                             style="width:100%"
-                            @click="resetForm('loginForm')"
+                            @click="resetForm('registerForm')"
                             >Reset
                             </el-button>
                         </el-form-item>
@@ -100,7 +100,6 @@
             if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
               //Save token
               this.$store.commit("login", resp.data);
-              this.$store.commit("username", this.loginForm.username)
               this.$message({
                 dangerouslyUseHTMLString: true,
                 type:'success',
