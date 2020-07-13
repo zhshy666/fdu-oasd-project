@@ -83,9 +83,7 @@
     },
     computed:{
       isDisabled(){
-        return 
-        !(/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/.test(this.loginForm.username)
-         && /^[\w-]{6,32}$/.test(this.loginForm.password));
+        return !(/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/.test(this.loginForm.username) && /^[\w-]{6,32}$/.test(this.loginForm.password));
       }
     },
     methods: {
