@@ -36,10 +36,11 @@ export default {
       .then(() => {
         this.$store.commit("logout");
         this.reload();
-        this.$message({
+        this.$notify({
+          type:'info',
           dangerouslyUseHTMLString: true,
+          showClose: false,
           message: '<strong style="color:teal">You have signed out!</strong>',
-          center: true
         });
       })
       .catch(error => {});

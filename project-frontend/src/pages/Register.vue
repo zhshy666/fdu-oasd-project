@@ -1,62 +1,95 @@
 <template>
-    <el-container>
-        <el-header>
-            Register
-        </el-header>
-        <el-main>
-            <el-row :gutter="20">
-                <el-col :span="6" :offset="9">
-                    <el-form 
-                    @submit.native.prevent
-                    status-icon
-                    :model="registerForm"
-                    :rules="rules"
-                    ref="registerForm"
-                    label-position="left"
-                    label-width="0px"
-                    v-loading="loading"
-                    >
-                        <el-form-item prop="username" >
-                            <el-input
-                                type="text"
-                                v-model="loginForm.username"
-                                auto-complete="off"
-                                placeholder="Username"
-                            ></el-input>
-                        </el-form-item>
-                        <el-form-item prop="password" >
-                            <el-input
-                                type="password"
-                                show-password
-                                v-model="loginForm.password"
-                                auto-complete="off"
-                                placeholder="Password"
-                            ></el-input>
-                        </el-form-item>
-                            
-                        <el-form-item size="medium">
-                            <el-button
-                            native-type="submit"
-                            :disabled ="isDisabled"
-                            size="medium"
-                            type="primary"
-                            style="width:100% "
-                            v-on:click="login"
-                            >Sign In</el-button>
-                        </el-form-item>
-                        <el-form-item size="medium">
-                            <el-button
-                            plain
-                            style="width:100%"
-                            @click="resetForm('registerForm')"
-                            >Reset
-                            </el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-            </el-row>
-        </el-main>
-    </el-container>
+<div>
+<div class="layui-container">
+    <div style="height: 150px"></div>
+</div>
+  <el-container>
+    <el-header height="50%">
+      <div class="layui-col-md4 layui-col-md-offset4">
+        <h1>Login</h1>
+      </div>
+    </el-header>
+    <el-main>
+      <el-col :span="6" :offset="9">
+        <el-form 
+          @submit.native.prevent
+          status-icon
+          :model="loginForm"
+          :rules="rules"
+          ref="loginForm"
+          label-position="left"
+          label-width="0px"
+          v-loading="loading"
+        >
+          <el-form-item prop="username" >
+            <el-popover
+              placement="right"
+              width="200"
+              trigger="focus"
+            >
+              <div style="font-size:small">
+                <p>* Use <strong>numbers</strong>, <strong>letters</strong>, <strong>-</strong> and <strong>_</strong></p>
+                <p>* Start with <strong>letters</strong> or <strong>-</strong></p>
+                <p>* <strong>5</strong> and <strong>32</strong> characters in length</p>
+              </div>
+              <el-input
+                type="text"
+                slot="reference"
+                v-model="loginForm.username"
+                auto-complete="off"
+                placeholder="Username / Email"
+                prefix-icon="el-icon-user"
+              ></el-input>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item prop="password" >
+            <el-input
+              type="password"
+              show-password
+              v-model="loginForm.password"
+              auto-complete="off"
+              prefix-icon="el-icon-lock"
+              placeholder="Password"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item size="medium">
+            <button v-if="isDisabled"
+              type="button"
+              class="layui-btn layui-btn-disabled"
+              native-type="submit"
+              disabled
+              size="medium"
+              style="width:100% "
+              v-on:click="login">
+                Login
+            </button>
+            <button v-else
+              type="button"
+              class="layui-btn"
+              native-type="submit"
+              size="medium"
+              style="width:100% "
+              v-on:click="login">
+                Login
+            </button>
+          </el-form-item>
+
+          <el-form-item size="medium">
+            <button 
+              type="button"
+              style="width:100%"
+              @click="resetForm('loginForm')"
+              class="layui-btn layui-btn-primary">
+                Reset
+            </button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-main>
+  </el-container>
+</div>
 </template>
 
 <script>

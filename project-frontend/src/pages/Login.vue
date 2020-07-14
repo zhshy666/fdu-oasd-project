@@ -3,76 +3,80 @@
 <div class="layui-container">
     <div style="height: 150px"></div>
 </div>
-    <el-container>
-        <el-header height="50%">
-          <div class="layui-col-md4 layui-col-md-offset4">
-              <h1>Login</h1>
-          </div>
-        </el-header>
-        <el-main>
-            <el-col :span="6" :offset="9">
-                <el-form 
-                  @submit.native.prevent
-                  status-icon
-                  :model="loginForm"
-                  :rules="rules"
-                  ref="loginForm"
-                  label-position="left"
-                  label-width="0px"
-                  v-loading="loading"
-                >
-                    <el-form-item prop="username" >
-                        <el-input
-                          type="text"
-                          v-model="loginForm.username"
-                          auto-complete="off"
-                          placeholder="Username"
-                        ></el-input>
-                    </el-form-item>
-                    <el-form-item prop="password" >
-                        <el-input
-                          type="password"
-                          show-password
-                          v-model="loginForm.password"
-                          auto-complete="off"
-                          placeholder="Password"
-                        ></el-input>
-                    </el-form-item>
+  <el-container>
+    <el-header height="50%">
+      <div class="layui-col-md4 layui-col-md-offset4">
+        <h1>Login</h1>
+      </div>
+    </el-header>
+    <el-main>
+      <el-col :span="6" :offset="9">
+        <el-form 
+          @submit.native.prevent
+          status-icon
+          :model="loginForm"
+          :rules="rules"
+          ref="loginForm"
+          label-position="left"
+          label-width="0px"
+          v-loading="loading"
+        >
+          <el-form-item prop="username" >
+            <el-input
+                type="text"
+                v-model="loginForm.username"
+                auto-complete="off"
+                placeholder="Username / Email"
+                prefix-icon="el-icon-user"
+              ></el-input>
+          </el-form-item>
 
-                    <el-form-item size="medium">
-                        <button v-if="isDisabled"
-                          type="button"
-                          class="layui-btn layui-btn-disabled"
-                          native-type="submit"
-                          disabled
-                          size="medium"
-                          style="width:100% "
-                          v-on:click="login">
-                            Login
-                        </button>
-                        <button v-else
-                          type="button"
-                          class="layui-btn"
-                          native-type="submit"
-                          size="medium"
-                          style="width:100% "
-                          v-on:click="login">
-                            Login
-                        </button>
-                    </el-form-item>
-                    <el-form-item size="medium">
-                        <button 
-                          type="button"
-                          style="width:100%"
-                          @click="resetForm('loginForm')"
-                          class="layui-btn layui-btn-primary">
-                            Reset
-                        </button>
-                    </el-form-item>
-                </el-form>
-            </el-col>
-        </el-main>
-    </el-container>
+          <el-form-item prop="password" >
+            <el-input
+              type="password"
+              show-password
+              v-model="loginForm.password"
+              auto-complete="off"
+              prefix-icon="el-icon-lock"
+              placeholder="Password"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item size="medium">
+            <button v-if="isDisabled"
+              type="button"
+              class="layui-btn layui-btn-disabled"
+              native-type="submit"
+              disabled
+              size="medium"
+              style="width:100% "
+              v-on:click="login">
+                Login
+            </button>
+            <button v-else
+              type="button"
+              class="layui-btn"
+              native-type="submit"
+              size="medium"
+              style="width:100% "
+              v-on:click="login">
+                Login
+            </button>
+          </el-form-item>
+
+          <el-form-item size="medium">
+            <button 
+              type="button"
+              style="width:100%"
+              @click="resetForm('loginForm')"
+              class="layui-btn layui-btn-primary">
+                Reset
+            </button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-main>
+  </el-container>
 </div>
 </template>
 
