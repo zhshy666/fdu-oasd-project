@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="layui-container">
-    <div style="height: 150px"></div>
+    <div style="height: 100px"></div>
 </div>
   <el-container>
     <el-header height="50%">
@@ -14,9 +14,9 @@
         <el-form 
           @submit.native.prevent
           status-icon
-          :model="loginForm"
+          :model="registerForm"
           :rules="rules"
-          ref="loginForm"
+          ref="registerForm"
           label-position="left"
           label-width="0px"
           v-loading="loading"
@@ -28,30 +28,123 @@
               trigger="focus"
             >
               <div style="font-size:small">
-                <p>* Use <strong>numbers</strong>, <strong>letters</strong>, <strong>-</strong> and <strong>_</strong></p>
-                <p>* Start with <strong>letters</strong> or <strong>-</strong></p>
-                <p>* <strong>5</strong> and <strong>32</strong> characters in length</p>
+                <p>· <span class="mySpan">4</span> and <span  class="mySpan">15</span> characters in length</p>
+                <p>· eg: zsyzsy</p>
               </div>
               <el-input
                 type="text"
                 slot="reference"
-                v-model="loginForm.username"
+                v-model="registerForm.username"
                 auto-complete="off"
-                placeholder="Username / Email"
+                placeholder="Username"
                 prefix-icon="el-icon-user"
               ></el-input>
             </el-popover>
           </el-form-item>
 
-          <el-form-item prop="password" >
-            <el-input
+          <el-form-item prop="email" >
+            <el-popover
+              placement="right"
+              width="200"
+              trigger="focus"
+            >
+              <div style="font-size:small">
+                <p>· eg: zsyzsy@qq.com</p>
+              </div>
+              <el-input
+                type="text"
+                slot="reference"
+                v-model="registerForm.email"
+                auto-complete="off"
+                placeholder="Email"
+                prefix-icon="el-icon-message"
+              ></el-input>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item prop="password">
+            <el-popover
+              placement="right"
+              width="200"
+              trigger="focus"
+            >
+              <div style="font-size:small" >
+                <p>· <span class="mySpan">6</span> and <span class="mySpan">12</span> characters in length</p>
+                <p>· eg: pAs3s?wOrd</p>
+                <p>· password strength</p>
+                <p>
+                  <span>
+                    <el-progress 
+                    v-if="strength===0" 
+                    :percentage=0 
+                    :format="format" 
+                    :color="customColors">
+                    </el-progress>
+
+                    <el-progress 
+                    v-if="strength===1" 
+                    :percentage=25
+                    :format="format" 
+                    :color="customColors">
+                    </el-progress>
+
+                    <el-progress 
+                    v-if="strength===2" 
+                    :percentage=50
+                    :format="format" 
+                    :color="customColors">
+                    </el-progress>
+
+                    <el-progress 
+                    v-if="strength===3" 
+                    :percentage=75
+                    :format="format" 
+                    :color="customColors">
+                    </el-progress>
+
+                    <el-progress 
+                    v-if="strength===4" 
+                    :percentage=100 
+                    :format="format"
+                    :color="customColors">
+                    </el-progress>
+                  </span>
+                </p>
+              </div>
+              <el-input
+                type="password"
+                slot="reference"
+                show-password
+                v-model="registerForm.password"
+                auto-complete="off"
+                prefix-icon="el-icon-lock"
+                placeholder="Password"
+                @change="calculateStrength"
+              ></el-input>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item prop="confirmPassword" >
+            <el-popover
+              placement="right"
+              width="200"
+              trigger="focus"
+            >
+              <div style="font-size:small">
+                <p>· Equal to password</p>
+                <p>· eg: pAs3s?wOrd</p>
+              </div>
+              <el-input
               type="password"
+              slot="reference"
               show-password
-              v-model="loginForm.password"
+              v-model="registerForm.confirmPassword"
               auto-complete="off"
               prefix-icon="el-icon-lock"
-              placeholder="Password"
+              placeholder="Confirm password"
             ></el-input>
+            </el-popover>
+            
           </el-form-item>
 
           <el-form-item size="medium">
@@ -62,8 +155,8 @@
               disabled
               size="medium"
               style="width:100% "
-              v-on:click="login">
-                Login
+              v-on:click="register">
+                Register
             </button>
             <button v-else
               type="button"
@@ -71,8 +164,8 @@
               native-type="submit"
               size="medium"
               style="width:100% "
-              v-on:click="login">
-                Login
+              v-on:click="register">
+                Register
             </button>
           </el-form-item>
 
@@ -80,7 +173,7 @@
             <button 
               type="button"
               style="width:100%"
-              @click="resetForm('loginForm')"
+              @click="resetForm('registerForm')"
               class="layui-btn layui-btn-primary">
                 Reset
             </button>
@@ -94,21 +187,48 @@
 
 <script>
   export default {
-    name: "Login",
+    name: "Register",
     data() {
       return {
-        loginForm: {
+        strength: 1,
+        customColors: [
+          {color: '#909399', percentage: 26},
+          {color: '#f56c6c', percentage: 51},
+          {color: '#E6A23C', percentage: 76},
+          {color: '#67C23A', percentage: 100}
+        ],
+        registerForm: {
           username: "",
-          password: ""
+          email:"",
+          password: "",
+          confirmPassword: ""
         },
         rules: {
           username: [
-            {required:true,message:"Username is required",blur:"change"},
-            // {pattern:/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/,message:"Invalid username",blur:"change"}
+            {required: true,message:"Username is required",blur:"change"},
+            {pattern: /^[\w]{4,15}$/,message:"Invalid username",blur:"change"}
+          ],
+          email: [
+            {required: true,message:"Email is required",blur:"change"},
+            {pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, message:"Invalid email", trigger:"change"},
           ],
           password: [
             {required:true, message:"Password is required", blur:"change"},
-            // {pattern:/^[\w-]{6,32}$/, message:"Invalid password",blur:"change"},
+            {pattern:/^[\w\W]{6,12}$/, message:"Invalid password",blur:"change"},
+          ],
+          confirmPassword: [
+            {required:true, message:"Confirm password is required", blur:"change"},
+            {
+              validator:(rule,value,callback)=>{
+                if(value !== this.registerForm.password) {
+                  callback(new Error('Confirm password doesn\'t equals password'));
+                }
+                callback();
+              },
+              message:"Confirm password doesn\'t equals password",
+              trigger:"change"
+            },
+            {pattern:/^[\w\W]{6,12}$/, message:"Invalid confirm password",blur:"change"},
           ]
         },
         loading: false,
@@ -116,18 +236,47 @@
     },
     computed:{
       isDisabled(){
-          return false
-        // return !(/^[a-zA-Z-][a-zA-Z0-9-_]{4,31}$/.test(this.loginForm.username) && /^[\w-]{6,32}$/.test(this.loginForm.password));
+          return !(/^[\w]{4,15}$/.test(this.registerForm.username)
+                  &&(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.registerForm.email))
+                  &&(/^[\w-]{6,12}$/.test(this.registerForm.password))
+                  &&(/^[\w-]{6,12}$/.test(this.registerForm.confirmPassword))
+                  && this.registerForm.confirmPassword === this.registerForm.password
+                  );
+      },
+      calculateStrength(){
+        var modes = 0;
+        if(/\d/.test(this.registerForm.password)) modes++; //数字
+        if(/[a-z]/.test(this.registerForm.password)) modes++; //小写
+        if(/[A-Z]/.test(this.registerForm.password)) modes++; //大写  
+        if(/\W/.test(this.registerForm.password)) modes++; //特殊字符
+        //逻辑处理
+        switch(modes) {
+          case 0:
+            this.strength = 0;
+            break;
+          case 1:
+            this.strength = 1;
+            break;
+          case 2:
+            this.strength = this.registerForm.password.length < 8 ? 1 : 2;
+            break;
+          case 3:
+            this.strength = this.registerForm.password.length < 10 ? 2 : 3;
+            break;
+          case 4:
+            this.strength = this.registerForm.password.length < 10 ? 3 : 4;
+            break;
+        }
       }
     },
     methods: {
-      login() {
+      register() {
         // Turn to loading mode when the form is submitted,and come back when getting response
         this.loading = true;
         this.$axios
-          .post("/login", {
-            username: this.loginForm.username,
-            password: this.loginForm.password
+          .post("/register", {
+            username: this.registerForm.username,
+            password: this.registerForm.password
           })
           .then(resp => {
             if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
@@ -154,6 +303,16 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+      format(percentage) {
+        if(percentage <= 25)
+          return 'bad';
+        if(percentage <= 50)
+          return 'low';
+        if(percentage <= 75)
+          return 'mid';
+        if(percentage <= 100)
+          return 'high';
+      },
       errorNotification(){
         this.$notify({
           type:'error',
@@ -165,3 +324,10 @@
     }
   }
 </script>
+
+<style>
+.mySpan{
+  color: #009688;
+  font-weight: bold;
+}
+</style>
