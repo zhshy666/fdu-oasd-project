@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="layui-container">
-    <div style="height: 100px"></div>
+    <div style="height: 60px"></div>
 </div>
   <el-container>
     <el-header height="50%">
@@ -119,7 +119,7 @@
                 auto-complete="off"
                 prefix-icon="el-icon-lock"
                 placeholder="Password"
-                @change="calculateStrength"
+                :@change="calculateStrength"
               ></el-input>
             </el-popover>
           </el-form-item>
@@ -144,7 +144,29 @@
               placeholder="Confirm password"
             ></el-input>
             </el-popover>
-            
+          </el-form-item>
+
+          <el-form-item prop="verifycode">
+            <el-popover
+              placement="right"
+              width="220"
+              trigger="focus"
+            >
+              <div>
+                <p>· <span class="mySpan">Click</span> to change the verify code</p>
+                <p @click="refreshCode">
+                  · <s-identify :identifyCode="identifyCode"></s-identify>
+                </p>
+              </div>
+              <el-input 
+                type="text"
+                slot="reference"
+                auto-complete="off"
+                v-model="registerForm.verifycode" 
+                prefix-icon="el-icon-key"
+                placeholder="Verify code">
+              </el-input>
+            </el-popover>
           </el-form-item>
 
           <el-form-item size="medium">
@@ -186,11 +208,16 @@
 </template>
 
 <script>
+import SIdentify from '../components/RandomCode'
   export default {
     name: "Register",
+    components: {SIdentify},
     data() {
       return {
         strength: 1,
+        
+				identifyCodes: '1234567890',
+				identifyCode: '',
         customColors: [
           {color: '#909399', percentage: 26},
           {color: '#f56c6c', percentage: 51},
@@ -201,7 +228,8 @@
           username: "",
           email:"",
           password: "",
-          confirmPassword: ""
+          confirmPassword: "",
+          verifycode: '',
         },
         rules: {
           username: [
@@ -239,11 +267,29 @@
               trigger:"change"
             },
             {pattern:/^[\w\W]{6,12}$/, message:"Invalid confirm password",blur:"change"},
-          ]
+          ],
+          verifycode:[
+            {required: true, message: "Verify code is required", blur: "change"},
+            {
+              validator:(rule,value,callback)=>{
+                if(value !== this.identifyCode) {
+                  callback(new Error('Wrong verify code'));
+                }
+                callback();
+              },
+              message:"Wrong verify code",
+              trigger:"change"
+            }
+          ],
         },
         loading: false,
       };
     },
+    mounted() {
+			// init
+			this.identifyCode = ''
+			this.makeCode(this.identifyCodes, 4)
+		},
     computed:{
       isDisabled(){
           return !(/^[\w]{4,15}$/.test(this.registerForm.username)
@@ -251,6 +297,7 @@
                   &&(/^[\w\W]{6,12}$/.test(this.registerForm.password))
                   &&(/^[\w\W]{6,12}$/.test(this.registerForm.confirmPassword))
                   && this.registerForm.confirmPassword === this.registerForm.password
+                  && this.registerForm.verifycode === this.identifyCode
                   );
       },
       calculateStrength(){
@@ -277,7 +324,7 @@
             this.strength = this.registerForm.password.length < 10 ? 3 : 4;
             break;
         }
-      }
+      },
     },
     methods: {
       register() {
@@ -331,6 +378,22 @@
           message: '<strong style="color:teal">Please check your username and password or try again later!</strong>'
         });
       },
+      // 生成随机数
+			randomNum(min, max) {
+				return Math.floor(Math.random() * (max - min) + min)
+			},
+			// 切换验证码
+			refreshCode() {
+				this.identifyCode = ''
+				this.makeCode(this.identifyCodes, 4)
+			},
+			// 生成四位随机验证码
+			makeCode(o, l) {
+				for (let i = 0; i < l; i++) {
+					this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
+				}
+				console.log(this.identifyCode)
+			}
     }
   }
 </script>
