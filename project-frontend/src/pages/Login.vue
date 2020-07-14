@@ -100,7 +100,6 @@
             if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
               //Save token
               this.$store.commit("login", resp.data);
-              this.$store.commit("username", this.loginForm.username)
               this.$message({
                 dangerouslyUseHTMLString: true,
                 type:'success',

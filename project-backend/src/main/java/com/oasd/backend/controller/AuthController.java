@@ -30,6 +30,7 @@ public class AuthController {
             String token = jwtTokenUtil.generateToken(user);
             TokenProcessor t = new TokenProcessor();
             t.setToken(token);
+            t.setUsername(request.getUsername());
             System.out.println("Login success.");
             return ResponseEntity.ok(t);
         }

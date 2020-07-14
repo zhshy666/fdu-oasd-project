@@ -4,21 +4,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        token: localStorage.getItem('token') || null
+        token: localStorage.getItem('token') || null,
+        cur_user: localStorage.getItem('username') || null
     },
     mutations: {
         login(state, data) {
             localStorage.setItem('token', data.token)
-            localStorage.setItem('userType', data.userType)
-            state.userType = data.userType;
+            localStorage.setItem('username', data.username)
             state.token = data.token
+            state.cur_user = data.username
         },
         logout(state) {
             // releasetoken
             localStorage.removeItem('token')
-            localStorage.removeItem('userType')
-            state.userType = null
+            localStorage.removeItem('username')
             state.token = null
+            state.cur_user = null
         }
     },
     actions: {}

@@ -1,30 +1,51 @@
 <template>
     <el-container>
         <div v-if="beforeLogin">
-          <a href="Login">login</a>
+          <el-button plain @click="login">Login</el-button>
         </div>
         <div v-if="afterLogin">
-          Hello{{msg}}
+          Hello, {{msg}}
+          <br>
+          <router-link to @click.native="logout">
+              Log out
+          </router-link>
         </div>
     </el-container>
 </template>
 
 <script>
 export default {
+  inject: ['reload'],
   name: "Index",
   data() {
     return {
       beforeLogin: true,
       afterLogin: false,
-      msg: '111'
+      msg: this.$store.state.cur_user
     };
   },
   methods: {
-    
+    login(){
+      this.$router.replace({ path: "/login" });
+    },
+    logout() {
+      this.$confirm("Are you sure to log out?", "Log Out", {
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      })
+      .then(() => {
+        this.$store.commit("logout");
+        this.reload();
+        this.$message({
+          dangerouslyUseHTMLString: true,
+          message: '<strong style="color:teal">You have signed out!</strong>',
+          center: true
+        });
+      })
+      .catch(error => {});
+    }
   },
   created() {
-    this.$axios
-    .get()
     // Control the display of different interface
     if (this.$store.state.token) {
       this.beforeLogin = false;
