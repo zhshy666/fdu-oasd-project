@@ -86,8 +86,6 @@
 				for (let i = 0; i < this.identifyCode.length; i++) {
 					this.drawText(ctx, this.identifyCode[i], i)
 				}
-				this.drawLine(ctx)
-				this.drawDot(ctx)
 			},
 			drawText(ctx, txt, i) {
 				ctx.fillStyle = this.randomColor(this.colorMin, this.colorMax)
@@ -103,40 +101,6 @@
 				// 恢复坐标原点和旋转角度
 				ctx.rotate(-deg * Math.PI / 180)
 				ctx.translate(-x, -y)
-			},
-			drawLine(ctx) {
-				// 绘制干扰线
-				for (let i = 0; i < 8; i++) {
-					ctx.strokeStyle = this.randomColor(
-						this.lineColorMin,
-						this.lineColorMax
-					)
-					ctx.beginPath()
-					ctx.moveTo(
-						this.randomNum(0, this.contentWidth),
-						this.randomNum(0, this.contentHeight)
-					)
-					ctx.lineTo(
-						this.randomNum(0, this.contentWidth),
-						this.randomNum(0, this.contentHeight)
-					)
-					ctx.stroke()
-				}
-			},
-			drawDot(ctx) {
-				// 绘制干扰点
-				for (let i = 0; i < 100; i++) {
-					ctx.fillStyle = this.randomColor(0, 255)
-					ctx.beginPath()
-					ctx.arc(
-						this.randomNum(0, this.contentWidth),
-						this.randomNum(0, this.contentHeight),
-						1,
-						0,
-						2 * Math.PI
-					)
-					ctx.fill()
-				}
 			}
 		},
 		// 监听--watch中包含immediate属性和deep属性。immediate属性：immediate:true，首次绑定的时候执行watch中的方法；immediate:false，当数据发生变化时执行watch中的方法（首次绑定时不执行）
@@ -148,7 +112,7 @@
 			    immediate: false
 			  }
 		},
-		// mounted 完成挂载：在这发起后端请求，拿回数据，配合路由钩子做一些事情
+		// mounted 完成挂载
 		mounted() {
 			this.drawPic()
 		}

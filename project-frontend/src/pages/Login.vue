@@ -42,6 +42,29 @@
             ></el-input>
           </el-form-item>
 
+          <el-form-item prop="verifycode">
+            <el-popover
+              placement="right"
+              width="220"
+              trigger="focus"
+            >
+              <div>
+                <p>· <span class="mySpan">Click</span> to change the verify code</p>
+                <p @click="refreshCode">
+                  · <s-identify :identifyCode="identifyCode"></s-identify>
+                </p>
+              </div>
+              <el-input 
+                type="text"
+                slot="reference"
+                auto-complete="off"
+                v-model="loginForm.verifycode" 
+                prefix-icon="el-icon-key"
+                placeholder="Verify code">
+              </el-input>
+            </el-popover>
+          </el-form-item>
+
           <el-form-item size="medium">
             <button v-if="isDisabled"
               type="button"
@@ -81,13 +104,18 @@
 </template>
 
 <script>
+import SIdentify from '../components/RandomCode'
   export default {
     name: "Login",
+    components: {SIdentify},
     data() {
       return {
+        identifyCodes: '1234567890',
+				identifyCode: '',
         loginForm: {
           username: "",
-          password: ""
+          password: "",
+          verifycode: '',
         },
         rules: {
           username: [
@@ -95,14 +123,34 @@
           ],
           password: [
             {required:true, message:"Password is required", blur:"change"},
-          ]
+          ],
+          verifycode:[
+            {required: true, message: "Verify code is required", blur: "change"},
+            {
+              validator:(rule,value,callback)=>{
+                if(value !== this.identifyCode) {
+                  callback(new Error('Wrong verify code'));
+                }
+                callback();
+              },
+              message:"Wrong verify code",
+              trigger:"change"
+            }
+          ],
         },
         loading: false,
       };
     },
+    mounted() {
+			// init
+			this.identifyCode = ''
+			this.makeCode(this.identifyCodes, 4)
+		},
     computed:{
       isDisabled(){
-        return !(this.loginForm.username && this.loginForm.password);
+        return !(this.loginForm.username && this.loginForm.password
+        && this.loginForm.verifycode === this.identifyCode
+        );
       }
     },
     methods: {
@@ -149,6 +197,28 @@
           message: '<strong style="color:teal">Please check your username and password or try again later!</strong>'
         });
       },
+      randomNum(min, max) {
+				return Math.floor(Math.random() * (max - min) + min)
+			},
+			// refresh verify code
+			refreshCode() {
+				this.identifyCode = ''
+				this.makeCode(this.identifyCodes, 4)
+			},
+			// get random verify code
+			makeCode(o, l) {
+				for (let i = 0; i < l; i++) {
+					this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
+				}
+				console.log(this.identifyCode)
+			}
     }
   }
 </script>
+
+<style>
+.mySpan{
+  color: #009688;
+  font-weight: bold;
+}
+</style>

@@ -214,8 +214,7 @@ import SIdentify from '../components/RandomCode'
     components: {SIdentify},
     data() {
       return {
-        strength: 1,
-        
+        strength: 1, 
 				identifyCodes: '1234567890',
 				identifyCode: '',
         customColors: [
@@ -378,16 +377,15 @@ import SIdentify from '../components/RandomCode'
           message: '<strong style="color:teal">Please check your username and password or try again later!</strong>'
         });
       },
-      // 生成随机数
 			randomNum(min, max) {
 				return Math.floor(Math.random() * (max - min) + min)
 			},
-			// 切换验证码
+			// refresh verify code
 			refreshCode() {
 				this.identifyCode = ''
 				this.makeCode(this.identifyCodes, 4)
 			},
-			// 生成四位随机验证码
+			// get random verify code
 			makeCode(o, l) {
 				for (let i = 0; i < l; i++) {
 					this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
