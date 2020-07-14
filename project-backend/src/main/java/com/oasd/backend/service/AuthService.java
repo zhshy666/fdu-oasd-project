@@ -1,6 +1,7 @@
 package com.oasd.backend.service;
 
 import com.oasd.backend.domain.TravelUser;
+import com.oasd.backend.repository.TravelUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,13 +18,12 @@ import java.util.List;
 
 @Service
 public class AuthService {
-    @Resource
-    private JdbcTemplate jdbcTemplate;
+    private TravelUserRepo travelUserRepo;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public AuthService() {
-
+    public AuthService(TravelUserRepo repo) {
+        this.travelUserRepo = repo;
     }
 
     /**
@@ -33,7 +33,7 @@ public class AuthService {
      * return value sent to : AuthController
      */
     public TravelUser login(String username, String password) {
-        TravelUser user= findByUsername(username, password);
+        TravelUser user= travelUserRepo.findUserByUsernameAndPass(username, password);
         return user;
         // Step1 : user can be found or not
 //        if(user == null){
@@ -51,28 +51,12 @@ public class AuthService {
 //        }
     }
 
-    public TravelUser findByUsername(String username, String password){
-        String sql = "select * from traveluser where UserName='" +
-                username + "'" +
-                "and Pass='" +
-                password + "'";
-        List<TravelUser> userList = jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
-            TravelUser user = null;
-            @Override
-            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
-                user = new TravelUser();
-                user.setId(resultSet.getInt("UID"));
-                user.setPassword(resultSet.getString("Pass"));
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("UserName"));
-                user.setState(resultSet.getString("State"));
-                user.setDateJoined(resultSet.getString("DateJoined"));
-                user.setDateLastModified(resultSet.getString("DateLastModified"));
-                return user;
-            }
-        });
-        if(userList.isEmpty())
-            return null;
-        return userList.get(0);
+    public boolean register(String username, String password, String email){
+        boolean isUserExists = travelUserRepo.findUserByUsername(username);
+        if (isUserExists){
+            return false;
+        }
+        travelUserRepo.insertUser(username, password, email);
+        return true;
     }
 }

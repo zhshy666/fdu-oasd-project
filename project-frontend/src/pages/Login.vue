@@ -170,8 +170,7 @@ import SIdentify from '../components/RandomCode'
                 dangerouslyUseHTMLString: true,
                 type:'success',
                 title: 'Login success',
-                showClose: false,
-                message: '<strong style="color:teal"Login successfully!</strong>',
+                message: '<strong style="color:teal"Login successfully</strong>',
               });
               this.$router.replace({ path: "/" });
             } else {

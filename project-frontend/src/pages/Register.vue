@@ -332,19 +332,20 @@ import SIdentify from '../components/RandomCode'
         this.$axios
           .post("/register", {
             username: this.registerForm.username,
-            password: this.registerForm.password
+            password: this.registerForm.password,
+            email: this.registerForm.email
           })
           .then(resp => {
             if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
-              //Save token
+              // login automatically after register
               this.$store.commit("login", resp.data);
-              this.$message({
+              this.$notify({
                 dangerouslyUseHTMLString: true,
                 type:'success',
-                message: '<strong style="color:teal">Welcome back!</strong>',
-                center:true
+                title: 'Register success',
+                message: '<strong style="color:teal"Register successfully</strong>',
               });
-              this.$router.replace({ path: "/" });
+              this.$router.replace({ path: "/" });              
             } else {
               this.errorNotification();
               this.loading = false;
@@ -373,8 +374,8 @@ import SIdentify from '../components/RandomCode'
         this.$notify({
           type:'error',
           dangerouslyUseHTMLString: true,
-          title: 'Login error',
-          message: '<strong style="color:teal">Please check your username and password or try again later!</strong>'
+          title: 'Register error',
+          message: '<strong style="color:teal">The username has been used. Please try another one</strong>'
         });
       },
 			randomNum(min, max) {

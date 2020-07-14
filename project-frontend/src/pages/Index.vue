@@ -43,7 +43,7 @@ export default {
       this.$router.replace({path: "/register"})
     },
     logout() {
-      this.$confirm("Are you sure to log out?", "Log Out", {
+      this.$confirm("Are you sure to log out?", "Logout", {
         confirmButtonText: "Yes",
         cancelButtonText: "No"
       })
@@ -53,8 +53,7 @@ export default {
         this.$notify({
           type:'info',
           dangerouslyUseHTMLString: true,
-          showClose: false,
-          message: '<strong style="color:teal">You have signed out!</strong>',
+          message: '<strong style="color:teal">Logout successfully</strong>',
         });
       })
       .catch(error => {});
