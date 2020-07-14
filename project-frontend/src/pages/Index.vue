@@ -1,7 +1,17 @@
 <template>
     <el-container>
+      <el-header>
         <div v-if="beforeLogin">
-          <el-button plain @click="login">Login</el-button>
+          <button type="button"
+            class="layui-btn" 
+            @click="login">
+              Login
+          </button>
+          <button type="button"
+            class="layui-btn" 
+            @click="register">
+              Register
+          </button>
         </div>
         <div v-if="afterLogin">
           Hello, {{msg}}
@@ -10,6 +20,7 @@
               Log out
           </router-link>
         </div>
+      </el-header>
     </el-container>
 </template>
 
@@ -27,6 +38,9 @@ export default {
   methods: {
     login(){
       this.$router.replace({ path: "/login" });
+    },
+    register(){
+      this.$router.replace({path: "/register"})
     },
     logout() {
       this.$confirm("Are you sure to log out?", "Log Out", {

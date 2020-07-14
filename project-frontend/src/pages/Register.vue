@@ -6,7 +6,7 @@
   <el-container>
     <el-header height="50%">
       <div class="layui-col-md4 layui-col-md-offset4">
-        <h1>Login</h1>
+        <h1>Register</h1>
       </div>
     </el-header>
     <el-main>
