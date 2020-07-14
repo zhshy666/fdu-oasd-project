@@ -215,6 +215,16 @@
           password: [
             {required:true, message:"Password is required", blur:"change"},
             {pattern:/^[\w\W]{6,12}$/, message:"Invalid password",blur:"change"},
+            {
+              validator:(rule,value,callback)=>{
+                if(value !== this.registerForm.confirmPassword) {
+                  callback(new Error('Password doesn\'t equals confirm password'));
+                }
+                callback();
+              },
+              message:"Password doesn\'t equals confirm password",
+              trigger:"change"
+            },
           ],
           confirmPassword: [
             {required:true, message:"Confirm password is required", blur:"change"},
@@ -238,8 +248,8 @@
       isDisabled(){
           return !(/^[\w]{4,15}$/.test(this.registerForm.username)
                   &&(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.registerForm.email))
-                  &&(/^[\w-]{6,12}$/.test(this.registerForm.password))
-                  &&(/^[\w-]{6,12}$/.test(this.registerForm.confirmPassword))
+                  &&(/^[\w\W]{6,12}$/.test(this.registerForm.password))
+                  &&(/^[\w\W]{6,12}$/.test(this.registerForm.confirmPassword))
                   && this.registerForm.confirmPassword === this.registerForm.password
                   );
       },
