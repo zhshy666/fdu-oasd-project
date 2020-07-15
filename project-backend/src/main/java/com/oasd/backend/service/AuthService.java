@@ -2,24 +2,17 @@ package com.oasd.backend.service;
 
 import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.repository.TravelUserRepo;
+import com.oasd.backend.util.AESUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class AuthService {
     private TravelUserRepo travelUserRepo;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public AuthService(TravelUserRepo repo) {
@@ -33,10 +26,18 @@ public class AuthService {
      * return value sent to : AuthController
      */
     public TravelUser login(String usernameOrEmail, String password) {
-        if (usernameOrEmail.contains("@")){
-            return travelUserRepo.findUserByEmailAndPass(usernameOrEmail, password);
+        // decode
+        String psw = null;
+        try {
+            psw = AESUtil.desEncrypt(password).trim();
+            System.out.println(psw);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return travelUserRepo.findUserByUsernameAndPass(usernameOrEmail, password);
+        if (usernameOrEmail.contains("@")){
+            return travelUserRepo.findUserByEmailAndPass(usernameOrEmail, psw);
+        }
+        return travelUserRepo.findUserByUsernameAndPass(usernameOrEmail, psw);
         // Step1 : user can be found or not
 //        if(user == null){
 //            return null;

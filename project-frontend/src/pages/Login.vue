@@ -102,6 +102,7 @@
 
 <script>
 import SIdentify from '../components/RandomCode'
+import {Encrypt} from '../tools/AESUtils'
   export default {
     name: "Login",
     components: {SIdentify},
@@ -157,10 +158,11 @@ import SIdentify from '../components/RandomCode'
       login() {
         // Turn to loading mode when the form is submitted,and come back when getting response
         this.loading = true;
+        let passwordAES = Encrypt(this.loginForm.password.trim()).toString();
         this.$axios
           .post("/login", {
             usernameOrEmail: this.loginForm.usernameOrEmail,
-            password: this.loginForm.password
+            password: passwordAES
           })
           .then(resp => {
             if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
@@ -211,7 +213,6 @@ import SIdentify from '../components/RandomCode'
 				for (let i = 0; i < l; i++) {
 					this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
 				}
-				console.log(this.identifyCode)
 			}
     }
   }

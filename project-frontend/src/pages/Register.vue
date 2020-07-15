@@ -82,7 +82,7 @@
               <div style="font-size:small" >
                 <p>· <span class="mySpan">6</span> and <span class="mySpan">12</span> characters in length</p>
                 <p>· eg: pAs3s?wOrd</p>
-                <p>· password strength</p>
+                <p>· Password strength</p>
                 <p>
                   <span>
                     <el-progress 
@@ -410,7 +410,6 @@ import SIdentify from '../components/RandomCode'
 				for (let i = 0; i < l; i++) {
 					this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
 				}
-				console.log(this.identifyCode)
 			}
     }
   }
