@@ -27,15 +27,16 @@ public class AuthService {
     }
 
     /**
-     * @param username username from the front end
+     * @param usernameOrEmail username from the front end
      * @param password password from the front end
      * @return return token info to the front end(call generateToken func)
      * return value sent to : AuthController
      */
     public TravelUser login(String usernameOrEmail, String password) {
-        if (usernameOrEmail)
-        TravelUser user= travelUserRepo.findUserByUsernameAndPass(usernameOrEmail, password);
-        return user;
+        if (usernameOrEmail.contains("@")){
+            return travelUserRepo.findUserByEmailAndPass(usernameOrEmail, password);
+        }
+        return travelUserRepo.findUserByUsernameAndPass(usernameOrEmail, password);
         // Step1 : user can be found or not
 //        if(user == null){
 //            return null;

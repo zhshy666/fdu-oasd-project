@@ -21,10 +21,10 @@
           label-width="0px"
           v-loading="loading"
         >
-          <el-form-item prop="username" >
+          <el-form-item prop="usernameOrEmail" >
             <el-input
                 type="text"
-                v-model="loginForm.username"
+                v-model="loginForm.usernameOrEmail"
                 auto-complete="off"
                 placeholder="Username / Email"
                 prefix-icon="el-icon-user"
@@ -113,13 +113,13 @@ import SIdentify from '../components/RandomCode'
         identifyCodes: '1234567890',
 				identifyCode: '',
         loginForm: {
-          username: "",
+          usernameOrEmail: "",
           password: "",
           verifycode: '',
         },
         rules: {
-          username: [
-            {required:true,message:"Username is required",blur:"change"},
+          usernameOrEmail: [
+            {required:true,message:"Username / Email is required",blur:"change"},
           ],
           password: [
             {required:true, message:"Password is required", blur:"change"},
@@ -148,7 +148,7 @@ import SIdentify from '../components/RandomCode'
 		},
     computed:{
       isDisabled(){
-        return !(this.loginForm.username && this.loginForm.password
+        return !(this.loginForm.usernameOrEmail && this.loginForm.password
         && this.loginForm.verifycode === this.identifyCode
         );
       }
@@ -159,7 +159,7 @@ import SIdentify from '../components/RandomCode'
         this.loading = true;
         this.$axios
           .post("/login", {
-            username: this.loginForm.username,
+            usernameOrEmail: this.loginForm.usernameOrEmail,
             password: this.loginForm.password
           })
           .then(resp => {
@@ -191,9 +191,8 @@ import SIdentify from '../components/RandomCode'
         this.$notify({
           type:'error',
           dangerouslyUseHTMLString: true,
-          showClose: false,
           title: 'Login error',
-          message: '<strong style="color:teal">Please check your username and password or try again later!</strong>'
+          message: '<strong style="color:teal">Please check your username / email and password or try again later!</strong>'
         });
       },
       randomNum(min, max) {

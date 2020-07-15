@@ -100,4 +100,29 @@ public class TravelUserRepo {
         });
         return !userList.isEmpty();
     }
+
+    public TravelUser findUserByEmailAndPass(String email, String password) {
+        String sql = "select * from traveluser where Email='" +
+                email + "'" +
+                "and Pass='" +
+                password + "'";
+        List<TravelUser> userList = jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
+            TravelUser user = null;
+            @Override
+            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
+                user = new TravelUser();
+                user.setId(resultSet.getInt("UID"));
+                user.setPassword(resultSet.getString("Pass"));
+                user.setEmail(resultSet.getString("email"));
+                user.setUsername(resultSet.getString("UserName"));
+                user.setState(resultSet.getString("State"));
+                user.setDateJoined(resultSet.getString("DateJoined"));
+                user.setDateLastModified(resultSet.getString("DateLastModified"));
+                return user;
+            }
+        });
+        if(userList.isEmpty())
+            return null;
+        return userList.get(0);
+    }
 }
