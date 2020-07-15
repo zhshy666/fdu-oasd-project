@@ -23,7 +23,7 @@ public class AuthController {
     }
     @RequestMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
-        TravelUser user = authService.login(request.getUsername(), request.getPassword());
+        TravelUser user = authService.login(request.getUsernameOrEmail(), request.getPassword());
         if (user == null){
             return new ResponseEntity<>("Login failed", HttpStatus.BAD_REQUEST);
         }
@@ -31,7 +31,7 @@ public class AuthController {
             String token = jwtTokenUtil.generateToken(user);
             TokenProcessor t = new TokenProcessor();
             t.setToken(token);
-            t.setUsername(request.getUsername());
+            t.setUsername(request.getUsernameOrEmail());
             System.out.println("Login success.");
             return ResponseEntity.ok(t);
         }

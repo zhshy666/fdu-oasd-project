@@ -24,12 +24,17 @@
           <el-form-item prop="username" >
             <el-popover
               placement="right"
-              width="200"
+              width="220"
               trigger="focus"
             >
               <div style="font-size:small">
-                <p>· <span class="mySpan">4</span> and <span  class="mySpan">15</span> characters in length</p>
-                <p>· eg: zsyzsy</p>
+                <p>· <span class="mySpan">4</span> and <span class="mySpan">15</span> characters in length</p>
+                <p>· 
+                  <span class="mySpan">numbers</span>,
+                  <span class="mySpan">letters</span>
+                  or <span class="mySpan">_</span> 
+                  is required</p>
+                <p>· eg: zsy_123</p>
               </div>
               <el-input
                 type="text"

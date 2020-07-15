@@ -32,8 +32,9 @@ public class AuthService {
      * @return return token info to the front end(call generateToken func)
      * return value sent to : AuthController
      */
-    public TravelUser login(String username, String password) {
-        TravelUser user= travelUserRepo.findUserByUsernameAndPass(username, password);
+    public TravelUser login(String usernameOrEmail, String password) {
+        if (usernameOrEmail)
+        TravelUser user= travelUserRepo.findUserByUsernameAndPass(usernameOrEmail, password);
         return user;
         // Step1 : user can be found or not
 //        if(user == null){
