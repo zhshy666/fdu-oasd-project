@@ -172,7 +172,7 @@ import {Encrypt} from '../tools/AESUtils'
                 dangerouslyUseHTMLString: true,
                 type:'success',
                 title: 'Login success',
-                message: '<strong style="color:teal"Login successfully</strong>',
+                message: '<strong style="color:teal">'+this.$store.state.cur_user+', welcome back</strong>',
               });
               this.$router.replace({ path: "/" });
             } else {
@@ -218,7 +218,7 @@ import {Encrypt} from '../tools/AESUtils'
   }
 </script>
 
-<style>
+<style scope>
 .mySpan{
   color: #009688;
   font-weight: bold;

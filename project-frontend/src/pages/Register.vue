@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="layui-container">
-    <div style="height: 60px"></div>
+    <div style="height: 80px"></div>
 </div>
   <el-container>
     <el-header height="50%">
@@ -352,7 +352,7 @@ import SIdentify from '../components/RandomCode'
                 dangerouslyUseHTMLString: true,
                 type:'success',
                 title: 'Register success',
-                message: '<strong style="color:teal"Register successfully</strong>',
+                message: '<strong style="color:teal">Register successfully</strong>',
               });
               this.$router.replace({ path: "/" });              
             } else {
@@ -415,7 +415,7 @@ import SIdentify from '../components/RandomCode'
   }
 </script>
 
-<style>
+<style scope>
 .mySpan{
   color: #009688;
   font-weight: bold;
