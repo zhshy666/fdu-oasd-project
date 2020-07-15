@@ -7,6 +7,7 @@ import ElementUI from 'element-ui'
 import '../node_modules/element-ui/lib/theme-chalk/index.css'
 import qs from '../node_modules/qs'
 import store from '../src/store'
+import './assets/theme/index.css'
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 

@@ -6,7 +6,12 @@
   <el-container>
     <el-header height="50%">
       <div class="layui-col-md4 layui-col-md-offset4">
-        <h1>Register</h1>
+        <h1>Register</h1><br>
+        <p class="small-font">
+          <span>Into the world of 
+            <el-link @click="goToIndex" :underline="false" class="small-font">Travellers</el-link>
+          </span>
+        </p>
       </div>
     </el-header>
     <el-main>
@@ -175,38 +180,30 @@
           </el-form-item>
 
           <el-form-item size="medium">
-            <button v-if="isDisabled"
-              type="button"
-              class="layui-btn layui-btn-disabled"
+            <el-button
+              type="primary"
               native-type="submit"
-              disabled
+              :disabled="isDisabled"
               size="medium"
-              style="width:100% "
+              style="width:100%"
               v-on:click="register">
                 Register
-            </button>
-            <button v-else
-              type="button"
-              class="layui-btn"
-              native-type="submit"
-              size="medium"
-              style="width:100% "
-              v-on:click="register">
-                Register
-            </button>
+            </el-button>
           </el-form-item>
 
           <el-form-item size="medium">
-            <button 
-              type="button"
+            <el-button 
               style="width:100%"
-              @click="resetForm('registerForm')"
-              class="layui-btn layui-btn-primary">
+              plain
+              @click="resetForm('registerForm')">
                 Reset
-            </button>
+            </el-button>
           </el-form-item>
         </el-form>
       </el-col>
+      <div class="layui-col-md4 layui-col-md-offset4">
+        <p class="small-font"><span>Already get an account yet? <el-link @click="login" :underline="false" class="small-font">Login.</el-link></span></p>
+      </div>
     </el-main>
   </el-container>
 </div>
@@ -331,6 +328,12 @@ import SIdentify from '../components/RandomCode'
       },
     },
     methods: {
+      goToIndex(){
+        this.$router.replace({ path: "/" });
+      },
+      login(){
+        this.$router.replace({ path: "/login" });
+      },
       register() {
         // Turn to loading mode when the form is submitted,and come back when getting response
         this.loading = true;

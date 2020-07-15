@@ -2,16 +2,17 @@
     <el-container>
       <el-header>
         <div v-if="beforeLogin">
-          <button type="button"
-            class="layui-btn" 
+          <el-button 
+            type="primary"
             @click="login">
               Login
-          </button>
-          <button type="button"
-            class="layui-btn" 
+          </el-button>
+          <el-button 
+            type="primary"
             @click="register">
               Register
-          </button>
+          </el-button>
+
         </div>
         <div v-if="afterLogin">
           Hello, {{msg}}
