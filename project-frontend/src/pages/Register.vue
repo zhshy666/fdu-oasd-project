@@ -347,7 +347,7 @@ import SIdentify from '../components/RandomCode'
               });
               this.$router.replace({ path: "/" });              
             } else {
-              this.errorNotification();
+              this.errorNotification(resp.data);
               this.loading = false;
             }
           })
@@ -370,13 +370,23 @@ import SIdentify from '../components/RandomCode'
         if(percentage <= 100)
           return 'high';
       },
-      errorNotification(){
-        this.$notify({
-          type:'error',
-          dangerouslyUseHTMLString: true,
-          title: 'Register error',
-          message: '<strong style="color:teal">The username has been used. Please try another one</strong>'
-        });
+      errorNotification(message){
+        if(message === "username"){
+          this.$notify({
+            type:'error',
+            dangerouslyUseHTMLString: true,
+            title: 'Register error',
+            message: '<strong style="color:teal">The username has been used. Please try another one</strong>'
+          });
+        }
+        else{
+          this.$notify({
+            type:'error',
+            dangerouslyUseHTMLString: true,
+            title: 'Register error',
+            message: '<strong style="color:teal">The email has been used. Please try another one</strong>'
+          });
+        }
       },
 			randomNum(min, max) {
 				return Math.floor(Math.random() * (max - min) + min)

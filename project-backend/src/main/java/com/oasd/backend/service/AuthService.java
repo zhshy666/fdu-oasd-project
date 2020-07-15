@@ -51,12 +51,16 @@ public class AuthService {
 //        }
     }
 
-    public boolean register(String username, String password, String email){
-        boolean isUserExists = travelUserRepo.findUserByUsername(username);
-        if (isUserExists){
-            return false;
+    public String register(String username, String password, String email){
+        boolean isUsernameExists = travelUserRepo.findUserByUsername(username);
+        if (isUsernameExists){
+            return "username";
+        }
+        boolean isEmailExists = travelUserRepo.findUserByEmail(email);
+        if (isEmailExists){
+            return "email";
         }
         travelUserRepo.insertUser(username, password, email);
-        return true;
+        return "success";
     }
 }

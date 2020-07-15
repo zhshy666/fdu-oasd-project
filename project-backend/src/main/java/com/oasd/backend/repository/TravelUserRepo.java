@@ -81,4 +81,23 @@ public class TravelUserRepo {
         System.out.println("Register success");
     }
 
+    public boolean findUserByEmail(String email) {
+        String sql = "select * from traveluser where Email='" + email + "'";
+        List<TravelUser> userList = jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
+            TravelUser user = null;
+            @Override
+            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
+                user = new TravelUser();
+                user.setId(resultSet.getInt("UID"));
+                user.setPassword(resultSet.getString("Pass"));
+                user.setEmail(resultSet.getString("email"));
+                user.setUsername(resultSet.getString("UserName"));
+                user.setState(resultSet.getString("State"));
+                user.setDateJoined(resultSet.getString("DateJoined"));
+                user.setDateLastModified(resultSet.getString("DateLastModified"));
+                return user;
+            }
+        });
+        return !userList.isEmpty();
+    }
 }

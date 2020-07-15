@@ -39,9 +39,9 @@ public class AuthController {
 
     @RequestMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request){
-        boolean flag = authService.register(request.getUsername(), request.getPassword(), request.getEmail());
-        if (!flag){
-            return new ResponseEntity<>("Register failed", HttpStatus.BAD_REQUEST);
+        String msg = authService.register(request.getUsername(), request.getPassword(), request.getEmail());
+        if (!msg.equals("success")){
+            return ResponseEntity.ok(msg);
         }
         TravelUser user = authService.login(request.getUsername(), request.getPassword());
         String token = jwtTokenUtil.generateToken(user);
