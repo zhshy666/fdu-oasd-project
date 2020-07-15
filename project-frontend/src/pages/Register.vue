@@ -7,9 +7,9 @@
     <el-header height="50%">
       <div class="layui-col-md4 layui-col-md-offset4">
         <h1>Register</h1><br>
-        <p class="small-font">
+        <p style="font-size:small">
           <span>Into the world of 
-            <el-link @click="goToIndex" :underline="false" class="small-font">Travellers</el-link>
+            <el-link @click="goToIndex" :underline="false" style="font-size:small">Travellers</el-link>
           </span>
         </p>
       </div>
@@ -33,7 +33,8 @@
               trigger="focus"
             >
               <div style="font-size:small">
-                <p>· <span class="mySpan">4</span> and <span class="mySpan">15</span> characters in length</p>
+                <p>· <span class="mySpan">4</span> and 
+                <span class="mySpan">15</span> characters in length</p>
                 <p>· 
                   <span class="mySpan">numbers</span>,
                   <span class="mySpan">letters</span>
@@ -162,7 +163,7 @@
               width="220"
               trigger="focus"
             >
-              <div>
+              <div style="font-size:small">
                 <p>· <span class="mySpan">Click</span> to change the verify code</p>
                 <p @click="refreshCode">
                   · <s-identify :identifyCode="identifyCode"></s-identify>
@@ -201,8 +202,8 @@
           </el-form-item>
         </el-form>
       </el-col>
-      <div class="layui-col-md4 layui-col-md-offset4">
-        <p class="small-font"><span>Already get an account yet? <el-link @click="login" :underline="false" class="small-font">Login.</el-link></span></p>
+      <div class="layui-col-md4 layui-col-md-offset4"  style="font-size:small">
+        <p><span>Already get an account yet? <el-link @click="login" :underline="false" style="font-size:small">Login.</el-link></span></p>
       </div>
     </el-main>
   </el-container>

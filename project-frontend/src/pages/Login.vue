@@ -7,9 +7,9 @@
     <el-header height="50px">
       <div class="layui-col-md4 layui-col-md-offset4">
         <h1>Login</h1><br>
-        <p class="small-font">
+        <p style="font-size:small">
           <span>Into the world of 
-            <el-link @click="goToIndex" :underline="false" class="small-font">Travellers</el-link>
+            <el-link @click="goToIndex" :underline="false" style="font-size:small">Travellers</el-link>
           </span>
         </p>
       </div>
@@ -53,8 +53,8 @@
               width="220"
               trigger="focus"
             >
-              <div>
-                <p class="small-font">· <span class="mySpan">Click</span> to change the verify code</p>
+              <div style="font-size:small">
+                <p>· <span class="mySpan">Click</span> to change the verify code</p>
                 <p @click="refreshCode">
                   · <s-identify :identifyCode="identifyCode"></s-identify>
                 </p>
@@ -93,7 +93,7 @@
         </el-form>
       </el-col>
       <div class="layui-col-md4 layui-col-md-offset4">
-        <p class="small-font"><span>Don't have an account yet? <el-link @click="register" :underline="false" class="small-font">Register one.</el-link></span></p>
+        <p style="font-size:small"><span>Don't have an account yet? <el-link @click="register" :underline="false" style="font-size:small">Register one.</el-link></span></p>
       </div>
     </el-main>
   </el-container>
@@ -221,8 +221,5 @@ import SIdentify from '../components/RandomCode'
 .mySpan{
   color: #009688;
   font-weight: bold;
-}
-.small-font{
-  font-size: small;
 }
 </style>
