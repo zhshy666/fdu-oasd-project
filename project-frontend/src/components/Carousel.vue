@@ -11,7 +11,8 @@
                 <i class="el-icon-picture-outline-round"></i>
                 <span>{{item['title']}} &nbsp;&nbsp;&nbsp;</span>
                 <i class="el-icon-star-off"></i>
-                <span>{{item['heat']}}</span>
+                <span v-if="large(item)">99+</span>
+                <span v-else>{{item['heat']}}</span>
                 </el-carousel-item>
             </el-carousel>
         </el-col>
@@ -28,7 +29,14 @@ export default {
             baseURL: '/static/travel-images/small/',
         }
     },
+    computed: {
+    },
     methods: {
+        large(item){
+            if(item['heat'] <= 99)
+                return false;
+            return true;
+        }
     },
     created(){
         this.$axios
