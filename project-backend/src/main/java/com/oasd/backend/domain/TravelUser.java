@@ -1,18 +1,11 @@
 package com.oasd.backend.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-/**
- * @author LBW
- */
 @Entity
 public class TravelUser implements UserDetails {
 
@@ -26,6 +19,7 @@ public class TravelUser implements UserDetails {
     private String username;
 
     private String password;
+    @Column(unique = true)
     private String email;
     private String state;
     private String dateJoined;
@@ -33,14 +27,6 @@ public class TravelUser implements UserDetails {
 
 
     public TravelUser() {
-    }
-
-    public TravelUser(int id, String email, String state, String dateJoined, String dateLastModified) {
-        this.id = id;
-        this.email = email;
-        this.state = state;
-        this.dateJoined = dateJoined;
-        this.dateLastModified = dateLastModified;
     }
 
     public TravelUser(String username, String password) {

@@ -15,16 +15,6 @@ public class AESUtil {
 
     private static String IV = "_aes_secret_iv__";
 
-
-    /**
-     * 加密方法
-     *
-     * @param data 要加密的数据
-     * @param key  加密key
-     * @param iv   加密iv
-     * @return 加密的结果
-     * @throws Exception
-     */
     public static String encrypt(String data, String key, String iv) throws Exception {
         try {
 
@@ -54,15 +44,6 @@ public class AESUtil {
         }
     }
 
-    /**
-     * 解密方法
-     *
-     * @param data 要解密的数据
-     * @param key  解密key
-     * @param iv   解密iv
-     * @return 解密的结果
-     * @throws Exception
-     */
     public static String desEncrypt(String data, String key, String iv) throws Exception {
         try {
             byte[] encrypted1 = new Base64().decode(data);
@@ -81,44 +62,11 @@ public class AESUtil {
         }
     }
 
-    /**
-     * 使用默认的key和iv加密
-     *
-     * @param data
-     * @return
-     * @throws Exception
-     */
     public static String encrypt(String data) throws Exception {
         return encrypt(data, KEY, IV);
     }
 
-    /**
-     * 使用默认的key和iv解密
-     *
-     * @param data
-     * @return
-     * @throws Exception
-     */
     public static String desEncrypt(String data) throws Exception {
         return desEncrypt(data, KEY, IV);
-    }
-
-
-    /**
-     * 测试
-     */
-    public static void main(String args[]) throws Exception {
-
-        String test1 = "zsyzsy123";
-        String test = new String(test1.getBytes(), "UTF-8");
-        String data = null;
-        String key = KEY;
-        String iv = IV;
-        // /g2wzfqvMOeazgtsUVbq1kmJawROa6mcRAzwG1/GeJ4=
-        data = encrypt(test, key, iv);
-        System.out.println("数据：" + test);
-        System.out.println("加密：" + data);
-        String jiemi = desEncrypt("OnJ4xI17sBAJ1KcZBhOyQQ==", key, iv).trim();
-        System.out.println("解密：" + jiemi);
     }
 }

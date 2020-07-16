@@ -13,16 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * This is a util class to use JWT.
- * We give it to you for free. :)
- *
- * @author LBW
- *
- * Get user info from token sent by the front end
- * And generate a new and only token info which will be sent to the front end
- *
- */
 @Component
 public class JwtTokenUtil implements Serializable {
 

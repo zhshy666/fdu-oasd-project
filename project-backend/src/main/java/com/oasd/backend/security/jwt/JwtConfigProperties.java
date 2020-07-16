@@ -3,12 +3,6 @@ package com.oasd.backend.security.jwt;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/**
- * Some properties about JWT.
- * You can change the value in `application.properties`.
- *
- * @author LBW
- */
 @Component
 @ConfigurationProperties(prefix = "jwt.token")
 public class JwtConfigProperties {

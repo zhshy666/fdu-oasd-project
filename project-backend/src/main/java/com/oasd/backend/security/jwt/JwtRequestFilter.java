@@ -16,11 +16,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Write your code to make this filter works.
- *
- * @author LBW
- */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 

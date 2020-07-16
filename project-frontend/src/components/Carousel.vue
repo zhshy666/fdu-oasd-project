@@ -1,17 +1,43 @@
 <template>
 <el-container>
     <el-main>
-        <el-col span="20" offset="2">
-
-  <el-carousel :interval="4000" type="card" height="350px">
-    <el-carousel-item v-for="item in 5" :key="item">
-      <h3 class="medium">{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
+        <el-col :span="20" :offset="2">
+            <el-carousel :interval="4000" type="card" height="350px">
+                <el-carousel-item v-for="item in 5" :key="item">
+                <h3 class="medium">{{ item }}</h3>
+                </el-carousel-item>
+            </el-carousel>
         </el-col>
     </el-main>
 </el-container>
 </template>
+
+<script>
+export default {
+    name: "carousel",
+    data(){
+        return{
+            images: []
+        }
+    },
+    methods: {
+    },
+    created(){
+        this.$axios
+        .get("/getPopularImages",{})
+        .then(resp => {
+            if (resp.status === 200) {
+                this.images = resp.data;
+            } else {
+            this.$message.error("Request Error.")
+            }
+        })
+        .catch(error =>{
+            console.log(error);
+        })
+    }
+}
+</script>
 
 <style>
   .el-carousel__item h3 {

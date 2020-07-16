@@ -1,0 +1,21 @@
+package com.oasd.backend.service;
+
+import com.oasd.backend.domain.TravelImage;
+import com.oasd.backend.repository.TravelImageRepo;
+import org.springframework.stereotype.Service;
+
+import java.util.LinkedHashSet;
+import java.util.List;
+
+@Service
+public class ImageService {
+    private TravelImageRepo travelImageRepo;
+
+    public ImageService(TravelImageRepo travelImageRepo) {
+        this.travelImageRepo = travelImageRepo;
+    }
+
+    public List<TravelImage> getPopularImages() {
+        return travelImageRepo.findImageByHeat();
+    }
+}

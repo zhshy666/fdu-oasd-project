@@ -3,9 +3,6 @@
 <navbar></navbar>
 <carousel></carousel>
 <el-container>
-  <el-main>
-    
-  </el-main>
 </el-container>
 </div>
 </template>
@@ -15,12 +12,11 @@ import navbar from "../components/Navbar"
 import carousel from "../components/Carousel"
 export default {
   components: {navbar, carousel},
-  name: "Index",
+  name: "index",
   data() {
     return {
       beforeLogin: true,
       afterLogin: false,
-      msg: this.$store.state.cur_user
     };
   },
   methods: {

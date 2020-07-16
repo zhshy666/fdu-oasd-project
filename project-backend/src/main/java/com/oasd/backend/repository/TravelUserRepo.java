@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.ResultSet;
@@ -25,21 +24,7 @@ public class TravelUserRepo {
                 username + "'" +
                 "and Pass='" +
                 password + "'";
-        List<TravelUser> userList = jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
-            TravelUser user = null;
-            @Override
-            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
-                user = new TravelUser();
-                user.setId(resultSet.getInt("UID"));
-                user.setPassword(resultSet.getString("Pass"));
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("UserName"));
-                user.setState(resultSet.getString("State"));
-                user.setDateJoined(resultSet.getString("DateJoined"));
-                user.setDateLastModified(resultSet.getString("DateLastModified"));
-                return user;
-            }
-        });
+        List<TravelUser> userList = findUser(sql);
         if(userList.isEmpty())
             return null;
         return userList.get(0);
@@ -47,21 +32,7 @@ public class TravelUserRepo {
 
     public boolean findUserByUsername(String username) {
         String sql = "select * from traveluser where UserName='" + username + "'";
-        List<TravelUser> userList = jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
-            TravelUser user = null;
-            @Override
-            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
-                user = new TravelUser();
-                user.setId(resultSet.getInt("UID"));
-                user.setPassword(resultSet.getString("Pass"));
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("UserName"));
-                user.setState(resultSet.getString("State"));
-                user.setDateJoined(resultSet.getString("DateJoined"));
-                user.setDateLastModified(resultSet.getString("DateLastModified"));
-                return user;
-            }
-        });
+        List<TravelUser> userList = findUser(sql);
         return !userList.isEmpty();
     }
 
@@ -83,21 +54,7 @@ public class TravelUserRepo {
 
     public boolean findUserByEmail(String email) {
         String sql = "select * from traveluser where Email='" + email + "'";
-        List<TravelUser> userList = jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
-            TravelUser user = null;
-            @Override
-            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
-                user = new TravelUser();
-                user.setId(resultSet.getInt("UID"));
-                user.setPassword(resultSet.getString("Pass"));
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("UserName"));
-                user.setState(resultSet.getString("State"));
-                user.setDateJoined(resultSet.getString("DateJoined"));
-                user.setDateLastModified(resultSet.getString("DateLastModified"));
-                return user;
-            }
-        });
+        List<TravelUser> userList = findUser(sql);
         return !userList.isEmpty();
     }
 
@@ -106,7 +63,14 @@ public class TravelUserRepo {
                 email + "'" +
                 "and Pass='" +
                 password + "'";
-        List<TravelUser> userList = jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
+        List<TravelUser> userList = findUser(sql);
+        if(userList.isEmpty())
+            return null;
+        return userList.get(0);
+    }
+
+    private List<TravelUser> findUser(String sql){
+        return jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
             TravelUser user = null;
             @Override
             public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -121,8 +85,5 @@ public class TravelUserRepo {
                 return user;
             }
         });
-        if(userList.isEmpty())
-            return null;
-        return userList.get(0);
     }
 }
