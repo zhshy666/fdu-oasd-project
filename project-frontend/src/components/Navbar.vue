@@ -3,14 +3,13 @@
   <el-main>
     <el-col :span="20" :offset="2">
       <el-menu 
-        :default-active="activeIndex" 
         mode="horizontal"
         :router="true"
         @select="handleSelect">
         <el-menu-item index="/" class="myLogo">
             Travellers
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/">
             <el-input 
                 v-model="input"
                 size="small"
@@ -29,6 +28,7 @@
         <el-submenu
           v-else
           class="myMenu"
+          index="/"
         >
         <template slot="title"><i class="el-icon-user"></i>{{username}}</template>
             <el-menu-item index="/" class="myItem">
@@ -51,7 +51,6 @@
       inject: ['reload'],
     data() {
       return {
-        activeIndex: '1',
         input: '',
         beforeLogin: true,
         username: this.$store.state.cur_user

@@ -31,7 +31,7 @@ public class AuthController {
             String token = jwtTokenUtil.generateToken(user);
             TokenProcessor t = new TokenProcessor();
             t.setToken(token);
-            t.setUsername(request.getUsernameOrEmail());
+            t.setUsername(user.getUsername());
             System.out.println("Login success.");
             return ResponseEntity.ok(t);
         }
