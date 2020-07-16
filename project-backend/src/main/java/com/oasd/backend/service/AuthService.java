@@ -6,6 +6,8 @@ import com.oasd.backend.util.AESUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthService {
     private TravelUserRepo travelUserRepo;
@@ -36,8 +38,8 @@ public class AuthService {
     }
 
     public String register(String username, String password, String email){
-        boolean isUsernameExists = travelUserRepo.findUserByUsername(username);
-        if (isUsernameExists){
+        List<TravelUser> userList = travelUserRepo.findUserByUsername(username);
+        if (userList.size()!=0){
             return "username";
         }
         boolean isEmailExists = travelUserRepo.findUserByEmail(email);

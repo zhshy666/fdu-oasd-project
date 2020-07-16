@@ -46,7 +46,12 @@ export default {
                 this.images = resp.data;
                 console.log(this.images)
             } else {
-            this.$message.error("Request Error.")
+                this.$notify({
+                    type:'error',
+                    dangerouslyUseHTMLString: true,
+                    title: 'Request error',
+                    message: '<strong style="color:teal">Requset error, please try again.</strong>'
+                });
             }
         })
         .catch(error =>{

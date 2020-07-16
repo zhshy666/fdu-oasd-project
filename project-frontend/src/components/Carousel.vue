@@ -51,12 +51,22 @@ export default {
             if (resp.status === 200) {
                 this.images = resp.data;
             } else {
-                this.$message.error("Request Error.")
+                this.$notify({
+                    type:'error',
+                    dangerouslyUseHTMLString: true,
+                    title: 'Request error',
+                    message: '<strong style="color:teal">Requset error, please try again.</strong>'
+                });
             }
         })
         .catch(error =>{
             console.log(error);
-            this.$message("Request Error");
+            this.$notify({
+                type:'error',
+                dangerouslyUseHTMLString: true,
+                title: 'Request error',
+                message: '<strong style="color:teal">Requset error, please try again.</strong>'
+            });
         })
     }
 }

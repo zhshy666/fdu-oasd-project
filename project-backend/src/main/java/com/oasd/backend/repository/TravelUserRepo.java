@@ -30,10 +30,9 @@ public class TravelUserRepo {
         return userList.get(0);
     }
 
-    public boolean findUserByUsername(String username) {
+    public List<TravelUser> findUserByUsername(String username) {
         String sql = "select * from traveluser where UserName='" + username + "'";
-        List<TravelUser> userList = findUser(sql);
-        return !userList.isEmpty();
+        return findUser(sql);
     }
 
     public void insertUser(String username, String password, String email) {
