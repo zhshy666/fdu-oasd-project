@@ -2,6 +2,7 @@
 <div>
 <navbar></navbar>
 <carousel></carousel>
+<newestImages></newestImages>
 <el-container>
 </el-container>
 </div>
@@ -10,8 +11,9 @@
 <script>
 import navbar from "../components/Navbar"
 import carousel from "../components/Carousel"
+import newestImages from "../components/NewestImages"
 export default {
-  components: {navbar, carousel},
+  components: {navbar, carousel, newestImages},
   name: "index",
   data() {
     return {

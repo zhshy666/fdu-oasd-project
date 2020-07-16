@@ -23,4 +23,10 @@ public class ImageController {
         List<TravelImage> popularImages = imageService.getPopularImages();
         return ResponseEntity.ok(popularImages);
     }
+
+    @GetMapping("/getNewestImages")
+    public ResponseEntity<?> getNewestImages(){
+        List<TravelImage> popularImages = imageService.getNewestImages();
+        return ResponseEntity.ok(popularImages);
+    }
 }

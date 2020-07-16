@@ -20,8 +20,16 @@ public class TravelImageRepo {
     private JdbcTemplate jdbcTemplate;
     public List<TravelImage> findImageByHeat() {
         String sql = "select * from travelimage order by Heat desc limit 5";
+        return findImages(sql);
+    }
 
-        List<TravelImage> imageList = jdbcTemplate.query(sql, new RowMapper<TravelImage>(){
+    public List<TravelImage> findImageByTime() {
+        String sql = "select * from travelimage order by ReleasedTime desc limit 6";
+        return findImages(sql);
+    }
+
+    private List<TravelImage> findImages(String sql){
+        return jdbcTemplate.query(sql, new RowMapper<TravelImage>(){
             TravelImage image = null;
             @Override
             public TravelImage mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -34,13 +42,12 @@ public class TravelImageRepo {
                 image.setCityCode(resultSet.getInt("CityCode"));
                 image.setCountry_RegionCodeISO(resultSet.getString("Country_RegionCodeISO"));
                 image.setPATH(resultSet.getString("Path"));
-                image.setUID(resultSet.getInt("UID"));
+                image.setUsername(resultSet.getString("Username"));
                 image.setContent(resultSet.getString("Content"));
                 image.setHeat(resultSet.getInt("Heat"));
+                image.setReleasedTime(resultSet.getString("ReleasedTime"));
                 return image;
             }
         });
-
-        return imageList;
     }
 }

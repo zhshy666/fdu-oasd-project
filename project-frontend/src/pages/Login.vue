@@ -218,9 +218,10 @@ import {Encrypt} from '../tools/AESUtils'
   }
 </script>
 
-<style scope>
+<style scoped>
 .mySpan{
   color: #009688;
   font-weight: bold;
+  font-size: small;
 }
 </style>

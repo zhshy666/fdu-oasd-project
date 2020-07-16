@@ -17,10 +17,11 @@ public class TravelImage {
     private double longitude;
     private int cityCode;
     private String country_RegionCodeISO;
-    private int UID;
+    private String username;
     private String PATH;
     private String content;
     private int heat;
+    private String releasedTime;
 
     public TravelImage() {
     }
@@ -81,12 +82,12 @@ public class TravelImage {
         this.country_RegionCodeISO = country_RegionCodeISO;
     }
 
-    public int getUID() {
-        return UID;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUID(int UID) {
-        this.UID = UID;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPATH() {
@@ -111,5 +112,13 @@ public class TravelImage {
 
     public void setHeat(int heat) {
         this.heat = heat;
+    }
+
+    public String getReleasedTime() {
+        return releasedTime;
+    }
+
+    public void setReleasedTime(String releasedTime) {
+        this.releasedTime = releasedTime;
     }
 }

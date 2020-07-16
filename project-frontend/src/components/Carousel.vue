@@ -1,8 +1,12 @@
 <template>
 <el-container>
     <el-main>
-        <el-col :span="20" :offset="2">
-            <el-carousel :interval="4000" type="card" height="360px">
+        <el-col :span="6" offset="1">
+            <span class="mySpan">Most popular</span>
+        </el-col>
+        <el-col :span="18" :offset="3">
+            <el-divider></el-divider>
+            <el-carousel :interval="4000" type="card" height="350px">
                 <el-carousel-item v-for="item in images" :key="item">
                 <!-- <h3 class="medium">{{ item }}</h3> -->
                 <img 
@@ -57,7 +61,12 @@ export default {
 
 <style>
 .myImg{
-    height: 320px;
-    width: 480px;
+    height: 300px;
+    width: 420px;
+}
+.mySpan{
+    color: #009688;
+    font-size: larger;
+    margin-left: 20px;
 }
 </style>
