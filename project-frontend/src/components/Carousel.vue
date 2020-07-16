@@ -2,9 +2,16 @@
 <el-container>
     <el-main>
         <el-col :span="20" :offset="2">
-            <el-carousel :interval="4000" type="card" height="350px">
-                <el-carousel-item v-for="item in 5" :key="item">
-                <h3 class="medium">{{ item }}</h3>
+            <el-carousel :interval="4000" type="card" height="360px">
+                <el-carousel-item v-for="item in images" :key="item">
+                <!-- <h3 class="medium">{{ item }}</h3> -->
+                <img 
+                :src="baseURL + item['path']" 
+                class="myImg" /><br><br>
+                <i class="el-icon-picture-outline-round"></i>
+                <span>{{item['title']}} &nbsp;&nbsp;&nbsp;</span>
+                <i class="el-icon-star-off"></i>
+                <span>{{item['heat']}}</span>
                 </el-carousel-item>
             </el-carousel>
         </el-col>
@@ -17,7 +24,8 @@ export default {
     name: "carousel",
     data(){
         return{
-            images: []
+            images: [],
+            baseURL: '/static/travel-images/small/',
         }
     },
     methods: {
@@ -40,19 +48,8 @@ export default {
 </script>
 
 <style>
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 200px;
-    margin: 0;
-  }
-  
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-  
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
+.myImg{
+    height: 320px;
+    width: 480px;
+}
 </style>
