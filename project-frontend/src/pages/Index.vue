@@ -1,16 +1,20 @@
 <template>
 <div>
 <navbar></navbar>
+<carousel></carousel>
 <el-container>
-
+  <el-main>
+    
+  </el-main>
 </el-container>
 </div>
 </template>
 
 <script>
 import navbar from "../components/Navbar"
+import carousel from "../components/Carousel"
 export default {
-  components: {navbar},
+  components: {navbar, carousel},
   name: "Index",
   data() {
     return {

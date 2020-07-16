@@ -20,27 +20,28 @@
         </el-menu-item>
         <el-menu-item 
           v-if="beforeLogin"
+          class="myMenu"
           index="/login">
+          <i class="el-icon-s-promotion"></i>
             Login
-        </el-menu-item>
-        <el-menu-item 
-          v-if="beforeLogin" 
-          index="/register">
-            Register
         </el-menu-item>
 
         <el-submenu
           v-else
+          class="myMenu"
         >
-        <template slot="title">{{username}}</template>
-            <el-menu-item index="/">Home</el-menu-item>
-            <el-menu-item index="/">Upload</el-menu-item>
-            <el-menu-item index="/">Friends</el-menu-item>
-            <el-menu-item index="/" @click="logout"> Logout</el-menu-item>
+        <template slot="title"><i class="el-icon-user"></i>{{username}}</template>
+            <el-menu-item index="/" class="myItem">
+              Home
+            </el-menu-item>           
+            <el-menu-item index="/" class="myItem">Upload</el-menu-item>
+            <el-menu-item index="/" class="myItem">Friends</el-menu-item>
+            <el-menu-item index="/" @click="logout" class="myItem"> Logout</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-col>
   </el-main>
+  
 </el-container>
 </template>
 
@@ -91,11 +92,12 @@
 .myLogo{
     color: #009688;
     font-size: larger;
+    margin-left: 20px;
 }
-.myImg{
-    width: 40%;
-    height: 40%;
-    margin-top: -3px;
+.myMenu{
+  margin-left: 55%;
 }
-
+.myItem{
+  text-align: center;
+}
 </style>
