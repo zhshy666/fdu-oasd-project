@@ -3,8 +3,7 @@
 <navbar></navbar>
 <carousel></carousel>
 <newestImages></newestImages>
-<el-container>
-</el-container>
+<footerbar></footerbar>
 </div>
 </template>
 
@@ -12,8 +11,10 @@
 import navbar from "../components/Navbar"
 import carousel from "../components/Carousel"
 import newestImages from "../components/NewestImages"
+import footerbar from "../components/footer"
+
 export default {
-  components: {navbar, carousel, newestImages},
+  components: {navbar, carousel, newestImages, footerbar},
   name: "index",
   data() {
     return {

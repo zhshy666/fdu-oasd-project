@@ -54,7 +54,7 @@
               trigger="focus"
             >
               <div style="font-size:small">
-                <p>· <span class="mySpan">Click</span> to change the verify code</p>
+                <p>· <span class="myFontSpan">Click</span> to change the verify code</p>
                 <p @click="refreshCode">
                   · <s-identify :identifyCode="identifyCode"></s-identify>
                 </p>
@@ -219,7 +219,7 @@ import {Encrypt} from '../tools/AESUtils'
 </script>
 
 <style scoped>
-.mySpan{
+.myFontSpan{
   color: #009688;
   font-weight: bold;
   font-size: small;

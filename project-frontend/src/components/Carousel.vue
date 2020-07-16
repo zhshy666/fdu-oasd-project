@@ -1,7 +1,7 @@
 <template>
 <el-container>
     <el-main>
-        <el-col :span="6" offset="1">
+        <el-col :span="6" :offset="1">
             <span class="mySpan">Most popular</span>
         </el-col>
         <el-col :span="18" :offset="3">

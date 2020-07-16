@@ -33,12 +33,12 @@
               trigger="focus"
             >
               <div style="font-size:small">
-                <p>· <span class="mySpan">4</span> and 
-                <span class="mySpan">15</span> characters in length</p>
+                <p>· <span class="myFontSpan">4</span> and 
+                <span class="myFontSpan">15</span> characters in length</p>
                 <p>· 
-                  <span class="mySpan">numbers</span>,
-                  <span class="mySpan">letters</span>
-                  or <span class="mySpan">_</span> 
+                  <span class="myFontSpan">numbers</span>,
+                  <span class="myFontSpan">letters</span>
+                  or <span class="myFontSpan">_</span> 
                   is required</p>
                 <p>· eg: zsy_123</p>
               </div>
@@ -80,7 +80,7 @@
               trigger="focus"
             >
               <div style="font-size:small" >
-                <p>· <span class="mySpan">6</span> and <span class="mySpan">12</span> characters in length</p>
+                <p>· <span class="myFontSpan">6</span> and <span class="mySpan">12</span> characters in length</p>
                 <p>· eg: pAs3s?wOrd</p>
                 <p>· Password strength</p>
                 <p>
@@ -164,7 +164,7 @@
               trigger="focus"
             >
               <div style="font-size:small">
-                <p>· <span class="mySpan">Click</span> to change the verify code</p>
+                <p>· <span class="myFontSpan">Click</span> to change the verify code</p>
                 <p @click="refreshCode">
                   · <s-identify :identifyCode="identifyCode"></s-identify>
                 </p>
@@ -416,7 +416,7 @@ import SIdentify from '../components/RandomCode'
 </script>
 
 <style scoped>
-.mySpan{
+.myFontSpan{
   color: #009688;
   font-weight: bold;
   font-size: small;

@@ -1,7 +1,7 @@
 <template>
 <el-container>
     <el-main>
-        <el-col :span="6" offset="1">
+        <el-col :span="6" :offset="1">
             <span class="mySpan">The newest</span>
         </el-col>
         <el-col :span="18" :offset="3">
@@ -11,11 +11,11 @@
                     <img :src="baseURL + item['path']" class=" newImg" />
                     <div class="container">
                         <br>
-                        <p><i class="el-icon-user"></i> {{item['username']}}</p>
+                        <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{item['username']}}</p>
                         <br>
-                        <p><i class="el-icon-camera"></i> {{item['content']}}</p>
+                        <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{item['content']}}</p>
                         <br>
-                        <p><i class="layui-icon layui-icon-time"></i> {{item['releasedTime']}}</p>
+                        <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{item['releasedTime']}}</p>
                         <br>
                     </div>
                 </div>
