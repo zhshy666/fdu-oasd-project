@@ -6,8 +6,13 @@
       "description": "Description for jwt.token.validity."
     },
     {
-      "name": "jwt.token.validity",
+      "name": "jwt.token.secret",
       "type": "java.lang.String",
       "description": "Description for jwt.token.validity."
+    },
+    {
+      "name": "jwt.token.secret",
+      "type": "java.lang.String",
+      "description": "Description for jwt.token.secret."
     }
   ] }
