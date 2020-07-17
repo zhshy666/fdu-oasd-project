@@ -42,10 +42,12 @@ export default {
     methods:{
       getImgInfo () {
         let img = new Image()
-        img.src = this.path  
-        this.$set(this.imgInfo, 'width', img.width)
-        this.$set(this.imgInfo, 'height', img.height)
-        this.setImgInfo()
+        img.src = this.path
+        img.onload = () => {
+          this.$set(this.imgInfo, 'width', img.width)
+          this.$set(this.imgInfo, 'height', img.height)
+          this.setImgInfo()
+        }
         console.log(this.imgInfo) // 打印图片信息
       },
       setImgInfo(){
