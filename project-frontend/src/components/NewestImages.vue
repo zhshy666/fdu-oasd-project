@@ -7,15 +7,15 @@
         <el-col :span="18" :offset="3">
             <el-divider></el-divider>
             <div class=" layui-row">
-                <div class=" layui-col-md3 card layui-col-md-offset3" v-for="item in images" :key="item">
-                    <img :src="baseURL + item['path']" class=" newImg" />
+                <div class=" layui-col-md3 card layui-col-md-offset3" v-for="(image,i) in images" :key="i">
+                    <img :src="baseURL + image.path" class=" newImg" />
                     <div class="container">
                         <br>
-                        <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{item['username']}}</p>
+                        <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{image.username}}</p>
                         <br>
-                        <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{item['content']}}</p>
+                        <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{image.content}}</p>
                         <br>
-                        <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{item['releasedTime']}}</p>
+                        <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{image.releasedTime}}</p>
                         <br>
                     </div>
                 </div>
@@ -44,7 +44,6 @@ export default {
         .then(resp => {
             if (resp.status === 200) {
                 this.images = resp.data;
-                console.log(this.images)
             } else {
                 this.$notify({
                     type:'error',

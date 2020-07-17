@@ -7,7 +7,7 @@
         <el-col :span="18" :offset="3">
             <el-divider></el-divider>
             <el-carousel :interval="4000" type="card" height="350px">
-                <el-carousel-item v-for="item in images" :key="item">
+                <el-carousel-item v-for="(item, j) in images" :key="j">
                 <router-link
                 :to="'imageDetail/'+item.imageId">
                     <img 
