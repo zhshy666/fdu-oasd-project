@@ -4,14 +4,14 @@
     <el-container>
       <el-main>
         <el-col :span="9" :offset="1">
-            <span class="mySpan">{{title}} </span> &nbsp;&nbsp;&nbsp;
-            <span style="font-size: small">  @ {{username}}</span>
+            <span class="mySpan">{{image.title}} </span> &nbsp;&nbsp;&nbsp;
+            <span style="font-size: small">  @ {{image.username}}</span>
         </el-col>
         <el-col :span="18" :offset="3">
             <el-divider></el-divider>
             <br>
             <br>
-            <el-col :span="12" :offset="offset">
+            <el-col :span="span" :offset="offset">
               <el-card shadow="hover" :body-style="{ padding: '0px', height: '400px'}" :style="styleModel">
               <img :src="path" class="image">
               </el-card>
@@ -23,25 +23,30 @@
                   </div>
                   <div>
                     <i class="myTitle"> &nbsp; Author &nbsp;</i>
-                    <div class="myInfo">{{username}}</div>
+                    <div class="myInfo">{{image.username}}</div>
                     <br>
                     <i class="myTitle"> &nbsp; Title &nbsp;</i>
-                    <div class="myInfo">{{title}}</div>
+                    <div class="myInfo">{{image.title}}</div>
                     <br>
                     <i class="myTitle"> &nbsp; Content &nbsp;</i>
-                    <div class="myInfo">{{content}}</div>
+                    <div class="myInfo">{{image.content}}</div>
                     <br>
                     <i class="myTitle"> &nbsp; Description &nbsp;</i>
-                    <div class="myInfo">{{description}}</div>
+                    <div class="myInfo">{{image.description}}</div>
                     <br>
                     <i class="myTitle"> &nbsp; Heat &nbsp;</i>
-                    <div class="myInfo">{{heat}}</div>
+                    <div class="myInfo">{{image.heat}}</div>
+                    <br>
+                    <i class="myTitle"> &nbsp; Country &nbsp;</i>
+                    <div class="myInfo">{{country}}</div>
+                    <br>
+                    <i class="myTitle"> &nbsp; City &nbsp;</i>
+                    <div class="myInfo">{{city}}</div>
                     <br>
                     <i class="myTitle"> &nbsp; Released On &nbsp;</i>
-                    <div class="myInfo">{{releasedTime}}</div>
+                    <div class="myInfo">{{image.releasedTime}}</div>
                     <br>
                   </div>
-                  
                 </el-card>
             </el-col>
         </el-col>
@@ -59,16 +64,14 @@ export default {
     name: "ImageDetail",
     data(){
         return{
-          title: '',
-          username: '',
+          image:[],
           path: '',
-          content: '',
-          description: '',
-          heat: '',
-          releasedTime: '',
+          country: '',
+          city: '',
           imgInfo: {},
           styleModel: {},
           offset: 1,
+          span: 12
         };
     },
     methods:{
@@ -87,6 +90,7 @@ export default {
             this.styleModel.width=(400/this.imgInfo.height*this.imgInfo.width) + "px"
             this.styleModel.height=400 + "px"
             this.offset = 3;
+            this.span = 8;
         }
       },
       errorNotification(){
@@ -105,14 +109,12 @@ export default {
         })
         .then(resp => {
             if(resp.status === 200){
-                this.title = resp.data.title;
-                this.username = resp.data.username;
-                this.path = "/static/travel-images/medium/" + resp.data.path;
-                this.getImgInfo();
-                this.content = resp.data.content;
-                this.description = resp.data.description;
-                this.heat = resp.data.heat;
-                this.releasedTime = resp.data.releasedTime;
+              this.image = resp.data.image;
+              this.country = resp.data.country;
+              this.city = resp.data.city;
+              this.path = "/static/travel-images/medium/" + resp.data.image.path;
+              this.getImgInfo();
+              
             } else {
               this.errorNotification();
             }
