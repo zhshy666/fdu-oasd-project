@@ -8,16 +8,19 @@
             <el-divider></el-divider>
             <div class=" layui-row">
                 <div class=" layui-col-md3 card layui-col-md-offset3" v-for="(image,i) in images" :key="i">
+                    <router-link
+                    :to="'imageDetail/'+image.imageId">
                     <img :src="baseURL + image.path" class=" newImg" />
-                    <div class="container">
-                        <br>
-                        <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{image.username}}</p>
-                        <br>
-                        <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{image.content}}</p>
-                        <br>
-                        <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{image.releasedTime}}</p>
-                        <br>
-                    </div>
+                        <div class="container">
+                            <br>
+                            <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{image.username}}</p>
+                            <br>
+                            <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{image.content}}</p>
+                            <br>
+                            <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{image.releasedTime}}</p>
+                            <br>
+                        </div>
+                    </router-link>
                 </div>
             </div>
         </el-col>
