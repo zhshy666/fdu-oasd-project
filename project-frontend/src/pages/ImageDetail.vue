@@ -3,7 +3,7 @@
     <navbar></navbar>
     <el-container>
       <el-main>
-        <el-col :span="8" :offset="1">
+        <el-col :span="9" :offset="1">
             <span class="mySpan">{{title}} </span> &nbsp;&nbsp;&nbsp;
             <span style="font-size: small">  @ {{username}}</span>
         </el-col>
@@ -15,6 +15,34 @@
               <el-card shadow="hover" :body-style="{ padding: '0px', height: '400px'}" :style="styleModel">
               <img :src="path" class="image">
               </el-card>
+            </el-col>
+            <el-col :span="8" :offset="2">
+                <el-card class="box-card cardSpan">
+                  <div slot="header">
+                    <span class="cardSpan">Image info</span>
+                  </div>
+                  <div>
+                    <i class="myTitle"> &nbsp; Author &nbsp;</i>
+                    <div class="myInfo">{{username}}</div>
+                    <br>
+                    <i class="myTitle"> &nbsp; Title &nbsp;</i>
+                    <div class="myInfo">{{title}}</div>
+                    <br>
+                    <i class="myTitle"> &nbsp; Content &nbsp;</i>
+                    <div class="myInfo">{{content}}</div>
+                    <br>
+                    <i class="myTitle"> &nbsp; Description &nbsp;</i>
+                    <div class="myInfo">{{description}}</div>
+                    <br>
+                    <i class="myTitle"> &nbsp; Heat &nbsp;</i>
+                    <div class="myInfo">{{heat}}</div>
+                    <br>
+                    <i class="myTitle"> &nbsp; Released On &nbsp;</i>
+                    <div class="myInfo">{{releasedTime}}</div>
+                    <br>
+                  </div>
+                  
+                </el-card>
             </el-col>
         </el-col>
       </el-main>
@@ -34,6 +62,10 @@ export default {
           title: '',
           username: '',
           path: '',
+          content: '',
+          description: '',
+          heat: '',
+          releasedTime: '',
           imgInfo: {},
           styleModel: {},
           offset: 1,
@@ -77,6 +109,10 @@ export default {
                 this.username = resp.data.username;
                 this.path = "/static/travel-images/medium/" + resp.data.path;
                 this.getImgInfo();
+                this.content = resp.data.content;
+                this.description = resp.data.description;
+                this.heat = resp.data.heat;
+                this.releasedTime = resp.data.releasedTime;
             } else {
               this.errorNotification();
             }
@@ -100,4 +136,20 @@ export default {
   height: 100%;
   display: block;
 }
+.cardSpan{
+  font-size: medium;
+  text-align: left;
+}
+.myTitle{
+  color: #009688;
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+}
+.myInfo{
+  font-size: small;
+  margin-left: 100px;
+  margin-top: -15px;
+}
+
 </style>
