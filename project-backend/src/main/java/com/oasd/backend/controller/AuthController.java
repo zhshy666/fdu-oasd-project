@@ -21,7 +21,7 @@ public class AuthController {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authService = authService;
     }
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         TravelUser user = authService.login(request.getUsernameOrEmail(), request.getPassword());
         if (user == null){
@@ -37,7 +37,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request){
         String msg = authService.register(request.getUsername(), request.getPassword(), request.getEmail());
         if (!msg.equals("success")){

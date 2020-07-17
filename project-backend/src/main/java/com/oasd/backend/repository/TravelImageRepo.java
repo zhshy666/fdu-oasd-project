@@ -18,15 +18,6 @@ import java.util.List;
 public class TravelImageRepo {
     @Resource
     private JdbcTemplate jdbcTemplate;
-    public List<TravelImage> findImageByHeat() {
-        String sql = "select * from travelimage order by Heat desc limit 5";
-        return findImages(sql);
-    }
-
-    public List<TravelImage> findImageByTime() {
-        String sql = "select * from travelimage order by ReleasedTime desc limit 6";
-        return findImages(sql);
-    }
 
     private List<TravelImage> findImages(String sql){
         return jdbcTemplate.query(sql, new RowMapper<TravelImage>(){
@@ -49,5 +40,21 @@ public class TravelImageRepo {
                 return image;
             }
         });
+    }
+
+    public List<TravelImage> findImageByHeat() {
+        String sql = "select * from travelimage order by Heat desc limit 5";
+        return findImages(sql);
+    }
+
+    public List<TravelImage> findImageByTime() {
+        String sql = "select * from travelimage order by ReleasedTime desc limit 6";
+        return findImages(sql);
+    }
+
+    public TravelImage findImageById(int imageId) {
+        String sql = "select * from travelimage where ImageID = '" + imageId +"'";
+        List<TravelImage> imageList = findImages(sql);
+        return imageList.isEmpty() ? null : imageList.get(0);
     }
 }

@@ -21,4 +21,8 @@ public class ImageService {
     public List<TravelImage> getNewestImages() {
         return travelImageRepo.findImageByTime();
     }
+
+    public TravelImage getImageDetail(int imageId) {
+        return travelImageRepo.findImageById(imageId);
+    }
 }

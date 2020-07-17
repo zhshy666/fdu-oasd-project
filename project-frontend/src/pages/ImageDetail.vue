@@ -26,12 +26,12 @@ export default {
     },
     created() {
         this.$axios
-        .post("ImageDetail",{
+        .post("/imageDetail",{
             imageId: this.$route.params.imageId
         })
         .then(resp => {
             if(resp.status === 200){
-
+                console.log(resp.data);
             } else {
               this.errorNotification();
             }
