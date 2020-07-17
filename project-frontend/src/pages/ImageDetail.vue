@@ -52,8 +52,8 @@ export default {
       },
       setImgInfo(){
         if(this.imgInfo.height > this.imgInfo.width){
-            this.styleModel.width=(450/this.imgInfo.height*this.imgInfo.width) + "px"
-            this.styleModel.height=450 + "px"
+            this.styleModel.width=(400/this.imgInfo.height*this.imgInfo.width) + "px"
+            this.styleModel.height=400 + "px"
             this.offset = 3;
         }
       },
