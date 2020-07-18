@@ -82,6 +82,31 @@
                 </el-select>
               </el-form-item>
 
+              <el-form-item prop="file">
+                  <el-upload
+                    ref="upload"
+                    action
+                    drag
+                    :auto-upload="false"
+                    :limit="1"
+                    :http-request="upload"
+                    accept="image/*"
+                    :before-upload="onBeforeUpload"
+                    :on-exceed="handleExceed"
+                    :on-change="handleChange"
+                    :file-list="files"
+                    list-type="picture"
+                    style="width: 100%"
+                    >
+                    <em class="el-icon-upload"></em>
+                    <div class="el-upload__text">
+                        Drag image here or 
+                        <em>click me</em>
+                    </div>
+                    <div class="el-upload__tip" slot="tip">Accept jpg, jpeg, png. Only one image is required.</div>
+                  </el-upload>
+              </el-form-item>
+
               <el-form-item size="medium">
                 <el-button
                 type="primary"
@@ -89,8 +114,8 @@
                 :disabled="isDisabled"
                 size="medium"
                 style="width:100%"
-                v-on:click="upload">
-                    Upload
+                v-on:click="submit">
+                    Submit
                 </el-button>
               </el-form-item>
 
@@ -116,6 +141,7 @@ import footerbar from "../components/footer"
 export default {
     components: {navbar, footerbar},
     name: 'Upload',
+    inject: ["reload"],
     data(){
         return{
             imageUrl: '',
@@ -123,6 +149,10 @@ export default {
             countries: [],
             cities: [],
             cityLoading: false,
+            file:null,
+            files:[],
+            isModify: false,
+            fileChange: false,
             uploadForm: {
                 title: '',
                 author: '',
@@ -203,7 +233,6 @@ export default {
         .then(resp => {
             if(resp.status === 200){
               this.countries = resp.data;
-              console.log(resp.data);
             } else {
               this.errorNotification();
             }
@@ -214,8 +243,79 @@ export default {
         });
     },
     methods: {
-      upload(){
+      submit(){
+        // First contribution but no image
+        if(!this.isModify && !this.file){
+            this.$notify({
+                type: "warning",
+                dangerouslyUseHTMLString: true,
+                title: 'Upload fail',
+                message:
+                "<strong style='color:teal'>Please upload your image!</strong>"
+            });
+            return;
+        }
+        this.loading = true;
+        this.$refs["upload"].submit();
 
+        var config = {
+            headers: { "Content-Type": "multipart/form-data" }
+        };
+
+        var url = this.isModify?'/modifyImg':'/submitImg';
+        this.$axios
+            .post(url, {
+                title: this.uploadForm.title,
+                author: this.uploadForm.author,
+                content: this.uploadForm.content,
+                description: this.uploadForm.content,
+                country: this.uploadForm.country,
+                city: this.uploadForm.city
+            })
+            .then(resp => {
+                if(resp.status === 200){
+                    this.reload();
+                    this.$message({
+                        type: "success",
+                        center: true,
+                        dangerouslyUseHTMLString: true,
+                        message:
+                        "<strong style='color:teal'>Upload successful!</strong>"
+                    });
+                    this.reload();
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+      },
+      handleExceed() {
+        this.$notify({
+          dangerouslyUseHTMLString: true,
+            type:'warning',
+            title: 'Upload fail',
+            message: '<strong style="color:teal">Only 1 file is required!</strong>',
+        });
+      },
+      handleChange(file){
+          this.file = file;
+          this.fileChange = true;
+      },
+      onBeforeUpload(file) {
+        const isImg = file.type === "image/*";
+        if (!isImg) {
+            this.$notify({
+            dangerouslyUseHTMLString: true,
+                type:'warning',
+                title: 'Upload fail',
+                message: '<strong style="color:teal">Please upload a image!</strong>',
+            });
+        }
+        return isImg;
+      },
+      upload(params) {
+        this.file = params.file;
+        return;
       },
       errorNotification(){
         this.$notify({
@@ -237,27 +337,8 @@ export default {
   font-size: larger;
   margin-left: 20px;
 }
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+.myBtn{
+    width: 400%;
+    margin-left: -50px;
+}
 </style>

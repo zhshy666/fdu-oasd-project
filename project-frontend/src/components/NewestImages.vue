@@ -34,7 +34,7 @@ export default {
     data(){
         return{
             images: [],
-            baseURL: '/static/travel-images/small/',
+            baseURL: '/static/travel-images/medium/',
         }
     },
     computed: {

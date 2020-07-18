@@ -121,7 +121,7 @@ export default {
                 rule: 'heat'
             },
             images: [],
-            baseURL: '/static/travel-images/small/',
+            baseURL: '/static/travel-images/medium/',
             afterSearch: false,
             isEmpty: false,
             notEmpty: true,
