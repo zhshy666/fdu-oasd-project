@@ -1,5 +1,6 @@
 package com.oasd.backend.repository;
 
+import com.oasd.backend.domain.City;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -20,5 +21,21 @@ public class CityRepo {
                 id + "'";
         List<String> list = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getString("AsciiName"));
         return list.get(0);
+    }
+
+    public List<City> findCitiesOfCountry(String ISO) {
+        String sql  = "select * from geocities where Country_RegionCodeISO = '" +
+                ISO +"'";
+        return jdbcTemplate.query(sql, new RowMapper<City>() {
+            City city = null;
+            @Override
+            public City mapRow(ResultSet resultSet, int i) throws SQLException {
+                city = new City();
+                city.setId(resultSet.getInt("GeoNameID"));
+                city.setValue(resultSet.getString("AsciiName"));
+                city.setName(resultSet.getString("AsciiName"));
+                return city;
+            }
+        });
     }
 }

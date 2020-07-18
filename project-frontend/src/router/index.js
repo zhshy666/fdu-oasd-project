@@ -5,6 +5,7 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import ImageDetail from'@/pages/ImageDetail'
 import Search from '@/pages/Search'
+import Upload from '@/pages/Upload'
 
 Vue.use(Router)
 
@@ -34,6 +35,14 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: Search
+    },
+    {
+      path: '/upload',
+      name: 'Upload',
+      component: Upload,
+      meta:{
+        requireAuth: true
+      }
     }
   ]
 })

@@ -1,19 +1,24 @@
 package com.oasd.backend.domain;
 
 public class City {
-    private String id;
+    private int id;
     private String name;
+    private String value;
 
-    public City(String id, String name) {
-        this.id = id;
-        this.name = name;
+    public City() {
     }
 
-    public String getId() {
+    public City(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.value = name;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -23,5 +28,13 @@ public class City {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
