@@ -114,7 +114,6 @@ export default {
               this.city = resp.data.city;
               this.path = "/static/travel-images/medium/" + resp.data.image.path;
               this.getImgInfo();
-              
             } else {
               this.errorNotification();
             }

@@ -9,13 +9,8 @@
         <el-menu-item index="/" class="myLogo">
             Travellers
         </el-menu-item>
-        <el-menu-item index="/">
-            <el-input 
-                v-model="input"
-                size="small"
-                prefix-icon="el-icon-search"
-                placeholder="Serach for something...">
-            </el-input>
+        <el-menu-item index="/search">
+        <i class="el-icon-search"></i>
         </el-menu-item>
         <el-menu-item 
           v-if="beforeLogin"
@@ -94,7 +89,7 @@
     margin-left: 20px;
 }
 .myMenu{
-  margin-left: 55%;
+  margin-left: 70%;
 }
 .myItem{
   text-align: center;

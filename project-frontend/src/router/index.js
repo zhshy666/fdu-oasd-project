@@ -4,6 +4,7 @@ import Index from '@/pages/Index'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import ImageDetail from'@/pages/ImageDetail'
+import Search from '@/pages/Search'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/imageDetail/:imageId',
       name: 'ImageDetail',
       component: ImageDetail
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: Search
     }
   ]
 })

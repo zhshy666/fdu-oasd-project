@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .newImg{
     height: 210px;
     width: 100%;
