@@ -38,16 +38,16 @@
                 </el-form-item>
 
                 <el-form-item prop="rule" >
-                        <el-select 
-                        v-model="searchForm.rule" 
-                        placeholder="Select rule">
+                    <el-select 
+                    v-model="searchForm.rule" 
+                    placeholder="Select rule">
                         <el-option-group
                             key="Order by"
                             label="Order by">
                             <el-option label="Heat" value="heat"></el-option>
-                            <el-option label="Released time" value="time"></el-option>
+                            <el-option label="Released time" value="releasedTime"></el-option>
                         </el-option-group>
-                        </el-select>
+                    </el-select>
                 </el-form-item>
 
                 <el-form-item size="medium">
@@ -64,7 +64,30 @@
             <br>
             <br>
         </el-col>
-        <el-col>
+        <el-col v-if="afterSearch" :span="6" :offset="1">
+            <span class="mySpan">Search results</span>
+        </el-col>
+        <el-col v-if="afterSearch" :span="18" :offset="3">
+            <el-divider></el-divider>
+            <div v-if="isEmpty">No results.</div>
+            <div v-else class=" layui-row" >
+                <div class=" layui-col-md3 card layui-col-md-offset3" v-for="(image,i) in images" :key="i">
+                    <router-link
+                    :to="'imageDetail/'+image.imageId">
+                    <img :src="baseURL + image.path" class=" newImg" />
+                        <div class="container">
+                            <br>
+                            <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{image.username}}</p>
+                            <br>
+                            <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{image.content}}</p>
+                            <br>
+                            <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{image.releasedTime}}</p>
+                            <br>
+                        </div>
+                    </router-link>
+                </div>
+            </div>
+
         </el-col>
       </el-main>
     </el-container>
@@ -84,6 +107,10 @@ export default {
                 scope: 'title',
                 rule: 'heat'
             },
+            images: [],
+            baseURL: '/static/travel-images/small/',
+            afterSearch: false,
+            isEmpty: false,
             loading: false
         }
     },
@@ -98,8 +125,15 @@ export default {
           })
           .then(resp => {
              if(resp.status === 200){
-                 console.log(resp.data);
-                 this.loading = false;
+                if(resp.data === "empty"){
+                    this.isEmpty = true;
+                }
+                else{
+                    this.images = resp.data;
+                    this.isEmpty = false;
+                }
+                this.loading = false;
+                this.afterSearch = true
              }
              else {
                 this.errorNotification();
@@ -125,5 +159,31 @@ export default {
 </script>
 
 <style scoped>
+.mySpan{
+    color: #009688;
+    font-size: larger;
+    margin-left: 20px;
+}
+.newImg{
+    height: 210px;
+    width: 100%;
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    margin: 30px 20px 20px 60px;
+}
 
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+img {
+    border-radius: 5px 5px 0 0;
+}
+
+.container {
+    padding: 2px 16px;
+}
 </style>
