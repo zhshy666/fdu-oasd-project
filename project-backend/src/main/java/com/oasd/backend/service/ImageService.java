@@ -25,4 +25,8 @@ public class ImageService {
     public TravelImage getImageDetail(int imageId) {
         return travelImageRepo.findImageById(imageId);
     }
+
+    public List<TravelImage> getSearchResult(String input, String scope, String rule) {
+        return travelImageRepo.findImagesBySearchInput(input, scope, rule);
+    }
 }

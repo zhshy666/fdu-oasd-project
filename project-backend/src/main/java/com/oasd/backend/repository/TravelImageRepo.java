@@ -57,4 +57,12 @@ public class TravelImageRepo {
         List<TravelImage> imageList = findImages(sql);
         return imageList.isEmpty() ? null : imageList.get(0);
     }
+
+    public List<TravelImage> findImagesBySearchInput(String input, String scope, String rule) {
+        String sql = "select * from travelimage where " + scope +
+                " like '%" + input +
+                "%' order by " + rule +
+                " desc ";
+        return findImages(sql);
+    }
 }

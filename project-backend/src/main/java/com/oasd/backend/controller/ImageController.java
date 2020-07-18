@@ -1,6 +1,7 @@
 package com.oasd.backend.controller;
 
 import com.oasd.backend.controller.request.ImageDetailRequest;
+import com.oasd.backend.controller.request.SearchImagesRequest;
 import com.oasd.backend.domain.City;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.service.CityService;
@@ -59,5 +60,13 @@ public class ImageController {
         map.put("country", country);
         map.put("city", city);
         return ResponseEntity.ok(map);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<?> search(@RequestBody SearchImagesRequest request){
+        List<TravelImage> imageList = imageService.getSearchResult(request.getInput(), request.getScope(), request.getRule());
+        if (imageList.isEmpty())
+            return ResponseEntity.ok("empty");
+        return ResponseEntity.ok(imageList);
     }
 }

@@ -13,49 +13,58 @@
               v-loading="loading"
               :inline="true"
             >
-            <el-form-item prop="input">
-                <el-input
-                    type="text"
-                    v-model="searchForm.input"
-                    auto-complete="off"
-                    placeholder="Search for images"
-                    prefix-icon="el-icon-search"
-                    style="width: 450px"
-                ></el-input>
-            </el-form-item>
+                <el-form-item prop="input">
+                    <el-input
+                        type="text"
+                        v-model="searchForm.input"
+                        auto-complete="off"
+                        placeholder="Search for images"
+                        prefix-icon="el-icon-search"
+                        style="width: 450px"
+                    ></el-input>
+                </el-form-item>
 
-            <el-form-item prop="scope" >
-                <el-select 
-                v-model="searchForm.scope" 
-                placeholder="Select scope">
-                <el-option label="Title" value="title"></el-option>
-                <el-option label="Content" value="content"></el-option>
-                </el-select>
-            </el-form-item>
+                <el-form-item prop="scope" >
+                    <el-select 
+                    v-model="searchForm.scope" 
+                    placeholder="Select scope">
+                    <el-option-group
+                        key="Select the scope"
+                        label="Select the scope">
+                        <el-option label="Title" value="title"></el-option>
+                        <el-option label="Content" value="content"></el-option>
+                    </el-option-group>
+                    </el-select>
+                </el-form-item>
 
-            <el-form-item prop="rule" >
-                <el-select 
-                v-model="searchForm.rule" 
-                placeholder="Select rule">
-                <el-option label="Heat" value="heat"></el-option>
-                <el-option label="Released time" value="time"></el-option>
-                </el-select>
-            </el-form-item>
+                <el-form-item prop="rule" >
+                        <el-select 
+                        v-model="searchForm.rule" 
+                        placeholder="Select rule">
+                        <el-option-group
+                            key="Order by"
+                            label="Order by">
+                            <el-option label="Heat" value="heat"></el-option>
+                            <el-option label="Released time" value="time"></el-option>
+                        </el-option-group>
+                        </el-select>
+                </el-form-item>
 
-            <el-form-item size="medium">
-            <el-button
-              plain
-              native-type="submit"
-              size="medium"
-              style="width:100%"
-              v-on:click="search">
-                Search
-            </el-button>
-          </el-form-item>
-
+                <el-form-item size="medium">
+                    <el-button
+                    type="primary"
+                    native-type="submit"
+                    size="medium"
+                    style="width:100%"
+                    v-on:click="search">
+                        Search
+                    </el-button>
+                </el-form-item>
             </el-form>
             <br>
             <br>
+        </el-col>
+        <el-col>
         </el-col>
       </el-main>
     </el-container>
@@ -72,8 +81,8 @@ export default {
         return{
             searchForm: {
                 input: '',
-                scope: '',
-                rule: ''
+                scope: 'title',
+                rule: 'heat'
             },
             loading: false
         }
@@ -90,14 +99,17 @@ export default {
           .then(resp => {
              if(resp.status === 200){
                  console.log(resp.data);
+                 this.loading = false;
              }
              else {
                 this.errorNotification();
+                this.loading = false;
              }
            })
            .catch(error => {
               console.log(error);
               this.errorNotification();
+              this.loading = false;
            });
       },
       errorNotification(){
