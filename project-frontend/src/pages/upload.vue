@@ -133,12 +133,32 @@ export default {
                 city: ''
             },
             rules: {
+                title: [
+                    {required:true,message:"Title is required",blur:"change"},
+                ],
+                author: [
+                    {required:true,message:"Author is required",blur:"change"},
+                ],
+                content: [
+                    {required:true,message:"Content is required",blur:"change"},
+                ],
+                description: [
+                    {required:true,message:"Description is required",blur:"change"},
+                ],
+                country: [
+                    {required:true,message:"Country is required",blur:"change"},
+                ],
+                city: [
+                    {required:true,message:"City is required",blur:"change"},
+                ],
             }
         }
     },
     computed: {
         isDisabled(){
-
+            return !(this.uploadForm.title && this.uploadForm.author
+                && this.uploadForm.content && this.uploadForm.description
+                && this.uploadForm.country && this.uploadForm.city)
         },
         isCityDisabled(){
             return !(this.uploadForm.country);
