@@ -70,8 +70,9 @@
         <el-col v-if="afterSearch" :span="18" :offset="3">
             <el-divider></el-divider>
             <div v-if="isEmpty">No results.</div>
-            <div v-else class=" layui-row" >
-                <div class=" layui-col-md3 card layui-col-md-offset3" v-for="(image,i) in images" :key="i">
+            <div v-if="notEmpty" class=" layui-row" >
+                <div class=" layui-col-md3 card layui-col-md-offset3" 
+                v-for="(image,i) in images.slice((currentPage-1)*6,currentPage*6)" :key="i">
                     <router-link
                     :to="'imageDetail/'+image.imageId">
                     <img :src="baseURL + image.path" class=" newImg" />
@@ -87,18 +88,30 @@
                     </router-link>
                 </div>
             </div>
-
+            <div v-if="notEmpty" class="block">
+                <br>
+                <br>
+                <el-pagination
+                    layout="prev, pager, next"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-size="6"
+                    :total="total">
+                </el-pagination>
+            </div>
         </el-col>
       </el-main>
     </el-container>
+    <footerbar v-if="afterSearch"></footerbar>
 </div>
 </template>
 
 <script>
 import navbar from "../components/Navbar"
+import footerbar from "../components/footer"
 
 export default {
-    components: {navbar},
+    components: {navbar, footerbar},
     name: 'Search',
     data(){
         return{
@@ -111,7 +124,10 @@ export default {
             baseURL: '/static/travel-images/small/',
             afterSearch: false,
             isEmpty: false,
-            loading: false
+            notEmpty: true,
+            loading: false,
+            total: 0,
+            currentPage: 1,
         }
     },
     methods: {
@@ -127,10 +143,13 @@ export default {
              if(resp.status === 200){
                 if(resp.data === "empty"){
                     this.isEmpty = true;
+                    this.notEmpty = false;
                 }
                 else{
                     this.images = resp.data;
                     this.isEmpty = false;
+                    this.notEmpty = true;
+                    this.total = this.images.length;
                 }
                 this.loading = false;
                 this.afterSearch = true
@@ -145,6 +164,9 @@ export default {
               this.errorNotification();
               this.loading = false;
            });
+      },
+      handleCurrentChange(val){
+          this.currentPage = val;
       },
       errorNotification(){
         this.$notify({
@@ -174,16 +196,16 @@ export default {
     border-radius: 5px;
     margin: 30px 20px 20px 60px;
 }
-
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
-
 img {
     border-radius: 5px 5px 0 0;
 }
-
 .container {
     padding: 2px 16px;
+}
+.emptyFooter{
+    margin-top: 30%;
 }
 </style>
