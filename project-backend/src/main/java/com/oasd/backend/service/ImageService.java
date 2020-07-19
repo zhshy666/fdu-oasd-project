@@ -4,6 +4,7 @@ import com.oasd.backend.domain.City;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.repository.CityRepo;
 import com.oasd.backend.repository.CountryRepo;
+import com.oasd.backend.repository.FavorRepo;
 import com.oasd.backend.repository.TravelImageRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,11 +23,13 @@ public class ImageService {
     private TravelImageRepo travelImageRepo;
     private CountryRepo countryRepo;
     private CityRepo cityRepo;
+    private FavorRepo favorRepo;
 
-    public ImageService(TravelImageRepo travelImageRepo, CountryRepo countryRepo, CityRepo cityRepo) {
+    public ImageService(TravelImageRepo travelImageRepo, CountryRepo countryRepo, CityRepo cityRepo, FavorRepo favorRepo) {
         this.travelImageRepo = travelImageRepo;
         this.countryRepo = countryRepo;
         this.cityRepo = cityRepo;
+        this.favorRepo = favorRepo;
     }
 
     public List<TravelImage> getPopularImages() {
@@ -104,5 +106,12 @@ public class ImageService {
 
     public List<TravelImage> getUploads(String username) {
         return travelImageRepo.findImagesByUsername(username);
+    }
+
+    public void deleteImg(int imageId) {
+        // delete
+        travelImageRepo.deleteImgById(imageId);
+        // remove the image from favors list
+        favorRepo.removeFavorsByImageId(imageId);
     }
 }

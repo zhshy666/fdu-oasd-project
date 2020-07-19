@@ -1,5 +1,6 @@
 package com.oasd.backend.controller;
 
+import com.oasd.backend.controller.request.DeleteImgRequest;
 import com.oasd.backend.controller.request.ImageDetailRequest;
 import com.oasd.backend.controller.request.SearchImagesRequest;
 import com.oasd.backend.domain.City;
@@ -77,5 +78,15 @@ public class ImageController {
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<TravelImage> imageList = imageService.getUploads(user.getUsername());
         return ResponseEntity.ok(imageList);
+    }
+
+    @PostMapping("/deleteImg")
+    public ResponseEntity<?> deleteImg(@RequestBody DeleteImgRequest request){
+        // delete image
+        imageService.deleteImg(request.getImageId());
+
+        // TODO : send message to related users
+
+        return ResponseEntity.ok("success");
     }
 }

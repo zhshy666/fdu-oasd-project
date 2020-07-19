@@ -1,17 +1,12 @@
 package com.oasd.backend.repository;
 
 import com.oasd.backend.domain.TravelImage;
-import com.oasd.backend.domain.TravelUser;
-import org.omg.CORBA.IMP_LIMIT;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import javax.annotation.Resource;
-import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 @Repository
@@ -87,5 +82,12 @@ public class TravelImageRepo {
         String sql = "select * from travelimage where Username = '" +
                 username + "'";
         return findImages(sql);
+    }
+
+    public void deleteImgById(int imageId) {
+        String sql = "delete from travelimage where ImageID = '" +
+                imageId + "'";
+        jdbcTemplate.update(sql);
+        System.out.println("Delete success");
     }
 }
