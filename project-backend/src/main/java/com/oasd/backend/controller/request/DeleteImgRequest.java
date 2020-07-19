@@ -2,6 +2,7 @@ package com.oasd.backend.controller.request;
 
 public class DeleteImgRequest {
     private int imageId;
+    private String url;
 
     public DeleteImgRequest() {
     }
@@ -12,5 +13,13 @@ public class DeleteImgRequest {
 
     public void setImageId(int imageId) {
         this.imageId = imageId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

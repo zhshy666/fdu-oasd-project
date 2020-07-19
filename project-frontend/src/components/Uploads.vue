@@ -25,7 +25,9 @@
                             <br>
                         </div>
                         <div>
-                            <el-link v-on:click="deleteImg(image.imageId)"><i class="el-icon-delete"></i></el-link>
+                            <el-link v-on:click="deleteImg(image)"><i class="el-icon-delete"></i></el-link>
+                            <el-link v-on:click="deleteImg(image)"><i class="el-icon-edit"></i></el-link>
+
                         </div>
                         <br>
                     </div>
@@ -50,6 +52,8 @@
 </template>
 
 <script>
+import uploadImg from "../pages/Upload"
+
 export default {
     name: "uploads",
     inject: ["reload"],
@@ -91,7 +95,7 @@ export default {
         handleCurrentChange(val){
           this.currentPage = val;
         },
-        deleteImg(id){
+        deleteImg(image){
             this.$confirm("Are you sure to delete this image?", "Delete confirm", {
                 confirmButtonText: "Yes",
                 cancelButtonText: "No"
@@ -99,7 +103,8 @@ export default {
             .then(()=>{
                 this.$axios
                     .post("/deleteImg", {
-                        imageId: id
+                        imageId: image.imageId,
+                        url: image.path
                     })
                     .then(resp => {
                         if(resp.status === 200){

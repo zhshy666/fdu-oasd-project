@@ -108,8 +108,15 @@ public class ImageService {
         return travelImageRepo.findImagesByUsername(username);
     }
 
-    public void deleteImg(int imageId) {
+    public void deleteImg(int imageId, String path) {
         // delete
+        String imgPath = "D:/Personal/Studies/2020summer/PJ/project-frontend/static/travel-images/medium/" + path;
+        File file = new File(imgPath);
+        if (file.exists()){
+            if (file.delete())
+               System.out.println("delete file success");
+        }
+
         travelImageRepo.deleteImgById(imageId);
         // remove the image from favors list
         favorRepo.removeFavorsByImageId(imageId);

@@ -83,7 +83,7 @@ public class ImageController {
     @PostMapping("/deleteImg")
     public ResponseEntity<?> deleteImg(@RequestBody DeleteImgRequest request){
         // delete image
-        imageService.deleteImg(request.getImageId());
+        imageService.deleteImg(request.getImageId(), request.getUrl());
 
         // TODO : send message to related users
 
