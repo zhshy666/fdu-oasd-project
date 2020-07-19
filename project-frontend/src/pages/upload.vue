@@ -91,7 +91,6 @@
                     :limit="1"
                     :http-request="upload"
                     accept="image/*"
-                    :before-upload="onBeforeUpload"
                     :on-exceed="handleExceed"
                     :on-change="handleChange"
                     :file-list="files"
@@ -114,7 +113,7 @@
                 :disabled="isDisabled"
                 size="medium"
                 style="width:100%"
-                v-on:click="submit">
+                v-on:click="submitForm('uploadForm')">
                     Submit
                 </el-button>
               </el-form-item>
@@ -153,12 +152,12 @@ export default {
             files:[],
             isModify: false,
             fileChange: false,
+            timeout:  null,
             uploadForm: {
                 title: '',
                 author: '',
                 content: '',
                 description: '',
-                timeout:  null,
                 country: '',
                 city: ''
             },
@@ -243,52 +242,64 @@ export default {
         });
     },
     methods: {
-      submit(){
-        // First contribution but no image
-        if(!this.isModify && !this.file){
-            this.$notify({
-                type: "warning",
-                dangerouslyUseHTMLString: true,
-                title: 'Upload fail',
-                message:
-                "<strong style='color:teal'>Please upload your image!</strong>"
-            });
-            return;
-        }
-        this.loading = true;
-        this.$refs["upload"].submit();
+      submitForm(formName){
+        this.$refs[formName].validate(valid => {
+            // First contribution but no image
+            if (valid) {
+            if(!this.isModify && !this.file){
+                this.$notify({
+                    type: "warning",
+                    dangerouslyUseHTMLString: true,
+                    title: 'Upload fail',
+                    message:
+                    "<strong style='color:teal'>Please upload your image!</strong>"
+                });
+                return;
+            }
+            this.loading = true;
+            this.$refs["upload"].submit();
 
-        var config = {
-            headers: { "Content-Type": "multipart/form-data" }
-        };
+            var config = {
+                headers: { "Content-Type": "multipart/form-data" }
+            };
 
-        var url = this.isModify?'/modifyImg':'/submitImg';
-        this.$axios
-            .post(url, {
-                title: this.uploadForm.title,
-                author: this.uploadForm.author,
-                content: this.uploadForm.content,
-                description: this.uploadForm.content,
-                country: this.uploadForm.country,
-                city: this.uploadForm.city
-            })
-            .then(resp => {
-                if(resp.status === 200){
-                    this.reload();
-                    this.$message({
-                        type: "success",
-                        center: true,
-                        dangerouslyUseHTMLString: true,
-                        message:
-                        "<strong style='color:teal'>Upload successful!</strong>"
-                    });
-                    this.reload();
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
+            var url = this.isModify?'/modifyImg':'/submitImg';
+            console.log(this.file);
+            var data = new FormData();
+            data.append("title", this.uploadForm.title);
+            data.append("author", this.uploadForm.author);
+            data.append("content", this.uploadForm.content);
+            data.append("description", this.uploadForm.description);
+            data.append("country", this.uploadForm.country);
+            data.append("city", this.uploadForm.city);
+            data.append("file", this.file);
+
+            this.$axios
+                .post(url, data, config)
+                .then(resp => {
+                    if(resp.status === 200){
+                        this.reload();
+                        this.$notify({
+                            type: "success",
+                            center: true,
+                            dangerouslyUseHTMLString: true,
+                            message:
+                            "<strong style='color:teal'>Upload successfully!</strong>"
+                        });
+                        this.reload();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            }else{
+                this.errorNotification();
+                this.loading = false;
+            }
+        
+        });
       },
+      
       handleExceed() {
         this.$notify({
           dangerouslyUseHTMLString: true,
@@ -300,18 +311,6 @@ export default {
       handleChange(file){
           this.file = file;
           this.fileChange = true;
-      },
-      onBeforeUpload(file) {
-        const isImg = file.type === "image/*";
-        if (!isImg) {
-            this.$notify({
-            dangerouslyUseHTMLString: true,
-                type:'warning',
-                title: 'Upload fail',
-                message: '<strong style="color:teal">Please upload a image!</strong>',
-            });
-        }
-        return isImg;
       },
       upload(params) {
         this.file = params.file;

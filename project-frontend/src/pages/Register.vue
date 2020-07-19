@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="layui-container">
-    <div style="height: 80px"></div>
+    <div style="height: 100px"></div>
 </div>
   <el-container>
     <el-header height="50%">
