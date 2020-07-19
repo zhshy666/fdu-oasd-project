@@ -6,6 +6,7 @@ import Register from '@/pages/Register'
 import ImageDetail from'@/pages/ImageDetail'
 import Search from '@/pages/Search'
 import Upload from '@/pages/Upload'
+import Home from '@/pages/Home'
 
 Vue.use(Router)
 
@@ -40,6 +41,14 @@ export default new Router({
       path: '/upload',
       name: 'Upload',
       component: Upload,
+      meta:{
+        requireAuth: true
+      }
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
       meta:{
         requireAuth: true
       }

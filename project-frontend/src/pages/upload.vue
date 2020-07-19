@@ -20,44 +20,44 @@
             label-width="0px"
             v-loading="loading"
             >
-              <el-form-item prop="title" >
+              <el-form-item prop="title" label="Title" class="is-required">
                 <el-input
                     type="text"
                     v-model="uploadForm.title"
                     auto-complete="off"
-                    placeholder="Title"
+                    placeholder="Title of your image"
                 ></el-input>
               </el-form-item>
 
-              <el-form-item prop="author" >
+              <el-form-item prop="author" label="Author" class="is-required">
                 <el-input
                     type="text"
                     v-model="uploadForm.author"
                     auto-complete="off"
-                    placeholder="Author"
+                    placeholder="Author of your image"
                 ></el-input>
               </el-form-item>
 
-              <el-form-item prop="content" >
+              <el-form-item prop="content" label="Content" class="is-required">
                 <el-input
                     type="text"
                     v-model="uploadForm.content"
                     auto-complete="off"
-                    placeholder="Content"
+                    placeholder="Content of your image"
                 ></el-input>
               </el-form-item>
 
-              <el-form-item prop="description" >
+              <el-form-item prop="description" label="Description" class="is-required">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}"
                     auto-complete="off"
-                    placeholder="Description"
+                    placeholder="Description of your image"
                     v-model="uploadForm.description">
                 </el-input>
               </el-form-item>
 
-              <el-form-item prop="country">
+              <el-form-item prop="country" label="Country" class="is-required">
                 <el-select v-model="uploadForm.country" filterable placeholder="Country" style="width:100%">
                     <el-option
                     v-for="(country,i) in countries"
@@ -70,7 +70,7 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item prop="city" v-loading="cityLoading">
+              <el-form-item prop="city" v-loading="cityLoading" label="City" class="is-required">
                 <el-select v-model="uploadForm.city" :disabled="isCityDisabled" filterable placeholder="City" style="width:100%">
                     <el-option
                     v-for="(city,j) in cities"
@@ -82,7 +82,7 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item prop="file">
+              <el-form-item prop="file" label="File" class="is-required">
                   <el-upload
                     ref="upload"
                     action
@@ -130,6 +130,7 @@
         </el-col>
       </el-main>
     </el-container>
+    <footerbar></footerbar>
 </div>
 </template>
 
@@ -253,7 +254,7 @@ export default {
                         dangerouslyUseHTMLString: true,
                         title: 'Upload fail',
                         message:
-                        "<strong style='color:teal'>Please upload your image!</strong>"
+                        "<strong style='color:teal'>Image is required.</strong>"
                     });
                     return;
                 }
@@ -315,7 +316,7 @@ export default {
           dangerouslyUseHTMLString: true,
             type:'warning',
             title: 'Upload fail',
-            message: '<strong style="color:teal">Only 1 file is required!</strong>',
+            message: '<strong style="color:teal">Only 1 file is required.</strong>',
         });
       },
       handleChange(file){

@@ -26,7 +26,7 @@
           index="/"
         >
         <template slot="title"><i class="el-icon-user"></i>{{username}}</template>
-            <el-menu-item index="/" class="myItem">
+            <el-menu-item index="/home" class="myItem">
               Home
             </el-menu-item>           
             <el-menu-item index="/upload" class="myItem">Upload</el-menu-item>

@@ -3,7 +3,7 @@
     <navbar></navbar>
     <el-container>
       <el-main>
-        <el-col :span="9" :offset="1">
+        <el-col :span="9" :offset="0">
             <span class="mySpan">{{image.title}} </span> &nbsp;&nbsp;&nbsp;
             <span style="font-size: small">  @ {{image.username}}</span>
         </el-col>
@@ -130,7 +130,6 @@ export default {
 .mySpan{
   color: #009688;
   font-size: larger;
-  margin-left: 20px;
 }
 .image {
   width: 100%;
