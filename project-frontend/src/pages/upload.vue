@@ -247,57 +247,66 @@ export default {
         this.$refs[formName].validate(valid => {
             // First contribution but no image
             if (valid) {
-            if(!this.isModify && !this.file){
-                this.$notify({
-                    type: "warning",
-                    dangerouslyUseHTMLString: true,
-                    title: 'Upload fail',
-                    message:
-                    "<strong style='color:teal'>Please upload your image!</strong>"
-                });
-                return;
-            }
-            this.loading = true;
-            this.$refs["upload"].submit();
-
-            var config = {
-                headers: { "Content-Type": "multipart/form-data" }
-            };
-
-            var url = this.isModify?'/modifyImg':'/submitImg';
-            console.log(this.file);
-            var data = new FormData();
-            data.append("title", this.uploadForm.title);
-            data.append("author", this.uploadForm.author);
-            data.append("content", this.uploadForm.content);
-            data.append("description", this.uploadForm.description);
-            data.append("country", this.uploadForm.country);
-            data.append("city", this.uploadForm.city);
-            data.append("file", this.file);
-
-            this.$axios
-                .post(url, data, config)
-                .then(resp => {
-                    if(resp.status === 200){
-                        this.reload();
-                        this.$notify({
-                            type: "success",
-                            center: true,
-                            dangerouslyUseHTMLString: true,
-                            message:
-                            "<strong style='color:teal'>Upload successfully!</strong>"
-                        });
-                        this.reload();
-                    }
+                if(!this.isModify && !this.file){
+                    this.$notify({
+                        type: "warning",
+                        dangerouslyUseHTMLString: true,
+                        title: 'Upload fail',
+                        message:
+                        "<strong style='color:teal'>Please upload your image!</strong>"
+                    });
+                    return;
+                }
+                this.$confirm("Are you sure to submit?", "Upload confirm", {
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No"
                 })
-                .catch(error => {
-                    console.log(error);
-                });
+                .then(() => {
+                    this.loading = true;
+                    this.$refs["upload"].submit();
+
+                    var config = {
+                        headers: { "Content-Type": "multipart/form-data" }
+                    };
+
+                    var url = this.isModify?'/modifyImg':'/submitImg';
+                    console.log(this.file);
+                    var data = new FormData();
+                    data.append("title", this.uploadForm.title);
+                    data.append("author", this.uploadForm.author);
+                    data.append("content", this.uploadForm.content);
+                    data.append("description", this.uploadForm.description);
+                    data.append("country", this.uploadForm.country);
+                    data.append("city", this.uploadForm.city);
+                    data.append("file", this.file);
+
+                    this.$axios
+                        .post(url, data, config)
+                        .then(resp => {
+                            if(resp.status === 200){
+                                this.reload();
+                                this.$notify({
+                                    type: "success",
+                                    center: true,
+                                    dangerouslyUseHTMLString: true,
+                                    message:
+                                    "<strong style='color:teal'>Upload successfully!</strong>"
+                                });
+                                this.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    
+                   
+                }) 
+                .catch(error => {});
             }else{
                 this.errorNotification();
                 this.loading = false;
             }
-        
+            
         });
       },
       

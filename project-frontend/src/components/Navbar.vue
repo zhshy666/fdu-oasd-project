@@ -56,9 +56,9 @@
         console.log(key, keyPath);
       },
       logout() {
-      this.$confirm("Are you sure to log out?", "Log out", {
-        confirmButtonText: "Yes",
-        cancelButtonText: "No"
+        this.$confirm("Are you sure to log out?", "Log out", {
+          confirmButtonText: "Yes",
+          cancelButtonText: "No"
       })
       .then(() => {
         this.$store.commit("logout");
