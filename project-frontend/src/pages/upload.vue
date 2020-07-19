@@ -288,8 +288,8 @@ export default {
                                 this.reload();
                                 this.$notify({
                                     type: "success",
-                                    center: true,
                                     dangerouslyUseHTMLString: true,
+                                    title: "Upload success",
                                     message:
                                     "<strong style='color:teal'>Upload successfully!</strong>"
                                 });
@@ -299,8 +299,6 @@ export default {
                         .catch(error => {
                             console.log(error);
                         });
-                    
-                   
                 }) 
                 .catch(error => {});
             }else{

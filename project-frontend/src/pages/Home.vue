@@ -10,7 +10,7 @@
             <br>
           </el-col>
           
-          <el-col :span="18" offset="3">
+          <el-col :span="18" :offset="3">
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="Uploads" name="first"><uploads></uploads></el-tab-pane>
                 <el-tab-pane label="Favors" name="second">Favors</el-tab-pane>

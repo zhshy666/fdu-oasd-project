@@ -8,6 +8,7 @@
                         <router-link
                         :to="'imageDetail/'+image.imageId">
                         <img :src="baseURL + image.path" class=" newImg" />
+                        </router-link>
                         <div>
                             <br>
                             <i class="myTitle"> &nbsp; Author &nbsp;</i>
@@ -19,8 +20,14 @@
                             <i class="myTitle"> &nbsp; Time &nbsp;</i>
                             <div class="myInfo">{{image.releasedTime}}</div>
                             <br>
+                            <i class="myTitle"> &nbsp; Heat &nbsp;</i>
+                            <div class="myInfo">{{image.heat}}</div>
+                            <br>
                         </div>
-                        </router-link>
+                        <div>
+                            <el-link v-on:click="deleteImg(image.imageId)"><i class="el-icon-delete"></i></el-link>
+                        </div>
+                        <br>
                     </div>
                 </div>
                 <div class="block">
@@ -45,6 +52,7 @@
 <script>
 export default {
     name: "uploads",
+    inject: ["reload"],
     data(){
         return{
             images: [],
@@ -82,7 +90,43 @@ export default {
     methods: {
         handleCurrentChange(val){
           this.currentPage = val;
-      },
+        },
+        deleteImg(id){
+            this.$confirm("Are you sure to delete this image?", "Delete confirm", {
+                confirmButtonText: "Yes",
+                cancelButtonText: "No"
+            })
+            .then(()=>{
+                this.$axios
+                    .post("/deleteImg", {
+                        imageId: id
+                    })
+                    .then(resp => {
+                        if(resp.status === 200){
+                            this.reload();
+                            this.$notify({
+                                type: "success",
+                                dangerouslyUseHTMLString: true,
+                                title: "Delete success",
+                                message:
+                                    "<strong style='color:teal'>Delete successfully!</strong>"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.errorNotification();
+                    });
+            })
+        },
+        errorNotification(){
+            this.$notify({
+            type:'error',
+            dangerouslyUseHTMLString: true,
+            title: 'Request error',
+            message: '<strong style="color:teal">Requset error, please try again.</strong>'
+            });
+        },
     }
 }
 </script>
@@ -118,7 +162,6 @@ export default {
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
-
 img {
     border-radius: 5px 5px 0 0;
 }
