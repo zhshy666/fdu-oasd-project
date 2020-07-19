@@ -46,7 +46,13 @@ public class AuthService {
         if (isEmailExists){
             return "email";
         }
-        travelUserRepo.insertUser(username, password, email);
+        String psw = null;
+        try {
+            psw = AESUtil.desEncrypt(password).trim();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        travelUserRepo.insertUser(username, psw, email);
         return "success";
     }
 }

@@ -97,7 +97,7 @@ public class ImageService {
         image.setPATH(title + time + "." + suffix);
         image.setCountry_RegionCodeISO(ISO);
         image.setCityCode(cityCode);
-        System.out.println(image.toString());
+        travelImageRepo.insertImage(image);
 
         return "upload successful";
     }

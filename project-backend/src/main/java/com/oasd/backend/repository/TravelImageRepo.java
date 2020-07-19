@@ -66,4 +66,20 @@ public class TravelImageRepo {
                 " desc ";
         return findImages(sql);
     }
+
+    public void insertImage(TravelImage image) {
+        String sql = "insert into travelimage values (null, '" + image.getTitle() +
+                "', '" + image.getDescription() + "','0','0" +
+                "', '" + image.getCityCode() +
+                "', '" + image.getCountry_RegionCodeISO() +
+                "', '" + image.getUsername() +
+                "', '" + image.getPATH() +
+                "', '" + image.getContent() +
+                "', '" + image.getHeat() +
+                "', '" + image.getReleasedTime() +
+                "', '" + image.getAuthor() +
+                "')";
+        jdbcTemplate.update(sql);
+        System.out.println("Upload successfully");
+    }
 }
