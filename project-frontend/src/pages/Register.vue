@@ -212,6 +212,7 @@
 
 <script>
 import SIdentify from '../components/RandomCode'
+import {Encrypt} from '../tools/AESUtils'
   export default {
     name: "Register",
     components: {SIdentify},
@@ -338,10 +339,11 @@ import SIdentify from '../components/RandomCode'
       register() {
         // Turn to loading mode when the form is submitted,and come back when getting response
         this.loading = true;
+        let passwordAES = Encrypt(this.registerForm.password.trim()).toString();
         this.$axios
           .post("/register", {
             username: this.registerForm.username,
-            password: this.registerForm.password,
+            password: passwordAES,
             email: this.registerForm.email
           })
           .then(resp => {
