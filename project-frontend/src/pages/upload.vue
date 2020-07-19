@@ -84,6 +84,7 @@
 
               <el-form-item prop="file" label="File" class="is-required">
                   <el-upload
+                    v-if="isModify"
                     ref="upload"
                     action
                     drag
@@ -94,6 +95,28 @@
                     :on-exceed="handleExceed"
                     :on-change="handleChange"
                     :file-list="files"
+                    list-type="picture"
+                    style="width: 100%"
+                    >
+                    <em class="el-icon-upload"></em>
+                    <div class="el-upload__text">
+                        Drag image here or 
+                        <em>click me</em>
+                    </div>
+                    <div class="el-upload__tip" slot="tip">Accept jpg, jpeg, png. Only one image is required.</div>
+                  </el-upload>
+
+                  <el-upload
+                    v-else
+                    ref="upload"
+                    action
+                    drag
+                    :auto-upload="false"
+                    :limit="1"
+                    :http-request="upload"
+                    accept="image/*"
+                    :on-exceed="handleExceed"
+                    :on-change="handleChange"
                     list-type="picture"
                     style="width: 100%"
                     >
@@ -144,13 +167,12 @@ export default {
     inject: ["reload"],
     data(){
         return{
-            imageUrl: '',
             loading: false,
             countries: [],
             cities: [],
             cityLoading: false,
             file:null,
-            files:[],
+            files:[{name: '', url: ''}],
             isModify: false,
             fileChange: false,
             timeout:  null,
@@ -228,27 +250,49 @@ export default {
                 message: '<strong style="color:teal">Please login to upload your photos</strong>'
             });
         };
-        this.uploadForm.author = this.$store.state.cur_user;
-        this.$axios
-        .get("/getCountries",{})
-        .then(resp => {
-            if(resp.status === 200){
-              this.countries = resp.data;
-            } else {
-              this.errorNotification();
-            }
-        })
-        .catch(error => {
-            console.log(error);
-            this.errorNotification();
-        });
+        if(this.$route.params.imageId){
+            console.log(this.$route.params.imageId);
+            this.$axios
+                .post("/imageDetail", {
+                    imageId: this.$route.params.imageId
+                })
+                .then(resp => {
+                    if(resp.status === 200){
+                        this.isModify = true;
+                        this.uploadForm.title = resp.data.image.title;
+                        this.uploadForm.author = resp.data.image.author;
+                        this.uploadForm.content = resp.data.image.content;
+                        this.uploadForm.description = resp.data.image.description;
+                        this.uploadForm.country = resp.data.country;
+                        this.uploadForm.city = resp.data.city;
+                        this.files[0].name = this.uploadForm.title;
+                        this.files[0].url = "/static/travel-images/medium/" + resp.data.image.path;
+                    }
+                })
+        }
+        else{
+            this.uploadForm.author = this.$store.state.cur_user;
+            this.$axios
+            .get("/getCountries",{})
+            .then(resp => {
+                if(resp.status === 200){
+                this.countries = resp.data;
+                } else {
+                this.errorNotification();
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                this.errorNotification();
+            });
+        }
     },
     methods: {
       submitForm(formName){
         this.$refs[formName].validate(valid => {
             // First contribution but no image
             if (valid) {
-                if(!this.isModify && !this.file){
+                if(!this.file){
                     this.$notify({
                         type: "warning",
                         dangerouslyUseHTMLString: true,
@@ -271,7 +315,6 @@ export default {
                     };
 
                     var url = this.isModify?'/modifyImg':'/submitImg';
-                    console.log(this.file);
                     var data = new FormData();
                     data.append("title", this.uploadForm.title);
                     data.append("author", this.uploadForm.author);
@@ -286,13 +329,23 @@ export default {
                         .then(resp => {
                             if(resp.status === 200){
                                 this.reload();
-                                this.$notify({
-                                    type: "success",
-                                    dangerouslyUseHTMLString: true,
-                                    title: "Upload success",
-                                    message:
-                                    "<strong style='color:teal'>Upload successfully!</strong>"
-                                });
+                                if(this.isModify){
+                                    this.$notify({
+                                        type: "success",
+                                        dangerouslyUseHTMLString: true,
+                                        title: "Modify success",
+                                        message:
+                                        "<strong style='color:teal'>Modify successfully!</strong>"
+                                    });
+                                }else{
+                                    this.$notify({
+                                        type: "success",
+                                        dangerouslyUseHTMLString: true,
+                                        title: "Upload success",
+                                        message:
+                                        "<strong style='color:teal'>Upload successfully!</strong>"
+                                    });
+                                }
                                 this.reload();
                             }
                         })

@@ -55,4 +55,10 @@ public class UploadController {
         String messageOfUpload = imageService.uploadImg(request, user.getUsername(), "upload");
         return ResponseEntity.ok(messageOfUpload);
     }
+
+    @PostMapping("/modifyImg")
+    public ResponseEntity<?> modifyImg(HttpServletRequest request){
+
+        return ResponseEntity.ok("ok");
+    }
 }

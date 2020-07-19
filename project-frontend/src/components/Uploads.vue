@@ -25,8 +25,8 @@
                             <br>
                         </div>
                         <div>
-                            <el-link v-on:click="deleteImg(image)"><i class="el-icon-delete"></i></el-link>
-                            <el-link v-on:click="deleteImg(image)"><i class="el-icon-edit"></i></el-link>
+                            <el-link v-on:click="deleteImg(image)"><i class="el-icon-delete">&nbsp;&nbsp;&nbsp;</i></el-link>
+                            <el-link v-on:click="routeTo(image)"><i class="el-icon-edit"></i></el-link>
 
                         </div>
                         <br>
@@ -123,6 +123,9 @@ export default {
                         this.errorNotification();
                     });
             })
+        },
+        routeTo(image){
+            this.$router.push({name: 'Upload', params: {imageId: image.imageId}})
         },
         errorNotification(){
             this.$notify({
