@@ -1,22 +1,25 @@
 <template>
     <el-container>
         <el-main>
-            <el-col :span="24" >
+            <el-col :span="24"  v-if="hasUploads">
                 <div class=" layui-row">
                     <div class=" layui-col-md3 card layui-col-md-offset3" 
                     v-for="(image,i) in images.slice((currentPage-1)*6,currentPage*6)" :key="i">
                         <router-link
                         :to="'imageDetail/'+image.imageId">
                         <img :src="baseURL + image.path" class=" newImg" />
-                            <div class="container">
-                                <br>
-                                <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{image.username}}</p>
-                                <br>
-                                <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{image.content}}</p>
-                                <br>
-                                <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{image.releasedTime}}</p>
-                                <br>
-                            </div>
+                        <div>
+                            <br>
+                            <i class="myTitle"> &nbsp; Author &nbsp;</i>
+                            <div class="myInfo">{{image.author}}</div>
+                            <br>
+                            <i class="myTitle"> &nbsp; Content &nbsp;</i>
+                            <div class="myInfo">{{image.content}}</div>
+                            <br>
+                            <i class="myTitle"> &nbsp; Time &nbsp;</i>
+                            <div class="myInfo">{{image.releasedTime}}</div>
+                            <br>
+                        </div>
                         </router-link>
                     </div>
                 </div>
@@ -32,6 +35,9 @@
                     </el-pagination>
                 </div>
             </el-col>
+            <el-col :span="24" v-else>
+                No uploads. Click <router-link :to="'upload'">here</router-link> to post one.
+            </el-col>
         </el-main>
     </el-container>
 </template>
@@ -45,14 +51,21 @@ export default {
             baseURL: '/static/travel-images/medium/',
             total: 0,
             currentPage: 1,
+            hasUploads: false,
+            noUploads: true,
         }
     },
     created() {
         this.$axios
-        .get("/getNewestImages",{})
+        .get("/getUploads",{})
         .then(resp => {
             if (resp.status === 200) {
                 this.images = resp.data;
+                this.total = this.images.length;
+                if(this.images.length > 0){
+                    this.hasUploads = true;
+                    this.noUploads = false;
+                }
             } else {
                 this.$notify({
                     type:'error',
@@ -90,16 +103,23 @@ export default {
     border-radius: 5px;
     margin: 30px 20px 20px 60px;
 }
-
+.myTitle{
+  color: #009688;
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  margin-left: -50%;
+}
+.myInfo{
+  font-size: small;
+  margin-left: 60px;
+  margin-top: -16px;
+}
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 img {
     border-radius: 5px 5px 0 0;
-}
-
-.container {
-    padding: 2px 16px;
 }
 </style>

@@ -54,6 +54,5 @@ public class UploadController {
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String messageOfUpload = imageService.uploadImg(request, user.getUsername(), "upload");
         return ResponseEntity.ok(messageOfUpload);
-
     }
 }

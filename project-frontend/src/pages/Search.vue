@@ -76,15 +76,18 @@
                     <router-link
                     :to="'imageDetail/'+image.imageId">
                     <img :src="baseURL + image.path" class=" newImg" />
-                        <div class="container">
-                            <br>
-                            <p><i class="el-icon-user"></i>&nbsp;&nbsp; {{image.username}}</p>
-                            <br>
-                            <p><i class="el-icon-camera"></i>&nbsp;&nbsp; {{image.content}}</p>
-                            <br>
-                            <p><i class="layui-icon layui-icon-time"></i>&nbsp;&nbsp; {{image.releasedTime}}</p>
-                            <br>
-                        </div>
+                    <div>
+                        <br>
+                        <i class="myTitle"> &nbsp; Author &nbsp;</i>
+                        <div class="myInfo">{{image.author}}</div>
+                        <br>
+                        <i class="myTitle"> &nbsp; Content &nbsp;</i>
+                        <div class="myInfo">{{image.content}}</div>
+                        <br>
+                        <i class="myTitle"> &nbsp; Time &nbsp;</i>
+                        <div class="myInfo">{{image.releasedTime}}</div>
+                        <br>
+                    </div>
                     </router-link>
                 </div>
             </div>
@@ -190,6 +193,18 @@ export default {
     height: 210px;
     width: 100%;
 }
+.myTitle{
+  color: #009688;
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  margin-left: -50%;
+}
+.myInfo{
+  font-size: small;
+  margin-left: 60px;
+  margin-top: -16px;
+}
 .card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
@@ -201,9 +216,6 @@ export default {
 }
 img {
     border-radius: 5px 5px 0 0;
-}
-.container {
-    padding: 2px 16px;
 }
 .emptyFooter{
     margin-top: 30%;

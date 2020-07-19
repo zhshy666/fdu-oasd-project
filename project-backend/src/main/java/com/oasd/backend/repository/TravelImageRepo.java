@@ -82,4 +82,10 @@ public class TravelImageRepo {
         jdbcTemplate.update(sql);
         System.out.println("Upload successfully");
     }
+
+    public List<TravelImage> findImagesByUsername(String username) {
+        String sql = "select * from travelimage where Username = '" +
+                username + "'";
+        return findImages(sql);
+    }
 }

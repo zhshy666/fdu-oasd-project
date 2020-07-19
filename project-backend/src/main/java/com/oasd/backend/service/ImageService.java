@@ -101,4 +101,8 @@ public class ImageService {
 
         return "upload successful";
     }
+
+    public List<TravelImage> getUploads(String username) {
+        return travelImageRepo.findImagesByUsername(username);
+    }
 }
