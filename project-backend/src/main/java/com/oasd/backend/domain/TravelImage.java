@@ -22,6 +22,7 @@ public class TravelImage {
     private String content;
     private int heat;
     private String releasedTime;
+    private String author;
 
     public TravelImage() {
     }
@@ -120,5 +121,31 @@ public class TravelImage {
 
     public void setReleasedTime(String releasedTime) {
         this.releasedTime = releasedTime;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "TravelImage{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", cityCode=" + cityCode +
+                ", country_RegionCodeISO='" + country_RegionCodeISO + '\'' +
+                ", username='" + username + '\'' +
+                ", PATH='" + PATH + '\'' +
+                ", content='" + content + '\'' +
+                ", heat=" + heat +
+                ", releasedTime='" + releasedTime + '\'' +
+                ", author='" + author + '\'' +
+                '}';
     }
 }

@@ -52,7 +52,7 @@ public class UploadController {
     @PostMapping("/submitImg")
     public ResponseEntity<?> submitImg(HttpServletRequest request){
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String messageOfUpload = imageService.uploadImg(request, user.getId(), "upload");
+        String messageOfUpload = imageService.uploadImg(request, user.getUsername(), "upload");
 
         return ResponseEntity.ok(messageOfUpload);
 

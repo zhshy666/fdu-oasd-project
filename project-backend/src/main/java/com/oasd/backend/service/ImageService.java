@@ -1,6 +1,9 @@
 package com.oasd.backend.service;
 
+import com.oasd.backend.domain.City;
 import com.oasd.backend.domain.TravelImage;
+import com.oasd.backend.repository.CityRepo;
+import com.oasd.backend.repository.CountryRepo;
 import com.oasd.backend.repository.TravelImageRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,14 +14,20 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class ImageService {
     private TravelImageRepo travelImageRepo;
+    private CountryRepo countryRepo;
+    private CityRepo cityRepo;
 
-    public ImageService(TravelImageRepo travelImageRepo) {
+    public ImageService(TravelImageRepo travelImageRepo, CountryRepo countryRepo, CityRepo cityRepo) {
         this.travelImageRepo = travelImageRepo;
+        this.countryRepo = countryRepo;
+        this.cityRepo = cityRepo;
     }
 
     public List<TravelImage> getPopularImages() {
@@ -37,7 +46,7 @@ public class ImageService {
         return travelImageRepo.findImagesBySearchInput(input, scope, rule);
     }
 
-    public String uploadImg(HttpServletRequest request, int id, String upload) {
+    public String uploadImg(HttpServletRequest request, String username, String upload) {
         MultipartHttpServletRequest params=((MultipartHttpServletRequest) request);
         TravelImage image = new TravelImage();
 
@@ -46,20 +55,24 @@ public class ImageService {
         String author = params.getParameter("author");
         String content = params.getParameter("content");
         String description = params.getParameter("description");
-        String country = params.getParameter("country");
-        String city = params.getParameter("city");
+        String countryName = params.getParameter("country");
+        String cityName = params.getParameter("city");
+
+        String ISO = countryRepo.findISOByName(countryName);
+        int cityCode = cityRepo.findIdByName(cityName);
 
         long time = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(time);
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        String releasedTime = formatter.format(date);
 
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
-
 
         assert file != null;
         String type = file.getContentType();
         assert type != null;
         String suffix = type.substring(6);
-        String url = "E://" + title + time + "." + suffix;
+        String url = "D:/Personal/Studies/2020summer/PJ/project-frontend/static/travel-images/medium/" + title + time + "." + suffix;
         if (!file.isEmpty()) {
             try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(
                     new File(url)))) {
@@ -73,6 +86,18 @@ public class ImageService {
             return "You failed to upload " + " because the file was empty.";
         }
 
+        // store image info
+        image.setTitle(title);
+        image.setUsername(username);
+        image.setAuthor(author);
+        image.setHeat(0);
+        image.setDescription(description);
+        image.setContent(content);
+        image.setReleasedTime(releasedTime);
+        image.setPATH(title + time + "." + suffix);
+        image.setCountry_RegionCodeISO(ISO);
+        image.setCityCode(cityCode);
+        System.out.println(image.toString());
 
         return "upload successful";
     }

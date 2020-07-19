@@ -227,6 +227,7 @@ export default {
                 message: '<strong style="color:teal">Please login to upload your photos</strong>'
             });
         };
+        this.uploadForm.author = this.$store.state.cur_user;
         this.$axios
         .get("/getCountries",{})
         .then(resp => {

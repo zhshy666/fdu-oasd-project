@@ -37,6 +37,7 @@ public class TravelImageRepo {
                 image.setContent(resultSet.getString("Content"));
                 image.setHeat(resultSet.getInt("Heat"));
                 image.setReleasedTime(resultSet.getString("ReleasedTime"));
+                image.setAuthor(resultSet.getString("Author"));
                 return image;
             }
         });

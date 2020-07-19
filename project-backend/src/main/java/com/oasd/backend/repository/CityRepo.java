@@ -38,4 +38,11 @@ public class CityRepo {
             }
         });
     }
+
+    public int findIdByName(String cityName) {
+        String sql  = "select GeoNameID from geocities where AsciiName = '" +
+                cityName + "'";
+        List<Integer> list = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getInt("GeoNameID"));
+        return list.get(0);
+    }
 }

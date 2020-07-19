@@ -23,7 +23,7 @@
                   </div>
                   <div>
                     <i class="myTitle"> &nbsp; Author &nbsp;</i>
-                    <div class="myInfo">{{image.username}}</div>
+                    <div class="myInfo">{{image.author}}</div>
                     <br>
                     <i class="myTitle"> &nbsp; Title &nbsp;</i>
                     <div class="myInfo">{{image.title}}</div>
