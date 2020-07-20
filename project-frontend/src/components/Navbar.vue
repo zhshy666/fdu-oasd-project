@@ -56,7 +56,7 @@
         console.log(key, keyPath);
       },
       logout() {
-        this.$confirm("Are you sure to log out?", "Log out", {
+        this.$confirm("Are you sure to log out?", "Log out confirm", {
           confirmButtonText: "Yes",
           cancelButtonText: "No"
       })

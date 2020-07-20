@@ -13,7 +13,7 @@
           <el-col :span="18" :offset="3">
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="Uploads" name="first"><uploads></uploads></el-tab-pane>
-                <el-tab-pane label="Favors" name="second">Favors</el-tab-pane>
+                <el-tab-pane label="Favors" name="second"><favors></favors></el-tab-pane>
                 <el-tab-pane label="Friends" name="third">Friends</el-tab-pane>
                 <el-tab-pane label="Messages" name="fourth">Messages</el-tab-pane>
             </el-tabs>
@@ -27,10 +27,11 @@
 import navbar from "../components/Navbar"
 import footerbar from "../components/footer"
 import uploads from "../components/Uploads"
+import favors from "../components/Favors"
 
 export default {
     name: "Home",
-    components: {navbar, footerbar, uploads},
+    components: {navbar, footerbar, uploads, favors},
     data(){
         return{
             username: '',

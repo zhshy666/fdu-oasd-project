@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -148,5 +149,17 @@ public class ImageService {
         travelImageRepo.deleteImgById(imageId);
         // remove the image from favors list
         favorRepo.removeFavorsByImageId(imageId);
+    }
+
+    public void modifyHeat(int imageId, int step) {
+        travelImageRepo.updateHeatByImageId(imageId, step);
+    }
+
+    public List<TravelImage> getFavorImages(List<Integer> ids) {
+        List<TravelImage> imageList = new LinkedList<>();
+        for (int i : ids){
+            imageList.add(travelImageRepo.findImageById(i));
+        }
+        return imageList;
     }
 }

@@ -3,11 +3,11 @@ package com.oasd.backend.controller;
 import com.oasd.backend.controller.request.DeleteImgRequest;
 import com.oasd.backend.controller.request.ImageDetailRequest;
 import com.oasd.backend.controller.request.SearchImagesRequest;
-import com.oasd.backend.domain.City;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.service.CityService;
 import com.oasd.backend.service.CountryService;
+import com.oasd.backend.service.FavorService;
 import com.oasd.backend.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,12 +27,14 @@ public class ImageController {
     private ImageService imageService;
     private CountryService countryService;
     private CityService cityService;
+    private FavorService favorService;
 
     @Autowired
-    public ImageController(ImageService imageService, CountryService countryService, CityService cityService) {
+    public ImageController(ImageService imageService, CountryService countryService, CityService cityService, FavorService favorService) {
         this.imageService = imageService;
         this.countryService = countryService;
         this.cityService = cityService;
+        this.favorService = favorService;
     }
 
     @GetMapping("/getPopularImages")
@@ -51,6 +53,7 @@ public class ImageController {
     public ResponseEntity<?> imageDetail(@RequestBody ImageDetailRequest request){
         Map<String, Object> map = new HashMap<>();
         TravelImage image = imageService.getImageDetail(request.getImageId());
+        TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (image == null) {
             return new ResponseEntity<>("The image does not exist.", HttpStatus.NOT_FOUND);
         }
@@ -62,6 +65,9 @@ public class ImageController {
         String city = cityService.getCity(image.getCityCode());
         map.put("country", country);
         map.put("city", city);
+        // is favor or not
+        boolean isFavor = favorService.isFavor(request.getImageId(), user.getId());
+        map.put("favor", isFavor);
         return ResponseEntity.ok(map);
     }
 

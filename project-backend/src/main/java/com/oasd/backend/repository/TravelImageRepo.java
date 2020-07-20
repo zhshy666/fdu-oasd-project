@@ -90,4 +90,15 @@ public class TravelImageRepo {
                 image.getCountry_RegionCodeISO(), image.getPATH(), image.getContent(), image.getReleasedTime(), imageId);
         System.out.println("Update successfully");
     }
+
+    public void updateHeatByImageId(int imageId, int step) {
+        String sql = "select * from travelimage where ImageID = '"+imageId+"'";
+        List<TravelImage> imageList = findImages(sql);
+        assert !imageList.isEmpty();
+        int heat = imageList.get(0).getHeat();
+        heat+=step;
+        String sql2 = "update travelimage set Heat = ? where ImageID = ?";
+        jdbcTemplate.update(sql2, heat, imageId);
+    }
+
 }

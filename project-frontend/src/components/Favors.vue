@@ -1,13 +1,13 @@
 <template>
     <el-container>
         <el-main>
-            <el-col :span="24"  v-if="hasUploads">
+            <el-col :span="24"  v-if="hasFavors">
                 <div class=" layui-row">
                     <div class=" layui-col-md3 card layui-col-md-offset3" 
                     v-for="(image,i) in images.slice((currentPage-1)*6,currentPage*6)" :key="i">
                         <router-link
                         :to="'imageDetail/'+image.imageId">
-                        <img :src="baseURL + image.path" class=" newImg" />
+                        <img :src="baseURL + image.path" class="newImg" />
                         </router-link>
                         <div>
                             <br>
@@ -25,11 +25,8 @@
                             <br>
                         </div>
                         <div>
-                            <el-tooltip class="item" effect="dark" content="Delete" placement="top">
-                                <el-link :underline="false" v-on:click="deleteImg(image)"><i class="el-icon-delete">&nbsp;&nbsp;&nbsp;</i></el-link>
-                            </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="Modify" placement="top">
-                                <el-link :underline="false" v-on:click="routeTo(image)"><i class="el-icon-edit"></i></el-link>
+                            <el-tooltip class="item" effect="dark" content="Remove from my favors" placement="top">
+                                <el-link :underline="false" v-on:click="removeFavor(image)"><i class="el-icon-delete">&nbsp;&nbsp;&nbsp;</i></el-link>
                             </el-tooltip>
                         </div>
                         <br>
@@ -48,7 +45,7 @@
                 </div>
             </el-col>
             <el-col :span="24" v-else>
-                No uploads. Click <router-link :to="'upload'">here</router-link> to post one.
+                No favors. Click <router-link :to="'/'">here</router-link> to view images uploaded by other users.
             </el-col>
         </el-main>
     </el-container>
@@ -56,28 +53,28 @@
 
 <script>
 export default {
-    name: "uploads",
+    name: "favors",
     inject: ["reload"],
-    data(){
+    data() {
         return{
+            hasFavors: false,
+            noFavors: true,
             images: [],
             baseURL: '/static/travel-images/medium/',
             total: 0,
             currentPage: 1,
-            hasUploads: false,
-            noUploads: true,
         }
     },
     created() {
         this.$axios
-        .get("/getUploads",{})
+        .get("/getFavors",{})
         .then(resp => {
             if (resp.status === 200) {
                 this.images = resp.data;
                 this.total = this.images.length;
                 if(this.images.length > 0){
-                    this.hasUploads = true;
-                    this.noUploads = false;
+                    this.hasFavors = true;
+                    this.noFavors = false;
                 }
             } else {
                 this.errorNotification();
@@ -91,37 +88,29 @@ export default {
         handleCurrentChange(val){
           this.currentPage = val;
         },
-        deleteImg(image){
-            this.$confirm("Are you sure to delete this image?", "Delete confirm", {
+        removeFavor(image){
+        this.$confirm("Are you sure to remove this image from your favors?", "Remove confirm", {
                 confirmButtonText: "Yes",
                 cancelButtonText: "No"
             })
             .then(()=>{
-                this.$axios
-                    .post("/deleteImg", {
-                        imageId: image.imageId,
-                        url: image.path
-                    })
-                    .then(resp => {
-                        if(resp.status === 200){
-                            this.reload();
-                            this.$notify({
-                                type: "success",
-                                dangerouslyUseHTMLString: true,
-                                title: "Delete success",
-                                message:
-                                    "<strong style='color:teal'>Delete successfully!</strong>"
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.errorNotification();
-                    });
+              this.$axios
+                .post("/removeFavor",{
+                  imageId: image.imageId
+                })
+                .then(resp => {
+                  if(resp.status === 200){
+                      this.reload();
+                      this.$notify({
+                        type: "success",
+                        dangerouslyUseHTMLString: true,
+                        title: "Remove success",
+                        message:
+                          "<strong style='color:teal'>Remove successfully.</strong>"
+                      });
+                  }
+                })
             })
-        },
-        routeTo(image){
-            this.$router.push({name: 'Upload', params: {imageId: image.imageId}})
         },
         errorNotification(){
             this.$notify({
