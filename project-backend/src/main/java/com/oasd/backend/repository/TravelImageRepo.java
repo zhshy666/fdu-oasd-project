@@ -84,8 +84,8 @@ public class TravelImageRepo {
 
     public void modifyImage(TravelImage image, int imageId) {
         String sql = "update travelimage set " +
-                "Title = ?, author = ?, Description = ?, CityCode = ?, Country_RegionCodeISO = ?, PATH = ?, Content = ?," +
-                "ReleasedTime = ? where ImageID = ?";
+                "Title = ?, author = ?, Description = ?, CityCode = ?, Country_RegionCodeISO = ?, " +
+                "PATH = ?, Content = ?, ReleasedTime = ? where ImageID = ?";
         jdbcTemplate.update(sql, image.getTitle(), image.getAuthor(), image.getDescription(), image.getCityCode(),
                 image.getCountry_RegionCodeISO(), image.getPATH(), image.getContent(), image.getReleasedTime(), imageId);
         System.out.println("Update successfully");

@@ -89,8 +89,19 @@ public class ImageService {
             } else {
                 return "You failed to upload " + " because the file was empty.";
             }
+
+            // if modify, delete the previous image
+            if (upload.equals("modify")){
+                imageId = Integer.parseInt(params.getParameter("imageId"));
+                TravelImage myImg = travelImageRepo.findImageById(imageId);
+                String imgPath = "D:/Personal/Studies/2020summer/PJ/project-frontend/static/travel-images/medium/" + myImg.getPATH();
+                File newFile = new File(imgPath);
+                if (newFile.exists()){
+                    if (newFile.delete())
+                        System.out.println("delete image success");
+                }
+            }
             image.setPATH(title + time + "." + suffix);
-            System.out.println("new Image");
         }
 
         // store image info
@@ -102,12 +113,14 @@ public class ImageService {
         image.setCountry_RegionCodeISO(ISO);
         image.setCityCode(cityCode);
         image.setReleasedTime(releasedTime);
+
         if (upload.equals("modify") && params.getParameter("modifyImg").equals("false")){
             imageId = Integer.parseInt(params.getParameter("imageId"));
             TravelImage myImg = travelImageRepo.findImageById(imageId);
             image.setPATH(myImg.getPATH());
             System.out.println("modify");
         }
+
         image.setHeat(0);
 
         if (upload.equals("modify")){
