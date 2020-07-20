@@ -96,4 +96,13 @@ public class ImageController {
 
         return ResponseEntity.ok("success");
     }
+
+    @GetMapping("/getHistory")
+    public ResponseEntity<?> getHistory(){
+        TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // get image id
+        List<Integer> ids = historyService.getHistory(user.getId());
+        List<TravelImage> imageList = imageService.getImagesByIds(ids);
+        return ResponseEntity.ok(imageList);
+    }
 }

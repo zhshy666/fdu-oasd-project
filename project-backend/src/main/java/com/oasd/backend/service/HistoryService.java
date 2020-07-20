@@ -41,4 +41,8 @@ public class HistoryService {
         }
         historyRepo.insertHistory(user.getId(), imageId, time);
     }
+
+    public List<Integer> getHistory(int userId) {
+        return historyRepo.findImageByUserID(userId);
+    }
 }

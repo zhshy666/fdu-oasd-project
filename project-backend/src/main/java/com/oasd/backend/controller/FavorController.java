@@ -48,7 +48,7 @@ public class FavorController {
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // get image id
         List<Integer> ids = favorService.getFavors(user.getId());
-        List<TravelImage> imageList = imageService.getFavorImages(ids);
+        List<TravelImage> imageList = imageService.getImagesByIds(ids);
         return ResponseEntity.ok(imageList);
     }
 }

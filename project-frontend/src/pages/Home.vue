@@ -14,7 +14,7 @@
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="Favors" name="first"><favors></favors></el-tab-pane>
                 <el-tab-pane label="Uploads" name="second"><uploads></uploads></el-tab-pane>
-                <el-tab-pane label="History" name="third">History</el-tab-pane>
+                <el-tab-pane label="History" name="third"><history></history></el-tab-pane>
                 <el-tab-pane label="Friends" name="fourth">Friends</el-tab-pane>
                 <el-tab-pane label="Messages" name="fifth">Messages</el-tab-pane>
             </el-tabs>
@@ -29,10 +29,11 @@ import navbar from "../components/Navbar"
 import footerbar from "../components/footer"
 import uploads from "../components/Uploads"
 import favors from "../components/Favors"
+import history from '../components/History'
 
 export default {
     name: "Home",
-    components: {navbar, footerbar, uploads, favors},
+    components: {navbar, footerbar, uploads, favors, history},
     data(){
         return{
             username: '',

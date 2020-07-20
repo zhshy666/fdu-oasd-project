@@ -155,7 +155,7 @@ public class ImageService {
         travelImageRepo.updateHeatByImageId(imageId, step);
     }
 
-    public List<TravelImage> getFavorImages(List<Integer> ids) {
+    public List<TravelImage> getImagesByIds(List<Integer> ids) {
         List<TravelImage> imageList = new LinkedList<>();
         for (int i : ids){
             imageList.add(travelImageRepo.findImageById(i));

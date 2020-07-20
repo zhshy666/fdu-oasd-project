@@ -53,4 +53,10 @@ public class HistoryRepo {
         jdbcTemplate.update(sql);
         System.out.println("Delete history success");
     }
+
+    public List<Integer> findImageByUserID(int userId) {
+        String sql  = "select imageId from history where userId = '" +
+                userId + "' order by time desc";
+        return jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getInt("imageId"));
+    }
 }
