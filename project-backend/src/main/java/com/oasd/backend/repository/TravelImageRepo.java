@@ -63,24 +63,15 @@ public class TravelImageRepo {
     }
 
     public void insertImage(TravelImage image) {
-        String sql = "insert into travelimage values (null, '" + image.getTitle() +
-                "', '" + image.getDescription() + "','0','0" +
-                "', '" + image.getCityCode() +
-                "', '" + image.getCountry_RegionCodeISO() +
-                "', '" + image.getUsername() +
-                "', '" + image.getPATH() +
-                "', '" + image.getContent() +
-                "', '" + image.getHeat() +
-                "', '" + image.getReleasedTime() +
-                "', '" + image.getAuthor() +
-                "')";
-        jdbcTemplate.update(sql);
+        String sql = "insert into travelimage values (null, ?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, image.getTitle(), image.getDescription(), image.getCityCode(), image.getCountry_RegionCodeISO(),
+                image.getUsername(), image.getPATH(), image.getContent(), image.getHeat(), image.getReleasedTime(), image.getAuthor());
         System.out.println("Upload successfully");
     }
 
     public List<TravelImage> findImagesByUsername(String username) {
         String sql = "select * from travelimage where Username = '" +
-                username + "'";
+                username + "' order by ReleasedTime desc";
         return findImages(sql);
     }
 
@@ -89,5 +80,14 @@ public class TravelImageRepo {
                 imageId + "'";
         jdbcTemplate.update(sql);
         System.out.println("Delete success");
+    }
+
+    public void modifyImage(TravelImage image, int imageId) {
+        String sql = "update travelimage set " +
+                "Title = ?, author = ?, Description = ?, CityCode = ?, Country_RegionCodeISO = ?, PATH = ?, Content = ?," +
+                "ReleasedTime = ? where ImageID = ?";
+        jdbcTemplate.update(sql, image.getTitle(), image.getAuthor(), image.getDescription(), image.getCityCode(),
+                image.getCountry_RegionCodeISO(), image.getPATH(), image.getContent(), image.getReleasedTime(), imageId);
+        System.out.println("Update successfully");
     }
 }

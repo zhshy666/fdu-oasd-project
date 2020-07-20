@@ -59,6 +59,7 @@ public class ImageService {
         String description = params.getParameter("description");
         String countryName = params.getParameter("country");
         String cityName = params.getParameter("city");
+        int imageId = -1;
 
         String ISO = countryRepo.findISOByName(countryName);
         int cityCode = cityRepo.findIdByName(cityName);
@@ -68,38 +69,52 @@ public class ImageService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         String releasedTime = formatter.format(date);
 
-        MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
+        if (upload.equals("upload") || (upload.equals("modify")&&params.getParameter("modifyImg").equals("true"))) {
+            MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
 
-        assert file != null;
-        String type = file.getContentType();
-        assert type != null;
-        String suffix = type.substring(6);
-        String url = "D:/Personal/Studies/2020summer/PJ/project-frontend/static/travel-images/medium/" + title + time + "." + suffix;
-        if (!file.isEmpty()) {
-            try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(
-                    new File(url)))) {
-                byte[] bytes = file.getBytes();
+            assert file != null;
+            String type = file.getContentType();
+            assert type != null;
+            String suffix = type.substring(6);
+            String url = "D:/Personal/Studies/2020summer/PJ/project-frontend/static/travel-images/medium/" + title + time + "." + suffix;
+            if (!file.isEmpty()) {
+                try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(
+                        new File(url)))) {
+                    byte[] bytes = file.getBytes();
 
-                stream.write(bytes);
-            } catch (Exception e) {
-                return "You failed to upload " + " => " + e.getMessage();
+                    stream.write(bytes);
+                } catch (Exception e) {
+                    return "You failed to upload " + " => " + e.getMessage();
+                }
+            } else {
+                return "You failed to upload " + " because the file was empty.";
             }
-        } else {
-            return "You failed to upload " + " because the file was empty.";
+            image.setPATH(title + time + "." + suffix);
+            System.out.println("new Image");
         }
 
         // store image info
         image.setTitle(title);
         image.setUsername(username);
         image.setAuthor(author);
-        image.setHeat(0);
         image.setDescription(description);
         image.setContent(content);
-        image.setReleasedTime(releasedTime);
-        image.setPATH(title + time + "." + suffix);
         image.setCountry_RegionCodeISO(ISO);
         image.setCityCode(cityCode);
-        travelImageRepo.insertImage(image);
+        image.setReleasedTime(releasedTime);
+        if (upload.equals("modify") && params.getParameter("modifyImg").equals("false")){
+            imageId = Integer.parseInt(params.getParameter("imageId"));
+            TravelImage myImg = travelImageRepo.findImageById(imageId);
+            image.setPATH(myImg.getPATH());
+            System.out.println("modify");
+        }
+        image.setHeat(0);
+
+        if (upload.equals("modify")){
+            travelImageRepo.modifyImage(image, imageId);
+        }else {
+            travelImageRepo.insertImage(image);
+        }
 
         return "upload successful";
     }

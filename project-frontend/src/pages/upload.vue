@@ -4,8 +4,9 @@
     <el-container>
       <el-main>
           <el-col :span="6" :offset="1">
-            <span class="mySpan">Upload</span>
-        </el-col>
+            <span v-if="isModify" class="mySpan">Modify</span>
+            <span v-else class="mySpan">Upload</span>
+          </el-col>
         <el-col :span="18" :offset="3">
             <el-divider></el-divider>
         </el-col>
@@ -130,7 +131,16 @@
               </el-form-item>
 
               <el-form-item size="medium">
-                <el-button
+                <el-button v-if="isModify"
+                type="primary"
+                native-type="submit"
+                :disabled="isDisabled"
+                size="medium"
+                style="width:100%"
+                v-on:click="submitForm('uploadForm')">
+                    Modify
+                </el-button>
+                <el-button v-else
                 type="primary"
                 native-type="submit"
                 :disabled="isDisabled"
@@ -176,6 +186,7 @@ export default {
             isModify: false,
             fileChange: false,
             timeout:  null,
+            heat: '',
             uploadForm: {
                 title: '',
                 author: '',
@@ -259,6 +270,7 @@ export default {
                 .then(resp => {
                     if(resp.status === 200){
                         this.isModify = true;
+                        this.heat = resp.data.image.heat;
                         this.uploadForm.title = resp.data.image.title;
                         this.uploadForm.author = resp.data.image.author;
                         this.uploadForm.content = resp.data.image.content;
@@ -292,7 +304,7 @@ export default {
         this.$refs[formName].validate(valid => {
             // First contribution but no image
             if (valid) {
-                if(!this.file){
+                if(!this.isModify && !this.file){
                     this.$notify({
                         type: "warning",
                         dangerouslyUseHTMLString: true,
@@ -315,6 +327,7 @@ export default {
                     };
 
                     var url = this.isModify?'/modifyImg':'/submitImg';
+                    
                     var data = new FormData();
                     data.append("title", this.uploadForm.title);
                     data.append("author", this.uploadForm.author);
@@ -324,6 +337,14 @@ export default {
                     data.append("city", this.uploadForm.city);
                     data.append("file", this.file);
 
+                    if(this.isModify){
+                        data.append("imageId", this.$route.params.imageId);
+                        if(!this.file){
+                            data.append("modifyImg", "false");
+                        }else if(this.file){
+                            data.append("modifyImg", "true");
+                        }
+                    }
                     this.$axios
                         .post(url, data, config)
                         .then(resp => {
@@ -337,6 +358,7 @@ export default {
                                         message:
                                         "<strong style='color:teal'>Modify successfully!</strong>"
                                     });
+                                    this.$router.replace("/home");
                                 }else{
                                     this.$notify({
                                         type: "success",

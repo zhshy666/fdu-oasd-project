@@ -58,7 +58,8 @@ public class UploadController {
 
     @PostMapping("/modifyImg")
     public ResponseEntity<?> modifyImg(HttpServletRequest request){
-
-        return ResponseEntity.ok("ok");
+        TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String messageOfModify = imageService.uploadImg(request, user.getUsername(), "modify");
+        return ResponseEntity.ok(messageOfModify);
     }
 }

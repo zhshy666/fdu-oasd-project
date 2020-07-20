@@ -25,9 +25,12 @@
                             <br>
                         </div>
                         <div>
-                            <el-link v-on:click="deleteImg(image)"><i class="el-icon-delete">&nbsp;&nbsp;&nbsp;</i></el-link>
-                            <el-link v-on:click="routeTo(image)"><i class="el-icon-edit"></i></el-link>
-
+                            <el-tooltip class="item" effect="dark" content="Delete" placement="top">
+                                <el-link v-on:click="deleteImg(image)"><i class="el-icon-delete">&nbsp;&nbsp;&nbsp;</i></el-link>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="Modify" placement="top">
+                                <el-link v-on:click="routeTo(image)"><i class="el-icon-edit"></i></el-link>
+                            </el-tooltip>
                         </div>
                         <br>
                     </div>
