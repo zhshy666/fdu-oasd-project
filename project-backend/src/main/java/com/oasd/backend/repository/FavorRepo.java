@@ -19,7 +19,6 @@ public class FavorRepo {
         String sql = "delete from travelimagefavor where ImageID = '" +
                 imageId + "'";
         jdbcTemplate.update(sql);
-        System.out.println("Delete favors success");
     }
 
     private List<Favor> findFavors(String sql){

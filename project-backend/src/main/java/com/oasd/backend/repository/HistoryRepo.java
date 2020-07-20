@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -38,20 +37,17 @@ public class HistoryRepo {
     public void insertHistory(int userId, int imageId, String time) {
         String sql = "insert into history values (null, ?, ?, ?)";
         jdbcTemplate.update(sql, userId, imageId, time);
-        System.out.println("History insert: " + imageId + " in " + userId);
     }
 
     public void updateHistory(int id, String time) {
         String sql = "update history set time = ? where id = ? ";
         jdbcTemplate.update(sql, time, id);
-        System.out.println("History update: " + id + " at " + time);
     }
 
     public void deleteLastHistory(int id) {
         String sql = "delete from history where id = '" +
                 id + "'";
         jdbcTemplate.update(sql);
-        System.out.println("Delete history success");
     }
 
     public List<Integer> findImageByUserID(int userId) {

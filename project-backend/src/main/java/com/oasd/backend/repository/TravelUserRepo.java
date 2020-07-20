@@ -48,7 +48,6 @@ public class TravelUserRepo {
                 "', '" + dateJoined +
                 "')";
         jdbcTemplate.update(sql);
-        System.out.println("Register success");
     }
 
     public boolean findUserByEmail(String email) {

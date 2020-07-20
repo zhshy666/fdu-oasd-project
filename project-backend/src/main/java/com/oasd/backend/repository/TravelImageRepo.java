@@ -66,7 +66,6 @@ public class TravelImageRepo {
         String sql = "insert into travelimage values (null, ?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, image.getTitle(), image.getDescription(), image.getCityCode(), image.getCountry_RegionCodeISO(),
                 image.getUsername(), image.getPATH(), image.getContent(), image.getHeat(), image.getReleasedTime(), image.getAuthor());
-        System.out.println("Upload successfully");
     }
 
     public List<TravelImage> findImagesByUsername(String username) {

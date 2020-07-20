@@ -119,7 +119,6 @@ public class ImageService {
             imageId = Integer.parseInt(params.getParameter("imageId"));
             TravelImage myImg = travelImageRepo.findImageById(imageId);
             image.setPATH(myImg.getPATH());
-            System.out.println("modify");
         }
 
         image.setHeat(0);

@@ -34,7 +34,6 @@ public class HistoryService {
             }
         }
 
-        System.out.println(historyList.size());
         if (historyList.size() >= 10){
             // delete
             historyRepo.deleteLastHistory(historyList.get(historyList.size()-1).getId());
