@@ -12,10 +12,11 @@
           
           <el-col :span="18" :offset="3">
               <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="Uploads" name="first"><uploads></uploads></el-tab-pane>
-                <el-tab-pane label="Favors" name="second"><favors></favors></el-tab-pane>
-                <el-tab-pane label="Friends" name="third">Friends</el-tab-pane>
-                <el-tab-pane label="Messages" name="fourth">Messages</el-tab-pane>
+                <el-tab-pane label="Favors" name="first"><favors></favors></el-tab-pane>
+                <el-tab-pane label="Uploads" name="second"><uploads></uploads></el-tab-pane>
+                <el-tab-pane label="History" name="third">History</el-tab-pane>
+                <el-tab-pane label="Friends" name="fourth">Friends</el-tab-pane>
+                <el-tab-pane label="Messages" name="fifth">Messages</el-tab-pane>
             </el-tabs>
           </el-col>
         </el-main>

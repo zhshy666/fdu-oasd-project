@@ -5,10 +5,7 @@ import com.oasd.backend.controller.request.ImageDetailRequest;
 import com.oasd.backend.controller.request.SearchImagesRequest;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.domain.TravelUser;
-import com.oasd.backend.service.CityService;
-import com.oasd.backend.service.CountryService;
-import com.oasd.backend.service.FavorService;
-import com.oasd.backend.service.ImageService;
+import com.oasd.backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +25,15 @@ public class ImageController {
     private CountryService countryService;
     private CityService cityService;
     private FavorService favorService;
+    private HistoryService historyService;
 
     @Autowired
-    public ImageController(ImageService imageService, CountryService countryService, CityService cityService, FavorService favorService) {
+    public ImageController(ImageService imageService, CountryService countryService, CityService cityService, FavorService favorService, HistoryService historyService) {
         this.imageService = imageService;
         this.countryService = countryService;
         this.cityService = cityService;
         this.favorService = favorService;
+        this.historyService = historyService;
     }
 
     @GetMapping("/getPopularImages")
@@ -68,6 +67,8 @@ public class ImageController {
         // is favor or not
         boolean isFavor = favorService.isFavor(request.getImageId(), user.getId());
         map.put("favor", isFavor);
+        // store history
+        historyService.storeHistory(request.getImageId());
         return ResponseEntity.ok(map);
     }
 

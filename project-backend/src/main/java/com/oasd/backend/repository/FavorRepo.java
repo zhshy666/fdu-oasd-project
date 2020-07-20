@@ -48,14 +48,12 @@ public class FavorRepo {
                 imageId + "' and UID = '" +
                 userId + "'";
         jdbcTemplate.update(sql);
-        System.out.println("Delete favor success");
         return "success";
     }
 
     public String insertFavor(int userId, int imageId) {
         String sql = "insert into travelimagefavor values (null, ?, ?)";
         jdbcTemplate.update(sql, userId, imageId);
-        System.out.println("Add favor success");
         return "success";
     }
 

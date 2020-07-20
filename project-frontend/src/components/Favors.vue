@@ -26,7 +26,7 @@
                         </div>
                         <div>
                             <el-tooltip class="item" effect="dark" content="Remove from my favors" placement="top">
-                                <el-link :underline="false" v-on:click="removeFavor(image)"><i class="el-icon-delete">&nbsp;&nbsp;&nbsp;</i></el-link>
+                                <el-link :underline="false" v-on:click="removeFavor(image)"><i class="el-icon-delete"></i></el-link>
                             </el-tooltip>
                         </div>
                         <br>

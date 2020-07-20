@@ -6,6 +6,7 @@
         </el-col>
         <el-col :span="18" :offset="3">
             <el-divider></el-divider>
+            <br>
             <el-carousel :interval="4000" type="card" height="350px">
                 <el-carousel-item v-for="(item, j) in images" :key="j">
                 <router-link
