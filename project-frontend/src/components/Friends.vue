@@ -118,6 +118,7 @@
 <script>
 export default {
     name: "friends",
+    inject: ['reload'],
     data(){
         return{
             formVisible: false,
@@ -126,6 +127,7 @@ export default {
             beforeSearch: true,
             afterSearch: false,
             users: [],
+            sendUsers: [],
             selections:[],
             form: {
                 input:''
@@ -160,12 +162,18 @@ export default {
             console.log(this.afterSearch);
         },
         send(){
+            var len = this.selections.length;
+            for (let i = 0; i < len; i++) {
+                this.sendUsers.push(this.selections[i].id);
+            }
+            console.log(this.sendUsers);
             this.$axios
                 .post("/sendRequest",{
-                    users: this.selections
+                    sendUsers: this.sendUsers
                 })
                 .then(resp => {
                     if(resp.status === 200){
+                        this.reload();
                         this.$notify({
                             type:'success',
                             dangerouslyUseHTMLString: true,

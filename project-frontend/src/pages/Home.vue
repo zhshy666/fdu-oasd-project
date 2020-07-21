@@ -16,7 +16,6 @@
                 <el-tab-pane label="Uploads" name="second"><uploads></uploads></el-tab-pane>
                 <el-tab-pane label="History" name="third"><history></history></el-tab-pane>
                 <el-tab-pane label="Friends" name="fourth"><friends></friends></el-tab-pane>
-                <el-tab-pane label="Messages" name="fifth">Messages</el-tab-pane>
             </el-tabs>
           </el-col>
         </el-main>

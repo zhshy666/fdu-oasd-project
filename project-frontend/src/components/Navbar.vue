@@ -30,6 +30,7 @@
               Home
             </el-menu-item>           
             <el-menu-item index="/upload" class="myItem">Upload</el-menu-item>
+            <el-menu-item index="/" class="myItem">Message</el-menu-item>
             <el-menu-item index="/" @click="logout" class="myItem"> Logout</el-menu-item>
         </el-submenu>
       </el-menu>
