@@ -39,7 +39,7 @@ public class MessageRepo {
     }
 
     public List<Message> findMessageOfUser(int to) {
-        String sql = "select * from messages where userId = '" + to +"'";
+        String sql = "select * from messages where userId = '" + to +"' order by sentTime desc";
         return findMessages(sql);
     }
 

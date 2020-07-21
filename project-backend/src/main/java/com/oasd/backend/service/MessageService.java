@@ -3,6 +3,7 @@ package com.oasd.backend.service;
 import com.oasd.backend.domain.Message;
 import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.repository.MessageRepo;
+import com.oasd.backend.repository.TravelUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,12 @@ import java.util.List;
 @Service
 public class MessageService {
     private MessageRepo messageRepo;
+    private TravelUserRepo travelUserRepo;
 
     @Autowired
-    public MessageService(MessageRepo messageRepo) {
+    public MessageService(MessageRepo messageRepo, TravelUserRepo travelUserRepo) {
         this.messageRepo = messageRepo;
+        this.travelUserRepo = travelUserRepo;
     }
 
     public void sendAddFriendRequest(TravelUser user, int userToSent) {

@@ -74,9 +74,52 @@
                         </el-table-column>
                     </el-table>
                 </el-dialog>
-
+                <br>
+                <br>
+                <br>
             </el-col>
-            <el-col :span="24">
+            <el-col :span="24" v-if="hasFriend">
+                <el-table
+                    :data="friends"
+                    stripe
+                    style="width: 100%">
+                    <el-table-column
+                    label="Title"
+                    width="270">
+                    <template slot-scope="scope">
+                        <router-link :to="'imageDetail/'+scope.row.imageId">{{ scope.row.title }}</router-link>
+                    </template>
+                    </el-table-column>
+
+                    <el-table-column
+                    prop="author"
+                    label="Author"
+                    width="200">
+                    </el-table-column>
+                    <el-table-column
+                    prop="content"
+                    label="Content"
+                    width="150">
+                    </el-table-column>
+                    <el-table-column
+                    prop="releasedTime"
+                    label="Released on"
+                    width="240">
+                    </el-table-column>
+                    <el-table-column
+                    prop="heat"
+                    label="Heat"
+                    width="100">
+                    </el-table-column>
+                </el-table>
+                <div style="font-size: small">
+                    <br>
+                    <br>
+                    10 images you recently viewed at most will be shown on this page.
+                </div>
+            </el-col>
+            <el-col :span="24" v-if="noFriend">
+                No friends now. Click <el-link :underline="false" @click="formVisible = true">here</el-link> to add more friends.
             </el-col>
         </el-main>
     </el-container>
@@ -93,16 +136,35 @@ export default {
             formLabelWidth: '120px',
             beforeSearch: true,
             afterSearch: false,
+            hasFriend: false,
+            noFriend: true,
             users: [],
             sendUsers: [],
             selections:[],
+            friends: [],
             form: {
                 input:''
             },
         }
     },
     created(){
-
+        this.$axios
+            .get("/getFriends", {})
+            .then(resp => {
+                if(resp.status === 200){
+                    this.friends = resp.data;
+                    if(this.friends.length > 0){
+                        this.hasFriend = true;
+                        this.noFriend = false;
+                    }
+                }
+                else {
+                    this.errorNotification();
+                }
+            })
+            .catch(error =>{
+                console.log(error);
+            })
     },
     methods: {
         search(){

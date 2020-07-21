@@ -4,6 +4,7 @@ import com.oasd.backend.controller.request.MarkAsReadRequest;
 import com.oasd.backend.controller.request.UpdateMessageRequest;
 import com.oasd.backend.domain.Message;
 import com.oasd.backend.domain.TravelUser;
+import com.oasd.backend.service.FriendService;
 import com.oasd.backend.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,12 @@ import java.util.List;
 @Controller
 public class MessageController {
     private MessageService messageService;
+    private FriendService friendService;
 
     @Autowired
-    public MessageController(MessageService messageService) {
+    public MessageController(MessageService messageService, FriendService friendService) {
         this.messageService = messageService;
+        this.friendService = friendService;
     }
 
     @GetMapping("/getMessages")
@@ -51,6 +54,8 @@ public class MessageController {
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         messageService.acceptOrRejectMessage(1, messageId);
         messageService.sendResponse("accept", user, request.getTo());
+        // update friends list
+        friendService.addFriends(request.getTo(), user.getId());
         return ResponseEntity.ok("success");
     }
 

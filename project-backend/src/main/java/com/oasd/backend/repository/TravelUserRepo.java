@@ -90,11 +90,4 @@ public class TravelUserRepo {
         String sql = "select * from traveluser where UserName like '%" + username + "%'";
         return findUsers(sql);
     }
-
-    public boolean areFriends(int id1, int id2) {
-        String sql = "select * from friends where userA = '" + id1 + "' and userB = '" + id2 + "' union " +
-                "select * from friends where userA = '" + id2 + "' and userB = '" +id1 +"'";
-        List<TravelUser> userList = findUsers(sql);
-        return userList.isEmpty();
-    }
 }

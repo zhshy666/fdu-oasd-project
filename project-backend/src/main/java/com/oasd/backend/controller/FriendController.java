@@ -28,9 +28,10 @@ public class FriendController {
     private FriendService friendService;
 
     @Autowired
-    public FriendController(AuthService authService, MessageService messageService) {
+    public FriendController(AuthService authService, MessageService messageService, FriendService friendService) {
         this.authService = authService;
         this.messageService = messageService;
+        this.friendService = friendService;
     }
 
     @PostMapping("/findUserByUsername")

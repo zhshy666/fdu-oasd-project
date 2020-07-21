@@ -10,7 +10,8 @@
             <el-divider></el-divider>
             <div v-if="noMessage">No messages.</div>
             <div v-if="hasMessage" class=" layui-row" >
-                <el-card class="box-card myCard" v-for="(message,i) in messages.slice((currentPage-1)*6,currentPage*6)" :key="i">
+                <div class=" layui-col-md4 card layui-col-md-offset2" v-for="(message,i) in messages.slice((currentPage-1)*6,currentPage*6)" :key="i">
+                <el-card class="box-card myCard">
                     <div 
                     slot="header" 
                     class="clearfix"
@@ -46,6 +47,7 @@
                         </div>
                     </div>
                 </el-card>
+                </div>
             </div>
             <div v-if="hasMessage" class="block">
                 <br>
@@ -118,7 +120,7 @@ export default {
             this.$axios
                 .post("/acceptMessage",{
                     messageId: message.messageId,
-                    to: message.from,
+                    to: message.fromId,
                 })
                 .then(resp => {
                     if(resp.status === 200){
@@ -230,5 +232,8 @@ export default {
     font-size: small;
     font-style: normal;
     color: gray;
+}
+.card{
+    margin: -10px 20px 20px 60px;
 }
 </style>
