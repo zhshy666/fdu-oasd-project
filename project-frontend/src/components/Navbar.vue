@@ -25,12 +25,18 @@
           class="myMenu"
           index="/"
         >
-        <template slot="title"><i class="el-icon-user"></i>{{username}}</template>
+        <template slot="title">
+          <el-badge :is-dot="hasNewMessage" class="item"></el-badge>
+          <i class="el-icon-user"></i>{{username}}
+        </template>
             <el-menu-item index="/home" class="myItem">
               Home
             </el-menu-item>           
             <el-menu-item index="/upload" class="myItem">Upload</el-menu-item>
-            <el-menu-item index="/" class="myItem">Message</el-menu-item>
+            <el-menu-item index="/message" class="myItem">
+              <el-badge :is-dot="hasNewMessage" class="item"></el-badge>&nbsp;&nbsp;
+                Message&nbsp;&nbsp;
+            </el-menu-item>
             <el-menu-item index="/" @click="logout" class="myItem"> Logout</el-menu-item>
         </el-submenu>
       </el-menu>
@@ -48,7 +54,8 @@
       return {
         input: '',
         beforeLogin: true,
-        username: this.$store.state.cur_user
+        username: this.$store.state.cur_user,
+        hasNewMessage: true
       };
     },
     methods: {
@@ -59,24 +66,34 @@
         this.$confirm("Are you sure to log out?", "Log out confirm", {
           confirmButtonText: "Yes",
           cancelButtonText: "No"
-      })
-      .then(() => {
-        this.$store.commit("logout");
-        this.reload();
-        this.$notify({
-          type:'info',
-          dangerouslyUseHTMLString: true,
-          title: 'Log out success',
-          message: '<strong style="color:teal">Log out successfully</strong>',
-        });
-      })
-      .catch(error => {});
-    }
+        })
+        .then(() => {
+          this.$store.commit("logout");
+          this.reload();
+          this.$notify({
+            type:'info',
+            dangerouslyUseHTMLString: true,
+            title: 'Log out success',
+            message: '<strong style="color:teal">Log out successfully</strong>',
+          });
+        })
+        .catch(error => {});
+      }
     },
     created() {
         // Control the display of different interface
         if (this.$store.state.token) {
             this.beforeLogin = false;
+            this.$axios
+              .get("/hasNewMessage", {})
+              .then(resp => {
+                if(resp.status === 200){
+                  if(resp.data === true)
+                    this.hasNewMessage = true;
+                  else
+                  this.hasNewMessage = false;
+                }
+              })
         }
     }
   }
@@ -93,5 +110,9 @@
 }
 .myItem{
   text-align: center;
+}
+.item{
+  margin-top: -10px;
+  margin-left: -10px;
 }
 </style>

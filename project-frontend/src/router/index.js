@@ -7,6 +7,7 @@ import ImageDetail from'@/pages/ImageDetail'
 import Search from '@/pages/Search'
 import Upload from '@/pages/Upload'
 import Home from '@/pages/Home'
+import Message from '@/pages/Message'
 
 Vue.use(Router)
 
@@ -50,6 +51,14 @@ export default new Router({
       name: 'Home',
       component: Home,
       meta:{
+        requireAuth: true
+      }
+    },
+    {
+      path: '/message',
+      name: 'Message',
+      component: Message,
+      meta: {
         requireAuth: true
       }
     }

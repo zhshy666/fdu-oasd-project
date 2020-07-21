@@ -38,7 +38,7 @@ public class MessageRepo {
         jdbcTemplate.update(sql, message.getUserId(), message.getTitle(), message.getContent(), message.getStatus(),message.getSentTime(), message.getFrom());
     }
 
-    public List<Message> findMessageOfTo(int to) {
+    public List<Message> findMessageOfUser(int to) {
         String sql = "select * from messages where userId = '" + to +"'";
         return findMessages(sql);
     }

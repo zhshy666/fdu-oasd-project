@@ -32,7 +32,7 @@ public class MessageService {
         messageRepo.storeMessage(message);
     }
 
-    public List<Message> findMessage(int to) {
-        return messageRepo.findMessageOfTo(to);
+    public List<Message> findMessage(int userId) {
+        return messageRepo.findMessageOfUser(userId);
     }
 }
