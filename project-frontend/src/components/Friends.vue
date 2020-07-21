@@ -48,8 +48,9 @@
                     </el-form>
                     <el-table
                         v-if="afterSearch"
+                        height="300px"
                         ref="userTable"
-                        :data="users.slice((currentUserPage-1)*5,currentUserPage*5)"
+                        :data="users"
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handleSelectionChange">
@@ -89,7 +90,6 @@
                 <el-table
                     :data="friends.slice((currentPage-1)*10,currentPage*10)"
                     stripe
-                    :key="i"
                     style="width: 100%">
                     <el-table-column
                     label="Username"
@@ -205,7 +205,6 @@ export default {
         handleSelectionChange(val) {
             this.selections = val;
             console.log(this.selections.length);
-            console.log(this.afterSearch);
         },
         send(){
             var len = this.selections.length;
