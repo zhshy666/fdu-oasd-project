@@ -23,7 +23,7 @@ public class MessageRepo {
                 message = new Message();
                 message.setMessageId(resultSet.getInt("messageId"));
                 message.setUserId(resultSet.getInt("userId"));
-                message.setFrom(resultSet.getInt("from"));
+                message.setFromId(resultSet.getInt("fromId"));
                 message.setStatus(resultSet.getInt("status"));
                 message.setTitle(resultSet.getString("title"));
                 message.setContent(resultSet.getString("content"));
@@ -35,7 +35,7 @@ public class MessageRepo {
 
     public void storeMessage(Message message) {
         String sql = "insert into messages values (null, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, message.getUserId(), message.getTitle(), message.getContent(), message.getStatus(),message.getSentTime(), message.getFrom());
+        jdbcTemplate.update(sql, message.getUserId(), message.getTitle(), message.getContent(), message.getStatus(),message.getSentTime(), message.getFromId());
     }
 
     public List<Message> findMessageOfUser(int to) {
@@ -54,5 +54,13 @@ public class MessageRepo {
         String sql = "update messages set " +
                 "status = ? where messageId = ?";
         jdbcTemplate.update(sql, 1, imageId);
+    }
+
+    public List<Message> findMessageUnread(int id) {
+        String sql = "select * from messages where fromId = '" + id +"' and title = 'Friend Request' " +
+                "and status = -1 union "+
+                "select * from messages where userId = '" + id + "' and title = 'Friend Request' "+
+                "and status = -1 ";
+        return findMessages(sql);
     }
 }

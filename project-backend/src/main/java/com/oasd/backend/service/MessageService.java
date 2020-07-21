@@ -28,7 +28,7 @@ public class MessageService {
         message.setTitle("Friend Request");
         message.setContent(user.getUsername() + " wants to be a friend of yours.");
         message.setStatus(-1);
-        message.setFrom(user.getId());
+        message.setFromId(user.getId());
         message.setSentTime(sentTime);
         messageRepo.storeMessage(message);
     }
@@ -50,12 +50,16 @@ public class MessageService {
         message.setTitle("Friend Response");
         message.setContent(user.getUsername() + " has " + msg + "ed your friend request.");
         message.setStatus(-1);
-        message.setFrom(user.getId());
+        message.setFromId(user.getId());
         message.setSentTime(sentTime);
         messageRepo.storeMessage(message);
     }
 
     public void markMessageAsRead(int imageId) {
         messageRepo.markMessageAsRead(imageId);
+    }
+
+    public List<Message> findMessageUnread(int id) {
+        return messageRepo.findMessageUnread(id);
     }
 }

@@ -5,6 +5,7 @@ import com.oasd.backend.controller.request.SendRequest;
 import com.oasd.backend.domain.Message;
 import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.service.AuthService;
+import com.oasd.backend.service.FriendService;
 import com.oasd.backend.service.MessageService;
 import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,46 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.MessageDigest;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
-public class FriendsController {
+public class FriendController {
     private AuthService authService;
     private MessageService messageService;
+    private FriendService friendService;
 
     @Autowired
-    public FriendsController(AuthService authService, MessageService messageService) {
+    public FriendController(AuthService authService, MessageService messageService) {
         this.authService = authService;
         this.messageService = messageService;
     }
 
     @PostMapping("/findUserByUsername")
     public ResponseEntity<?> findUserByUsername(@RequestBody FindFriendsRequest request){
+        TravelUser currentUser = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<TravelUser> users = authService.findUserLikeUsername(request.getUsername());
+        Set<TravelUser> delete = new LinkedHashSet<>();
+        // message sent
+        List<Message> messages = messageService.findMessageUnread(currentUser.getId());
+        for(TravelUser user : users){
+            int id = user.getId();
+            // are friends
+            if (friendService.areFriends(currentUser.getId(), user.getId())){
+                delete.add(user);
+                continue;
+            }
+            // has unread message from another
+            for(Message message : messages){
+                if (id == message.getUserId() || id == message.getFromId()) {
+                    delete.add(user);
+                    break;
+                }
+            }
+        }
+        users.removeAll(delete);
         return ResponseEntity.ok(users);
     }
 

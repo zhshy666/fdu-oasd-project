@@ -67,7 +67,6 @@ public class AuthService {
         for(TravelUser user: userList){
             if(user.getId() == travelUser.getId())
                 delete.add(travelUser);
-            // TODO: 排除已经成为好友的和已经发送过申请的
         }
         userList.removeAll(delete);
         return userList;

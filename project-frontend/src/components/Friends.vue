@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-main>
-            <el-col :span="5" :offset="19">
+            <el-col :span="3" :offset="21">
                 <el-button 
                 @click="formVisible = true"
                 size="medium" 
@@ -74,40 +74,7 @@
                         </el-table-column>
                     </el-table>
                 </el-dialog>
-                &nbsp;&nbsp;&nbsp;
-                <el-button 
-                @click="form2Visible = true"
-                size="medium" 
-                type="primary" 
-                icon="el-icon-info">
-                    Status
-                </el-button>
-                <el-dialog center title="Message status" :visible.sync="form2Visible">
-                    <el-table
-                        height="300px"
-                        ref="userTable"
-                        :data="users"
-                        tooltip-effect="dark"
-                        style="width: 100%"
-                        @selection-change="handleSelectionChange">
-                        
-                        <el-table-column
-                        prop="username"
-                        label="Username"
-                        width="150">
-                        </el-table-column>
-                        <el-table-column
-                        prop="email"
-                        label="Email"
-                        width="200">
-                        </el-table-column>
-                        <el-table-column
-                        prop="dateJoined"
-                        label="Status"
-                        show-overflow-tooltip>
-                        </el-table-column>
-                    </el-table>
-                </el-dialog>
+
             </el-col>
             <el-col :span="24">
             </el-col>

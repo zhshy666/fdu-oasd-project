@@ -20,12 +20,30 @@ public class TravelUserRepo {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
+    private List<TravelUser> findUsers(String sql){
+        return jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
+            TravelUser user = null;
+            @Override
+            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
+                user = new TravelUser();
+                user.setId(resultSet.getInt("UID"));
+                user.setPassword(resultSet.getString("Pass"));
+                user.setEmail(resultSet.getString("email"));
+                user.setUsername(resultSet.getString("UserName"));
+                user.setState(resultSet.getString("State"));
+                user.setDateJoined(resultSet.getString("DateJoined"));
+                user.setDateLastModified(resultSet.getString("DateLastModified"));
+                return user;
+            }
+        });
+    }
+
     public TravelUser findUserByUsernameAndPass(String username, String password){
         String sql = "select * from traveluser where UserName='" +
                 username + "'" +
                 "and Pass='" +
                 password + "'";
-        List<TravelUser> userList = findUser(sql);
+        List<TravelUser> userList = findUsers(sql);
         if(userList.isEmpty())
             return null;
         return userList.get(0);
@@ -33,7 +51,7 @@ public class TravelUserRepo {
 
     public List<TravelUser> findUserByUsername(String username) {
         String sql = "select * from traveluser where UserName='" + username + "'";
-        return findUser(sql);
+        return findUsers(sql);
     }
 
     public void insertUser(String username, String password, String email) {
@@ -53,7 +71,7 @@ public class TravelUserRepo {
 
     public boolean findUserByEmail(String email) {
         String sql = "select * from traveluser where Email='" + email + "'";
-        List<TravelUser> userList = findUser(sql);
+        List<TravelUser> userList = findUsers(sql);
         return !userList.isEmpty();
     }
 
@@ -62,32 +80,21 @@ public class TravelUserRepo {
                 email + "'" +
                 "and Pass='" +
                 password + "'";
-        List<TravelUser> userList = findUser(sql);
+        List<TravelUser> userList = findUsers(sql);
         if(userList.isEmpty())
             return null;
         return userList.get(0);
     }
 
-    private List<TravelUser> findUser(String sql){
-        return jdbcTemplate.query(sql, new RowMapper<TravelUser>(){
-            TravelUser user = null;
-            @Override
-            public TravelUser mapRow(ResultSet resultSet, int i) throws SQLException {
-                user = new TravelUser();
-                user.setId(resultSet.getInt("UID"));
-                user.setPassword(resultSet.getString("Pass"));
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("UserName"));
-                user.setState(resultSet.getString("State"));
-                user.setDateJoined(resultSet.getString("DateJoined"));
-                user.setDateLastModified(resultSet.getString("DateLastModified"));
-                return user;
-            }
-        });
-    }
-
     public List<TravelUser> findUserLikeUsername(String username) {
         String sql = "select * from traveluser where UserName like '%" + username + "%'";
-        return findUser(sql);
+        return findUsers(sql);
+    }
+
+    public boolean areFriends(int id1, int id2) {
+        String sql = "select * from friends where userA = '" + id1 + "' and userB = '" + id2 + "' union " +
+                "select * from friends where userA = '" + id2 + "' and userB = '" +id1 +"'";
+        List<TravelUser> userList = findUsers(sql);
+        return userList.isEmpty();
     }
 }
