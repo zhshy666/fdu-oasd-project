@@ -42,4 +42,11 @@ public class MessageRepo {
         String sql = "select * from messages where userId = '" + to +"'";
         return findMessages(sql);
     }
+
+    public void acceptOrRejectMessage(int i, int messageId) {
+        String sql = "update messages set " +
+                "status = ? where messageId = ?";
+        jdbcTemplate.update(sql, i, messageId);
+        System.out.println("Update message successfully");
+    }
 }

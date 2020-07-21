@@ -1,5 +1,6 @@
 package com.oasd.backend.controller;
 
+import com.oasd.backend.controller.request.UpdateMessageRequest;
 import com.oasd.backend.domain.Message;
 import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.service.MessageService;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -40,5 +42,19 @@ public class MessageController {
             }
         }
         return ResponseEntity.ok(hasNewMessage);
+    }
+
+    @PostMapping("/acceptMessage")
+    public ResponseEntity<?> acceptMessage(@RequestBody UpdateMessageRequest request){
+        int messageId = request.getMessageId();
+        messageService.acceptOrRejectMessage(1, messageId);
+        return ResponseEntity.ok("success");
+    }
+
+    @PostMapping("/rejectMessage")
+    public ResponseEntity<?> rejectMessage(@RequestBody UpdateMessageRequest request){
+        int messageId = request.getMessageId();
+        messageService.acceptOrRejectMessage(2, messageId);
+        return ResponseEntity.ok("success");
     }
 }

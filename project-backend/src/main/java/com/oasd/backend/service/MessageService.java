@@ -1,6 +1,7 @@
 package com.oasd.backend.service;
 
 import com.oasd.backend.domain.Message;
+import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.repository.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,9 @@ public class MessageService {
 
     public List<Message> findMessage(int userId) {
         return messageRepo.findMessageOfUser(userId);
+    }
+
+    public void acceptOrRejectMessage(int i, int messageId) {
+        messageRepo.acceptOrRejectMessage(i, messageId);
     }
 }

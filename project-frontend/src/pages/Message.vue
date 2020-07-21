@@ -24,6 +24,19 @@
                         <br>
                         <br>
                         <i class="date">{{message.sentTime}}</i>
+                        <br>
+                        <br>
+                        <br>
+                        <div v-if="isRequest(message) && isNew(message)">
+                            <el-button type="primary" size="medium" v-on:click="accept(message)">Accept</el-button>&nbsp;&nbsp;&nbsp;
+                            <el-button plain size="medium" v-on:click="reject(message)">Reject</el-button>
+                        </div>
+                        <div v-if="isRequest(message) && acceptRequest(message)">
+                            <el-button type="primary" size="medium" disabled>Accept</el-button>&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div v-if="isRequest(message) && rejectRequest(message)">
+                            <el-button plain size="medium" disabled>Reject</el-button>
+                        </div>
                     </div>
                 </el-card>
             </div>
@@ -50,6 +63,7 @@ import navbar from "../components/Navbar"
 export default {
     components: {navbar},
     name: 'message',
+    inject: ['reload'],
     data(){
         return{
             messages: [],
@@ -93,8 +107,65 @@ export default {
         handleCurrentChange(val){
             this.currentPage = val;
         },
+        accept(message){
+            this.$axios
+                .post("/acceptMessage",{
+                    messageId: message.messageId
+                })
+                .then(resp => {
+                    if(resp.status === 200){
+                        this.reload();
+                        this.$notify({
+                            type:'success',
+                            dangerouslyUseHTMLString: true,
+                            title: 'Accept success',
+                            message: '<strong style="color:teal">You have accept the friend invitation.</strong>'
+                        });
+                    }
+                    else {
+                        this.errorNotification();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorNotification();
+                });
+        },
+        reject(message){
+            this.$axios
+                .post("/rejectMessage",{
+                    messageId: message.messageId
+                })
+                .then(resp => {
+                    if(resp.status === 200){
+                        this.reload();
+                        this.$notify({
+                            type:'success',
+                            dangerouslyUseHTMLString: true,
+                            title: 'Reject success',
+                            message: '<strong style="color:teal">You have reject the friend invitation.</strong>'
+                        });
+                    }
+                    else {
+                        this.errorNotification();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorNotification();
+                });
+        },
         isNew(message){
-            return message.status === -1;
+            return message.status == -1;
+        },
+        isRequest(message){
+            return message.title == 'Friend Request';
+        },
+        acceptRequest(message){
+            return message.status === 1;
+        },
+        rejectRequest(message){
+            return message.status === 2;
         },
         errorNotification(){
         this.$notify({
@@ -104,6 +175,9 @@ export default {
           message: '<strong style="color:teal">Requset error, please try again.</strong>'
         });
       },
+    },
+    computed: {
+
     }
 }
 </script>
@@ -116,7 +190,7 @@ export default {
 }
 .myCard{
     width: 400px;
-    height: 200px;
+    height: 240px;
     margin: 50px 20px 20px 50px;
 }
 .content{
