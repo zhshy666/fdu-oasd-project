@@ -4,7 +4,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class FriendRepo {
@@ -21,5 +23,16 @@ public class FriendRepo {
     public void addFriends(int userA, int userB) {
         String sql = "insert into friends values (null, ?, ?)";
         jdbcTemplate.update(sql, userA, userB);
+    }
+
+    public Set<Integer> findFriendsById(int id) {
+        String sql = "select userB from friends where userA = '" + id +"'";
+        String sql2 ="select userA from friends where userB = '" + id +"'";
+        List<Integer> listA = jdbcTemplate.query(sql2, (resultSet, i) -> resultSet.getInt("userA"));
+        List<Integer> listB = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getInt("userB"));
+        Set<Integer> result = new LinkedHashSet<>();
+        result.addAll(listA);
+        result.addAll(listB);
+        return result;
     }
 }

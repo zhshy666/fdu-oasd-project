@@ -59,7 +59,6 @@ public class AuthService {
         return "success";
     }
 
-
     public List<TravelUser> findUserLikeUsername(String username) {
         List<TravelUser> userList = travelUserRepo.findUserLikeUsername(username);
         TravelUser travelUser = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -70,5 +69,9 @@ public class AuthService {
         }
         userList.removeAll(delete);
         return userList;
+    }
+
+    public TravelUser findUserById(int id) {
+        return travelUserRepo.findUserById(id);
     }
 }

@@ -1,11 +1,12 @@
 <template>
     <el-container>
         <el-main>
-            <el-col :span="3" :offset="21">
+            <br>
+            <el-col :span="3" :offset="0">
                 <el-button 
                 @click="formVisible = true"
                 size="medium" 
-                type="primary" 
+                plain
                 icon="el-icon-plus">
                     Add
                 </el-button>
@@ -46,10 +47,9 @@
                         </el-form-item>
                     </el-form>
                     <el-table
-                        height="300px"
                         v-if="afterSearch"
                         ref="userTable"
-                        :data="users"
+                        :data="users.slice((currentUserPage-1)*5,currentUserPage*5)"
                         tooltip-effect="dark"
                         style="width: 100%"
                         @selection-change="handleSelectionChange">
@@ -73,52 +73,63 @@
                         show-overflow-tooltip>
                         </el-table-column>
                     </el-table>
+                    <div v-if="afterSearch" class="block" style="text-align: center">
+                        <el-pagination
+                            layout="prev, pager, next"
+                            @current-change="handleCurrentUserChange"
+                            :current-page="currentUserPage"
+                            :page-size="5"
+                            :total="totalUser">
+                        </el-pagination>
+                    </div>
                 </el-dialog>
-                <br>
-                <br>
-                <br>
             </el-col>
-            <el-col :span="24" v-if="hasFriend">
+
+            <el-col :span="13" v-if="hasFriend" :offset="2">
                 <el-table
-                    :data="friends"
+                    :data="friends.slice((currentPage-1)*10,currentPage*10)"
                     stripe
+                    :key="i"
                     style="width: 100%">
                     <el-table-column
-                    label="Title"
-                    width="270">
+                    label="Username"
+                    width="180">
                     <template slot-scope="scope">
-                        <router-link :to="'imageDetail/'+scope.row.imageId">{{ scope.row.title }}</router-link>
+                        <router-link :to="'/'+scope.row.username">{{ scope.row.username }}</router-link>
                     </template>
                     </el-table-column>
 
                     <el-table-column
-                    prop="author"
-                    label="Author"
+                    label="Email"
                     width="200">
+                    <template slot-scope="scope">
+                        <router-link :to="'/'+scope.row.email">{{ scope.row.email }}</router-link>
+                    </template>
                     </el-table-column>
+
                     <el-table-column
-                    prop="content"
-                    label="Content"
-                    width="150">
-                    </el-table-column>
-                    <el-table-column
-                    prop="releasedTime"
-                    label="Released on"
-                    width="240">
-                    </el-table-column>
-                    <el-table-column
-                    prop="heat"
-                    label="Heat"
-                    width="100">
+                    prop="dateJoined"
+                    label="Date joined"
+                    width="170">
                     </el-table-column>
                 </el-table>
-                <div style="font-size: small">
+
+                <div v-if="hasFriend" class="block">
                     <br>
                     <br>
-                    10 images you recently viewed at most will be shown on this page.
+                    <el-pagination
+                        layout="prev, pager, next"
+                        @current-change="handleCurrentChange"
+                        :current-page="currentPage"
+                        :page-size="10"
+                        :total="total">
+                    </el-pagination>
                 </div>
             </el-col>
             <el-col :span="24" v-if="noFriend">
+                <br>
+                <br>
+                <br>
                 No friends now. Click <el-link :underline="false" @click="formVisible = true">here</el-link> to add more friends.
             </el-col>
         </el-main>
@@ -142,6 +153,10 @@ export default {
             sendUsers: [],
             selections:[],
             friends: [],
+            total: '',
+            totalUser: '',
+            currentPage: 1,
+            currentUserPage: 1,
             form: {
                 input:''
             },
@@ -156,6 +171,7 @@ export default {
                     if(this.friends.length > 0){
                         this.hasFriend = true;
                         this.noFriend = false;
+                        this.total = this.friends.length;
                     }
                 }
                 else {
@@ -176,6 +192,7 @@ export default {
                     if(resp.status === 200){
                         this.users = resp.data;
                         this.afterSearch = true;
+                        this.totalUser = this.users.length;
                     }
                     else {
                         this.errorNotification();
@@ -218,6 +235,12 @@ export default {
                 .catch(error =>{
                     console.log(error);
                 })
+        },
+        handleCurrentChange(val){
+            this.currentPage = val;
+        },
+        handleCurrentUserChange(val){
+            this.currentUserPage = val;
         },
         errorNotification(){
             this.$notify({

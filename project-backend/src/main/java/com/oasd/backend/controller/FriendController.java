@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -82,5 +83,16 @@ public class FriendController {
                 messageService.sendAddFriendRequest(user, userToSent);
         }
         return ResponseEntity.ok("success");
+    }
+
+    @GetMapping("/getFriends")
+    public ResponseEntity<?> getFriends(){
+        TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Integer> friendsId = friendService.findFriends(user.getId());
+        List<TravelUser> userList = new LinkedList<>();
+        for(int id : friendsId){
+            userList.add(authService.findUserById(id));
+        }
+        return ResponseEntity.ok(userList);
     }
 }

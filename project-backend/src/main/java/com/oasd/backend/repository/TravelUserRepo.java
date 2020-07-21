@@ -90,4 +90,10 @@ public class TravelUserRepo {
         String sql = "select * from traveluser where UserName like '%" + username + "%'";
         return findUsers(sql);
     }
+
+    public TravelUser findUserById(int id) {
+        String sql = "select * from traveluser where UID='" + id + "'";
+        List<TravelUser> userList = findUsers(sql);
+        return userList.isEmpty()? null : userList.get(0);
+    }
 }
