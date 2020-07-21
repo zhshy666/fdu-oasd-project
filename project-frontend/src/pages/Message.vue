@@ -37,6 +37,13 @@
                         <div v-if="isRequest(message) && rejectRequest(message)">
                             <el-button plain size="medium" disabled>Reject</el-button>
                         </div>
+                        
+                        <div v-if="isResponse(message) && isNew(message)">
+                            <el-button plain size="medium" v-on:click="hasRead(message)">Mark as read</el-button>
+                        </div>
+                        <div v-if="isResponse(message) && !isNew(message)">
+                            <el-button plain size="medium" disabled>Mark as read</el-button>
+                        </div>
                     </div>
                 </el-card>
             </div>
@@ -110,7 +117,8 @@ export default {
         accept(message){
             this.$axios
                 .post("/acceptMessage",{
-                    messageId: message.messageId
+                    messageId: message.messageId,
+                    to: message.from,
                 })
                 .then(resp => {
                     if(resp.status === 200){
@@ -161,11 +169,32 @@ export default {
         isRequest(message){
             return message.title == 'Friend Request';
         },
+        isResponse(message){
+            return message.title == 'Friend Response';
+        },
         acceptRequest(message){
             return message.status === 1;
         },
         rejectRequest(message){
             return message.status === 2;
+        },
+        hasRead(message){
+            this.$axios
+                .post("/hasReadMessage",{
+                    messageId: message.messageId,
+                })
+                .then(resp => {
+                    if(resp.status === 200){
+                        this.reload();
+                    }
+                    else {
+                        this.errorNotification();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorNotification();
+                });
         },
         errorNotification(){
         this.$notify({

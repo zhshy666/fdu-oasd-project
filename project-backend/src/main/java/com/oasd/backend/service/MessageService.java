@@ -19,16 +19,16 @@ public class MessageService {
         this.messageRepo = messageRepo;
     }
 
-    public void sendAddFriendRequest(String username, int userToSent) {
+    public void sendAddFriendRequest(TravelUser user, int userToSent) {
         Message message = new Message();
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         String sentTime = formatter.format(date);
         message.setUserId(userToSent);
         message.setTitle("Friend Request");
-        message.setContent(username + " wants to be a friend of yours.");
+        message.setContent(user.getUsername() + " wants to be a friend of yours.");
         message.setStatus(-1);
-        message.setFrom(username);
+        message.setFrom(user.getId());
         message.setSentTime(sentTime);
         messageRepo.storeMessage(message);
     }
@@ -39,5 +39,23 @@ public class MessageService {
 
     public void acceptOrRejectMessage(int i, int messageId) {
         messageRepo.acceptOrRejectMessage(i, messageId);
+    }
+
+    public void sendResponse(String msg, TravelUser user, int to) {
+        Message message = new Message();
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        String sentTime = formatter.format(date);
+        message.setUserId(to);
+        message.setTitle("Friend Response");
+        message.setContent(user.getUsername() + " has " + msg + "ed your friend request.");
+        message.setStatus(-1);
+        message.setFrom(user.getId());
+        message.setSentTime(sentTime);
+        messageRepo.storeMessage(message);
+    }
+
+    public void markMessageAsRead(int imageId) {
+        messageRepo.markMessageAsRead(imageId);
     }
 }

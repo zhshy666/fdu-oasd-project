@@ -23,7 +23,7 @@ public class MessageRepo {
                 message = new Message();
                 message.setMessageId(resultSet.getInt("messageId"));
                 message.setUserId(resultSet.getInt("userId"));
-                message.setFrom(resultSet.getString("from"));
+                message.setFrom(resultSet.getInt("from"));
                 message.setStatus(resultSet.getInt("status"));
                 message.setTitle(resultSet.getString("title"));
                 message.setContent(resultSet.getString("content"));
@@ -48,5 +48,11 @@ public class MessageRepo {
                 "status = ? where messageId = ?";
         jdbcTemplate.update(sql, i, messageId);
         System.out.println("Update message successfully");
+    }
+
+    public void markMessageAsRead(int imageId) {
+        String sql = "update messages set " +
+                "status = ? where messageId = ?";
+        jdbcTemplate.update(sql, 1, imageId);
     }
 }

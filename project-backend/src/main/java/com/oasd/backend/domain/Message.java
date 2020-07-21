@@ -16,7 +16,7 @@ public class Message {
     private int status;
     private String content;
     private String sentTime;
-    private String from;
+    private int from;
 
     public Message() {
     }
@@ -69,11 +69,11 @@ public class Message {
         this.sentTime = sentTime;
     }
 
-    public String getFrom() {
+    public int getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(int from) {
         this.from = from;
     }
 }

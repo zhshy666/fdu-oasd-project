@@ -54,7 +54,7 @@ public class FriendsController {
         // send message
         for (int userToSent : userIds){
             if(!remove.contains(userToSent))
-                messageService.sendAddFriendRequest(user.getUsername(), userToSent);
+                messageService.sendAddFriendRequest(user, userToSent);
         }
         return ResponseEntity.ok("success");
     }
