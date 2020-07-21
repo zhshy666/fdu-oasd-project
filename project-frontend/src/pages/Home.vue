@@ -15,7 +15,7 @@
                 <el-tab-pane label="Favors" name="first"><favors></favors></el-tab-pane>
                 <el-tab-pane label="Uploads" name="second"><uploads></uploads></el-tab-pane>
                 <el-tab-pane label="History" name="third"><history></history></el-tab-pane>
-                <el-tab-pane label="Friends" name="fourth">Friends</el-tab-pane>
+                <el-tab-pane label="Friends" name="fourth"><friends></friends></el-tab-pane>
                 <el-tab-pane label="Messages" name="fifth">Messages</el-tab-pane>
             </el-tabs>
           </el-col>
@@ -30,10 +30,11 @@ import footerbar from "../components/footer"
 import uploads from "../components/Uploads"
 import favors from "../components/Favors"
 import history from '../components/History'
+import friends from '../components/Friends'
 
 export default {
     name: "Home",
-    components: {navbar, footerbar, uploads, favors, history},
+    components: {navbar, footerbar, uploads, favors, history, friends},
     data(){
         return{
             username: '',
