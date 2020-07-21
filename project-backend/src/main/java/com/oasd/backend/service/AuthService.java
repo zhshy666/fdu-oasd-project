@@ -3,6 +3,7 @@ package com.oasd.backend.service;
 import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.repository.TravelUserRepo;
 import com.oasd.backend.util.AESUtil;
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,10 @@ public class AuthService {
         }
         travelUserRepo.insertUser(username, psw, email);
         return "success";
+    }
+
+
+    public List<TravelUser> findUserLikeUsername(String username) {
+        return travelUserRepo.findUserLikeUsername(username);
     }
 }

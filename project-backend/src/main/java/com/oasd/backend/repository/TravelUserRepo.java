@@ -1,6 +1,7 @@
 package com.oasd.backend.repository;
 
 import com.oasd.backend.domain.TravelUser;
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,5 +84,10 @@ public class TravelUserRepo {
                 return user;
             }
         });
+    }
+
+    public List<TravelUser> findUserLikeUsername(String username) {
+        String sql = "select * from traveluser where UserName like '%" + username + "%'";
+        return findUser(sql);
     }
 }

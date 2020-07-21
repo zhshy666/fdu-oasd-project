@@ -47,7 +47,8 @@
                         </el-form-item>
                     </el-form>
                     <el-table
-                        v-if="afterSearch && hasResults"
+                        height="300px"
+                        v-if="afterSearch"
                         ref="userTable"
                         :data="users"
                         tooltip-effect="dark"
@@ -58,23 +59,21 @@
                         width="55">
                         </el-table-column>
                         <el-table-column
-                        label="username"
+                        prop="username"
+                        label="Username"
                         width="120">
-                        <template slot-scope="scope">{{ scope.row.username }}</template>
                         </el-table-column>
                         <el-table-column
                         prop="email"
-                        label="email"
+                        label="Email"
                         width="120">
                         </el-table-column>
                         <el-table-column
-                        prop="date"
-                        label="time"
+                        prop="dateJoined"
+                        label="Date joined"
                         show-overflow-tooltip>
                         </el-table-column>
                     </el-table>
-                    <div v-if="afterSearch && noResults" class="noResults">No results.
-                    </div>
                 </el-dialog>
             
             </el-col>
@@ -97,8 +96,8 @@ export default {
             noResults: true,
             users: [],
             form: {
-                    input:''
-                },
+                input:''
+            },
         }
     },
     created(){
@@ -114,10 +113,6 @@ export default {
                     if(resp.status === 200){
                         this.users = resp.data;
                         this.afterSearch = true;
-                        if(this.users.length > 0){
-                            this.hasResults = true;
-                            this.noResults = false;
-                        }
                     }
                     else {
                         this.errorNotification();
