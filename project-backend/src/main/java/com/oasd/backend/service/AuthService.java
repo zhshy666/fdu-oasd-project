@@ -5,8 +5,10 @@ import com.oasd.backend.repository.TravelUserRepo;
 import com.oasd.backend.util.AESUtil;
 import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -59,6 +61,15 @@ public class AuthService {
 
 
     public List<TravelUser> findUserLikeUsername(String username) {
-        return travelUserRepo.findUserLikeUsername(username);
+        List<TravelUser> userList = travelUserRepo.findUserLikeUsername(username);
+        TravelUser travelUser = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<TravelUser> delete = new LinkedList<>();
+        for(TravelUser user: userList){
+            if(user.getId() == travelUser.getId())
+                delete.add(travelUser);
+            // TODO: 排除已经成为好友的和已经发送过申请的
+        }
+        userList.removeAll(delete);
+        return userList;
     }
 }
