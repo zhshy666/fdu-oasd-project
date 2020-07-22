@@ -50,12 +50,14 @@
                         v-if="afterSearch"
                         height="300px"
                         ref="userTable"
-                        :data="users"
+                        :data="users.slice((currentUserPage-1)*5,currentUserPage*5)"
                         tooltip-effect="dark"
+                        :row-key="getRowKeys"
                         style="width: 100%"
                         @selection-change="handleSelectionChange">
                         <el-table-column
                         type="selection"
+                        :reserve-selection="true"
                         width="55">
                         </el-table-column>
                         <el-table-column
@@ -66,7 +68,7 @@
                         <el-table-column
                         prop="email"
                         label="Email"
-                        width="200">
+                        width="210">
                         </el-table-column>
                         <el-table-column
                         prop="dateJoined"
@@ -204,7 +206,6 @@ export default {
         },
         handleSelectionChange(val) {
             this.selections = val;
-            console.log(this.selections.length);
         },
         send(){
             var len = this.selections.length;
@@ -240,6 +241,9 @@ export default {
         },
         handleCurrentUserChange(val){
             this.currentUserPage = val;
+        },
+        getRowKeys(row){
+            return row.id;
         },
         errorNotification(){
             this.$notify({
