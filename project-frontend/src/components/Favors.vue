@@ -6,7 +6,13 @@
                     <div class=" layui-col-md3 card layui-col-md-offset3" 
                     v-for="(image,i) in images.slice((currentPage-1)*6,currentPage*6)" :key="i">
                         <router-link
+                        v-if="hasAuthority"
                         :to="'imageDetail/'+image.imageId">
+                        <img :src="baseURL + image.path" class="newImg" />
+                        </router-link>
+                        <router-link
+                        v-else
+                        :to="'../imageDetail/'+image.imageId">
                         <img :src="baseURL + image.path" class="newImg" />
                         </router-link>
                         <div>
@@ -24,7 +30,7 @@
                             <div class="myInfo">{{image.heat}}</div>
                             <br>
                         </div>
-                        <div>
+                        <div v-if="hasAuthority">
                             <el-tooltip class="item" effect="dark" content="Remove from my favors" placement="top">
                                 <el-link :underline="false" v-on:click="removeFavor(image)"><i class="el-icon-delete"></i></el-link>
                             </el-tooltip>
@@ -44,8 +50,11 @@
                     </el-pagination>
                 </div>
             </el-col>
-            <el-col :span="24" v-else>
+            <el-col :span="24" v-if="!hasFavors && hasAuthority">
                 No favors. Click <router-link :to="'/'">here</router-link> to view images uploaded by other users.
+            </el-col>
+            <el-col :span="24" v-if="!hasFavors && !hasAuthority">
+                No favors.
             </el-col>
         </el-main>
     </el-container>
@@ -63,11 +72,23 @@ export default {
             baseURL: '/static/travel-images/medium/',
             total: 0,
             currentPage: 1,
+            username: '',
+            hasAuthority: false,
         }
     },
     created() {
+        console.log(this.$route.params.username);
+        if(this.$route.params.username){
+            this.username = this.$route.params.username;
+        }
+        else{
+            this.username = this.$store.state.cur_user;
+            this.hasAuthority = true;
+        }
         this.$axios
-        .get("/getFavors",{})
+        .post("/getFavors",{
+            username: this.username
+        })
         .then(resp => {
             if (resp.status === 200) {
                 this.images = resp.data;

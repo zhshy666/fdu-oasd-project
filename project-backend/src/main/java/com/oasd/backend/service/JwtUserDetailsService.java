@@ -32,9 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username){
-        List<TravelUser> userList = travelUserRepo.findUserByUsername(username);
-        if(userList.isEmpty())
-            return null;
-        return userList.get(0);
+        TravelUser user = travelUserRepo.findUserByUsername(username);
+        return user;
     }
 }

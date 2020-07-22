@@ -99,4 +99,17 @@ public class FriendController {
         map.put("messages", messages);
         return ResponseEntity.ok(map);
     }
+
+    @PostMapping("/isFriend")
+    public ResponseEntity<?> isFriend(@RequestBody FindFriendsRequest request){
+        TravelUser currentUser = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TravelUser user = authService.findUserByUsername(request.getUsername());
+        String msg;
+        if (friendService.areFriends(currentUser.getId(), user.getId())){
+            msg = "true";
+        }else {
+            msg = "false";
+        }
+        return ResponseEntity.ok(msg);
+    }
 }

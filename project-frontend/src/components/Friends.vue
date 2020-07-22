@@ -87,7 +87,6 @@
                         </el-pagination>
                     </div>
                 </el-dialog>
-
                 <br>
                 <br>
                 <el-button 
@@ -147,7 +146,7 @@
                     label="Username"
                     width="180">
                     <template slot-scope="scope">
-                        <router-link :to="'/'+scope.row.username">{{ scope.row.username }}</router-link>
+                        <router-link :to="'favor/'+scope.row.username">{{ scope.row.username }}</router-link>
                     </template>
                     </el-table-column>
 
@@ -155,7 +154,7 @@
                     label="Email"
                     width="200">
                     <template slot-scope="scope">
-                        <router-link :to="'/'+scope.row.email">{{ scope.row.email }}</router-link>
+                        <router-link :to="'favor/'+scope.row.username">{{ scope.row.email }}</router-link>
                     </template>
                     </el-table-column>
 

@@ -8,6 +8,7 @@ import Search from '@/pages/Search'
 import Upload from '@/pages/Upload'
 import Home from '@/pages/Home'
 import Message from '@/pages/Message'
+import Favor from '@/pages/Favor'
 
 Vue.use(Router)
 
@@ -61,6 +62,11 @@ export default new Router({
       meta: {
         requireAuth: true
       }
-    }
+    },
+    {
+      path: '/favor/:username',
+      name: 'Favor',
+      component: Favor,
+    },
   ]
 })

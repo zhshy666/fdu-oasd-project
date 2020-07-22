@@ -41,8 +41,8 @@ public class AuthService {
     }
 
     public String register(String username, String password, String email){
-        List<TravelUser> userList = travelUserRepo.findUserByUsername(username);
-        if (userList.size()!=0){
+        TravelUser user = travelUserRepo.findUserByUsername(username);
+        if (user!=null){
             return "username";
         }
         boolean isEmailExists = travelUserRepo.findUserByEmail(email);
@@ -74,4 +74,9 @@ public class AuthService {
     public TravelUser findUserById(int id) {
         return travelUserRepo.findUserById(id);
     }
+
+    public TravelUser findUserByUsername(String username) {
+        return travelUserRepo.findUserByUsername(username);
+    }
+
 }

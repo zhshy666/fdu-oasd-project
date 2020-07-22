@@ -1,9 +1,11 @@
 package com.oasd.backend.controller;
 
+import com.oasd.backend.controller.request.GetFavorsRequest;
 import com.oasd.backend.controller.request.ImageDetailRequest;
 import com.oasd.backend.domain.Favor;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.domain.TravelUser;
+import com.oasd.backend.service.AuthService;
 import com.oasd.backend.service.FavorService;
 import com.oasd.backend.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,13 @@ import java.util.List;
 public class FavorController {
     private FavorService favorService;
     private ImageService imageService;
+    private AuthService authService;
 
     @Autowired
-    public FavorController(FavorService favorService, ImageService imageService) {
+    public FavorController(FavorService favorService, ImageService imageService, AuthService authService) {
         this.favorService = favorService;
         this.imageService = imageService;
+        this.authService = authService;
     }
 
     @PostMapping("/removeFavor")
@@ -43,9 +47,11 @@ public class FavorController {
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping("/getFavors")
-    public ResponseEntity<?> getFavors(){
-        TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @PostMapping("/getFavors")
+    public ResponseEntity<?> getFavors(@RequestBody GetFavorsRequest request){
+        // friends or himself
+
+        TravelUser user = authService.findUserByUsername(request.getUsername());
         // get image id
         List<Integer> ids = favorService.getFavors(user.getId());
         List<TravelImage> imageList = imageService.getImagesByIds(ids);
