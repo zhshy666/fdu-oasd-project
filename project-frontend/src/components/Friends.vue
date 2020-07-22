@@ -6,7 +6,8 @@
                 <el-button 
                 @click="formVisible = true"
                 size="medium" 
-                plain
+                type="primary"
+                style="width: 80%"
                 icon="el-icon-plus">
                     Add
                 </el-button>
@@ -86,6 +87,55 @@
                         </el-pagination>
                     </div>
                 </el-dialog>
+
+                <br>
+                <br>
+                <el-button 
+                @click="form2Visible = true"
+                size="medium" 
+                type="primary"
+                style="width: 80%"
+                icon="el-icon-info">
+                    Status
+                </el-button>
+                <el-dialog width="600px" center title="Check status" :visible.sync="form2Visible">
+                    <el-table
+                        height="300px"
+                        ref="messageTable"
+                        :data="messages.slice((currentMessagePage-1)*5,currentMessagePage*5)"
+                        tooltip-effect="dark"
+                        :row-key="getRowKeys"
+                        style="width: 100%"
+                        >
+                        <el-table-column
+                        prop="username"
+                        label="Username"
+                        width="180">
+                        </el-table-column>
+                        <el-table-column
+                        prop="sentTime"
+                        label="Sent time"
+                        width="200">
+                        </el-table-column>
+                        <el-table-column
+                        label="Status">
+                        <template slot-scope="scope">
+                            <el-tag type="info" v-if="scope.row.status === -1">Unread</el-tag>
+                            <el-tag type="danger" v-if="scope.row.status === 2">Reject</el-tag>
+                            <el-tag type="success" v-if="scope.row.status === 1">Accept</el-tag>
+                        </template>
+                        </el-table-column>
+                    </el-table>
+                    <div v-if="hasMessage" class="block" style="text-align: center">
+                        <el-pagination
+                            layout="prev, pager, next"
+                            @current-change="handleCurrentMessageChange"
+                            :current-page="currentMessagePage"
+                            :page-size="5"
+                            :total="totalMessage">
+                        </el-pagination>
+                    </div>
+                </el-dialog>
             </el-col>
 
             <el-col :span="13" v-if="hasFriend" :offset="2">
@@ -155,10 +205,14 @@ export default {
             sendUsers: [],
             selections:[],
             friends: [],
+            messages: [],
+            hasMessage: false,
             total: '',
             totalUser: '',
+            totalMessage: '',
             currentPage: 1,
             currentUserPage: 1,
+            currentMessagePage: 1,
             form: {
                 input:''
             },
@@ -169,11 +223,16 @@ export default {
             .get("/getFriends", {})
             .then(resp => {
                 if(resp.status === 200){
-                    this.friends = resp.data;
+                    this.friends = resp.data.friends;
+                    this.messages = resp.data.messages;
+                    this.total = this.friends.length;
+                    this.totalMessage = this.messages.length;
                     if(this.friends.length > 0){
                         this.hasFriend = true;
                         this.noFriend = false;
-                        this.total = this.friends.length;
+                    }
+                    if(this.totalMessage > 0){
+                        this.hasMessage = true;
                     }
                 }
                 else {
@@ -241,6 +300,9 @@ export default {
         },
         handleCurrentUserChange(val){
             this.currentUserPage = val;
+        },
+        handleCurrentMessageChange(val){
+            this.currentMessagePage = val;
         },
         getRowKeys(row){
             return row.id;

@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.security.MessageDigest;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class FriendController {
@@ -67,20 +63,23 @@ public class FriendController {
         int[] userIds = request.getSendUsers();
         String content = user.getUsername() + " wants to be a friend of yours.";
         List<Integer> remove = new LinkedList<>();
+
         // remove if duplicated
-        for (int userToSent : userIds){
-            List<Message> messages = messageService.findMessage(userToSent);
+        for (int userId : userIds){
+            List<Message> messages = messageService.findMessage(userId);
             for(Message message : messages){
                 if (message.getContent().equals(content)){
-                    remove.add(userToSent);
+                    remove.add(userId);
                 }
             }
         }
 
         // send message
-        for (int userToSent : userIds){
-            if(!remove.contains(userToSent))
+        for (int userId : userIds){
+            if(!remove.contains(userId)) {
+                TravelUser userToSent = authService.findUserById(userId);
                 messageService.sendAddFriendRequest(user, userToSent);
+            }
         }
         return ResponseEntity.ok("success");
     }
@@ -89,10 +88,15 @@ public class FriendController {
     public ResponseEntity<?> getFriends(){
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<Integer> friendsId = friendService.findFriends(user.getId());
+        Map<String, Object> map = new HashMap<>();
         List<TravelUser> userList = new LinkedList<>();
         for(int id : friendsId){
             userList.add(authService.findUserById(id));
         }
-        return ResponseEntity.ok(userList);
+        map.put("friends", userList);
+        // find messages
+        List<Message> messages = messageService.findMessageSent(user.getId());
+        map.put("messages", messages);
+        return ResponseEntity.ok(map);
     }
 }

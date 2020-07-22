@@ -144,7 +144,8 @@ export default {
         reject(message){
             this.$axios
                 .post("/rejectMessage",{
-                    messageId: message.messageId
+                    messageId: message.messageId,
+                    to: message.fromId
                 })
                 .then(resp => {
                     if(resp.status === 200){

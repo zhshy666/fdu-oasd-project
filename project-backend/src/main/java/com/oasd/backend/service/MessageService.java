@@ -22,17 +22,18 @@ public class MessageService {
         this.travelUserRepo = travelUserRepo;
     }
 
-    public void sendAddFriendRequest(TravelUser user, int userToSent) {
+    public void sendAddFriendRequest(TravelUser user, TravelUser userToSent) {
         Message message = new Message();
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         String sentTime = formatter.format(date);
-        message.setUserId(userToSent);
+        message.setUserId(userToSent.getId());
         message.setTitle("Friend Request");
         message.setContent(user.getUsername() + " wants to be a friend of yours.");
         message.setStatus(-1);
         message.setFromId(user.getId());
         message.setSentTime(sentTime);
+        message.setUsername(userToSent.getUsername());
         messageRepo.storeMessage(message);
     }
 
@@ -44,17 +45,18 @@ public class MessageService {
         messageRepo.acceptOrRejectMessage(i, messageId);
     }
 
-    public void sendResponse(String msg, TravelUser user, int to) {
+    public void sendResponse(String msg, TravelUser user, TravelUser userToSent) {
         Message message = new Message();
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         String sentTime = formatter.format(date);
-        message.setUserId(to);
+        message.setUserId(userToSent.getId());
         message.setTitle("Friend Response");
         message.setContent(user.getUsername() + " has " + msg + "ed your friend request.");
         message.setStatus(-1);
         message.setFromId(user.getId());
         message.setSentTime(sentTime);
+        message.setUsername(userToSent.getUsername());
         messageRepo.storeMessage(message);
     }
 
@@ -64,5 +66,9 @@ public class MessageService {
 
     public List<Message> findMessageUnread(int id) {
         return messageRepo.findMessageUnread(id);
+    }
+
+    public List<Message> findMessageSent(int id){
+        return messageRepo.findMessageSent(id);
     }
 }

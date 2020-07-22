@@ -17,6 +17,7 @@ public class Message {
     private String content;
     private String sentTime;
     private int fromId;
+    private String username;
 
     public Message() {
     }
@@ -75,5 +76,13 @@ public class Message {
 
     public void setFromId(int fromId) {
         this.fromId = fromId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

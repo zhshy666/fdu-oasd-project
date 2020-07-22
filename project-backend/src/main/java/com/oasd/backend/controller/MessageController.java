@@ -4,6 +4,7 @@ import com.oasd.backend.controller.request.MarkAsReadRequest;
 import com.oasd.backend.controller.request.UpdateMessageRequest;
 import com.oasd.backend.domain.Message;
 import com.oasd.backend.domain.TravelUser;
+import com.oasd.backend.service.AuthService;
 import com.oasd.backend.service.FriendService;
 import com.oasd.backend.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ import java.util.List;
 public class MessageController {
     private MessageService messageService;
     private FriendService friendService;
+    private AuthService authService;
 
     @Autowired
-    public MessageController(MessageService messageService, FriendService friendService) {
+    public MessageController(MessageService messageService, FriendService friendService, AuthService authService) {
         this.messageService = messageService;
         this.friendService = friendService;
+        this.authService = authService;
     }
 
     @GetMapping("/getMessages")
@@ -53,7 +56,8 @@ public class MessageController {
         int messageId = request.getMessageId();
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         messageService.acceptOrRejectMessage(1, messageId);
-        messageService.sendResponse("accept", user, request.getTo());
+        TravelUser userToSent = authService.findUserById(request.getTo());
+        messageService.sendResponse("accept", user, userToSent);
         // update friends list
         friendService.addFriends(request.getTo(), user.getId());
         return ResponseEntity.ok("success");
@@ -64,7 +68,8 @@ public class MessageController {
         int messageId = request.getMessageId();
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         messageService.acceptOrRejectMessage(2, messageId);
-        messageService.sendResponse("reject", user, request.getTo());
+        TravelUser userToSent = authService.findUserById(request.getTo());
+        messageService.sendResponse("reject", user, userToSent);
         return ResponseEntity.ok("success");
     }
 

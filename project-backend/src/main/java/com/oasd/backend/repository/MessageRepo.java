@@ -28,14 +28,15 @@ public class MessageRepo {
                 message.setTitle(resultSet.getString("title"));
                 message.setContent(resultSet.getString("content"));
                 message.setSentTime(resultSet.getString("sentTime"));
+                message.setUsername(resultSet.getString("username"));
                 return message;
             }
         });
     }
 
     public void storeMessage(Message message) {
-        String sql = "insert into messages values (null, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, message.getUserId(), message.getTitle(), message.getContent(), message.getStatus(),message.getSentTime(), message.getFromId());
+        String sql = "insert into messages values (null, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, message.getUserId(), message.getTitle(), message.getContent(), message.getStatus(),message.getSentTime(), message.getFromId(), message.getUsername());
     }
 
     public List<Message> findMessageOfUser(int to) {
@@ -61,6 +62,11 @@ public class MessageRepo {
                 "and status = -1 union "+
                 "select * from messages where userId = '" + id + "' and title = 'Friend Request' "+
                 "and status = -1 ";
+        return findMessages(sql);
+    }
+
+    public List<Message> findMessageSent(int id) {
+        String sql = "select * from messages where title = 'Friend Request' and fromId = '" + id +"' order by sentTime desc";
         return findMessages(sql);
     }
 }
