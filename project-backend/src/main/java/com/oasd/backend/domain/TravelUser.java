@@ -24,6 +24,7 @@ public class TravelUser implements UserDetails {
     private String state;
     private String dateJoined;
     private String dateLastModified;
+    private int isPublic;
 
 
     public TravelUser() {
@@ -120,6 +121,14 @@ public class TravelUser implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(int isPublic) {
+        this.isPublic = isPublic;
     }
 
     @Override

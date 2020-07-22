@@ -33,6 +33,7 @@ public class TravelUserRepo {
                 user.setState(resultSet.getString("State"));
                 user.setDateJoined(resultSet.getString("DateJoined"));
                 user.setDateLastModified(resultSet.getString("DateLastModified"));
+                user.setIsPublic(resultSet.getInt("isPublic"));
                 return user;
             }
         });
@@ -96,5 +97,10 @@ public class TravelUserRepo {
         String sql = "select * from traveluser where UID='" + id + "'";
         List<TravelUser> userList = findUsers(sql);
         return userList.isEmpty()? null : userList.get(0);
+    }
+
+    public void updateStatus(int id, int status) {
+        String sql = "update traveluser set isPublic = ? where UID = ?";
+        jdbcTemplate.update(sql, status, id);
     }
 }

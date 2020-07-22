@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class FavorController {
@@ -49,12 +51,14 @@ public class FavorController {
 
     @PostMapping("/getFavors")
     public ResponseEntity<?> getFavors(@RequestBody GetFavorsRequest request){
-        // friends or himself
-
         TravelUser user = authService.findUserByUsername(request.getUsername());
+        Map<String, Object> map = new HashMap<>();
         // get image id
         List<Integer> ids = favorService.getFavors(user.getId());
         List<TravelImage> imageList = imageService.getImagesByIds(ids);
-        return ResponseEntity.ok(imageList);
+        map.put("images", imageList);
+        int isPublic = user.getIsPublic();
+        map.put("isPublic", isPublic);
+        return ResponseEntity.ok(map);
     }
 }

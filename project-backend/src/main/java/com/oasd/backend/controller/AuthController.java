@@ -1,5 +1,6 @@
 package com.oasd.backend.controller;
 
+import com.oasd.backend.controller.request.ChangeVisibilityRequest;
 import com.oasd.backend.controller.request.LoginRequest;
 import com.oasd.backend.controller.request.RegisterRequest;
 import com.oasd.backend.domain.TokenProcessor;
@@ -9,6 +10,7 @@ import com.oasd.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -50,5 +52,16 @@ public class AuthController {
         t.setUsername(request.getUsername());
         System.out.println("Login success.");
         return ResponseEntity.ok(t);
+    }
+
+    @PostMapping("/changeStatusOfFavors")
+    public ResponseEntity<?> changeStatusOfFavors(@RequestBody ChangeVisibilityRequest request){
+        TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int status = 1;
+        if (request.getIsPublic().equals("private")){
+            status = 0;
+        }
+        authService.changeStatus(user.getId(), status);
+        return ResponseEntity.ok("success");
     }
 }

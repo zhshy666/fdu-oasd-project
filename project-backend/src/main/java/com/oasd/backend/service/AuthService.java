@@ -79,4 +79,7 @@ public class AuthService {
         return travelUserRepo.findUserByUsername(username);
     }
 
+    public void changeStatus(int id, int status) {
+        travelUserRepo.updateStatus(id, status);
+    }
 }

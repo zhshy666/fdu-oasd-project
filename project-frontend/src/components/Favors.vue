@@ -1,7 +1,22 @@
 <template>
     <el-container>
         <el-main>
-            <el-col :span="24"  v-if="hasFavors">
+            <el-col :span="2" :offset="22" v-if="hasAuthority">
+                <el-tooltip 
+                effect="dark" 
+                :content="'Current status: ' + value" 
+                placement="top">
+                    <el-switch
+                    active-value="public"
+                    inactive-value="private"
+                    v-model="value"
+                    active-color="#13ce66"
+                    inactive-color="gray"
+                    @change="changeStatus">
+                    </el-switch>
+                </el-tooltip>
+            </el-col>
+            <el-col :span="24"  v-if="(hasFavors && hasAuthority) || (hasFavors && !hasAuthority && this.value === 'public')">
                 <div class=" layui-row">
                     <div class=" layui-col-md3 card layui-col-md-offset3" 
                     v-for="(image,i) in images.slice((currentPage-1)*6,currentPage*6)" :key="i">
@@ -53,8 +68,11 @@
             <el-col :span="24" v-if="!hasFavors && hasAuthority">
                 No favors. Click <router-link :to="'/'">here</router-link> to view images uploaded by other users.
             </el-col>
-            <el-col :span="24" v-if="!hasFavors && !hasAuthority">
+            <el-col :span="24" v-if="!hasFavors && !hasAuthority && this.value === 'public'">
                 No favors.
+            </el-col>
+            <el-col :span="24" v-if="!hasAuthority && this.value === 'private'">
+                The user has made his favors private. You don't have the authority to view.
             </el-col>
         </el-main>
     </el-container>
@@ -74,10 +92,10 @@ export default {
             currentPage: 1,
             username: '',
             hasAuthority: false,
+            value: 'private'
         }
     },
     created() {
-        console.log(this.$route.params.username);
         if(this.$route.params.username){
             this.username = this.$route.params.username;
         }
@@ -91,7 +109,13 @@ export default {
         })
         .then(resp => {
             if (resp.status === 200) {
-                this.images = resp.data;
+                this.images = resp.data.images;
+                if(resp.data.isPublic === 0){
+                    this.value = 'private';
+                }else{
+                    this.value = 'public';
+                }
+                console.log(this.value);
                 this.total = this.images.length;
                 if(this.images.length > 0){
                     this.hasFavors = true;
@@ -109,8 +133,31 @@ export default {
         handleCurrentChange(val){
           this.currentPage = val;
         },
+        changeStatus(){
+                this.$axios
+                    .post("/changeStatusOfFavors", {
+                        isPublic: this.value
+                    })
+                    .then(resp => {
+                        if(resp.status === 200){
+                            this.reload();
+                            this.$notify({
+                                type:'success',
+                                dangerouslyUseHTMLString: true,
+                                title: 'Change status success',
+                                message: '<strong style="color:teal">Change status successfully!</strong>'
+                            });
+                        }else{
+                            this.errorNotification();
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.errorNotification();
+                    });
+        },
         removeFavor(image){
-        this.$confirm("Are you sure to remove this image from your favors?", "Remove confirm", {
+            this.$confirm("Are you sure to remove this image from your favors?", "Remove confirm", {
                 confirmButtonText: "Yes",
                 cancelButtonText: "No"
             })
@@ -135,10 +182,10 @@ export default {
         },
         errorNotification(){
             this.$notify({
-            type:'error',
-            dangerouslyUseHTMLString: true,
-            title: 'Request error',
-            message: '<strong style="color:teal">Requset error, please try again.</strong>'
+                type:'error',
+                dangerouslyUseHTMLString: true,
+                title: 'Request error',
+                message: '<strong style="color:teal">Requset error, please try again.</strong>'
             });
         },
     }
@@ -178,5 +225,9 @@ export default {
 }
 img {
     border-radius: 5px 5px 0 0;
+}
+.tip{
+    font-style: normal;
+    font-size: small;
 }
 </style>
