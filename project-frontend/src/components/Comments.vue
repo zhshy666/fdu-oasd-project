@@ -7,7 +7,7 @@
                 <br>
                 <div v-if="!hasComment">No comments. Write down your comments now!</div>
                 <div v-if="hasComment" class=" layui-row">
-                    <div class=" layui-col-md7" v-for="(comment,i) in comments.slice((currentPage-1)*10,currentPage*10)" :key="i">
+                    <div class=" layui-col-md7" v-for="(comment,i) in comments.slice((currentPage-1)*6,currentPage*6)" :key="i">
                         <el-card class="box-card" shadow="hover">
                             <div slot="header" style="text-align: left">
                                 <span style="text-align: left" class="el-icon-user">&nbsp;&nbsp;{{comment.username}}</span>
@@ -42,7 +42,7 @@
                         layout="prev, pager, next"
                         @current-change="handleCurrentChange"
                         :current-page="currentPage"
-                        :page-size="10"
+                        :page-size="6"
                         :total="total">
                     </el-pagination>
                     <br>
@@ -54,7 +54,7 @@
                 <br>
                 <div v-if="!hasComment">No comments. Write down your comments now!</div>
                 <div v-if="hasComment" class=" layui-row">
-                    <div class=" layui-col-md7" v-for="(comment,i) in commentsByTime.slice((currentPage2-1)*10,currentPage2*10)" :key="i">
+                    <div class=" layui-col-md7" v-for="(comment,i) in commentsByTime.slice((currentPage2-1)*6,currentPage2*6)" :key="i">
                         <el-card class="box-card" shadow="hover">
                             <div slot="header" style="text-align: left">
                                 <span style="text-align: left" class="el-icon-user">&nbsp;&nbsp;{{comment.username}}</span>
@@ -89,7 +89,7 @@
                         layout="prev, pager, next"
                         @current-change="handleCurrentChange2"
                         :current-page="currentPage2"
-                        :page-size="10"
+                        :page-size="6"
                         :total="total">
                     </el-pagination>
                     <br>
