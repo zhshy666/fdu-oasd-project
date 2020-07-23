@@ -34,7 +34,7 @@ public class CommentRepo {
     }
 
     public List<Comment> findCommentsByImageId(int imageId) {
-        String sql = "select * from comment where imageId = '" + imageId +"'";
+        String sql = "select * from comment where imageId = '" + imageId +"' order by heat desc";
         return findComments(sql);
     }
 
