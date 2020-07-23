@@ -66,15 +66,19 @@
         </el-col>
       </el-main>
     </el-container>
+    <post></post>
+    <comments></comments>
   </div>
 </template>
 
 <script>
 import navbar from "../components/Navbar"
 import footerbar from "../components/footer"
+import post from "../components/PostComment"
+import comments from "../components/Comments"
 
 export default {
-    components: {navbar, footerbar},
+    components: {navbar, footerbar, post, comments},
     inject: ["reload"],
     name: "ImageDetail",
     data(){
@@ -112,11 +116,12 @@ export default {
               // not log in
               if(!this.$store.state.token){
                 this.isNotFavor = false;
+                this.isFavor = false;
               }
-              if(resp.data.favor === true){
+              else if(resp.data.favor === true){
                   this.isFavor = true;
                   this.isNotFavor = false;
-                }
+              }
               if(this.$store.state.token && this.$store.state.cur_user === this.image.username){
                 this.isAuthor = true;
               }

@@ -1,15 +1,12 @@
 package com.oasd.backend.service;
 
 import com.oasd.backend.domain.City;
+import com.oasd.backend.domain.Comment;
 import com.oasd.backend.domain.TravelImage;
-import com.oasd.backend.repository.CityRepo;
-import com.oasd.backend.repository.CountryRepo;
-import com.oasd.backend.repository.FavorRepo;
-import com.oasd.backend.repository.TravelImageRepo;
+import com.oasd.backend.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -26,7 +23,11 @@ public class ImageService {
     private CityRepo cityRepo;
     private FavorRepo favorRepo;
 
-    public ImageService(TravelImageRepo travelImageRepo, CountryRepo countryRepo, CityRepo cityRepo, FavorRepo favorRepo) {
+    public ImageService(
+            TravelImageRepo travelImageRepo,
+            CountryRepo countryRepo,
+            CityRepo cityRepo,
+            FavorRepo favorRepo) {
         this.travelImageRepo = travelImageRepo;
         this.countryRepo = countryRepo;
         this.cityRepo = cityRepo;
@@ -161,4 +162,5 @@ public class ImageService {
         }
         return imageList;
     }
+
 }

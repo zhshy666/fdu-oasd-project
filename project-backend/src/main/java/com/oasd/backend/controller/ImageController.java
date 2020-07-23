@@ -3,6 +3,7 @@ package com.oasd.backend.controller;
 import com.oasd.backend.controller.request.DeleteImgRequest;
 import com.oasd.backend.controller.request.ImageDetailRequest;
 import com.oasd.backend.controller.request.SearchImagesRequest;
+import com.oasd.backend.domain.Comment;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.domain.TravelUser;
 import com.oasd.backend.service.*;
@@ -26,14 +27,22 @@ public class ImageController {
     private CityService cityService;
     private FavorService favorService;
     private HistoryService historyService;
+    private CommentService commentService;
 
     @Autowired
-    public ImageController(ImageService imageService, CountryService countryService, CityService cityService, FavorService favorService, HistoryService historyService) {
+    public ImageController(
+            ImageService imageService,
+            CountryService countryService,
+            CityService cityService,
+            FavorService favorService,
+            HistoryService historyService,
+            CommentService commentService) {
         this.imageService = imageService;
         this.countryService = countryService;
         this.cityService = cityService;
         this.favorService = favorService;
         this.historyService = historyService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/getPopularImages")
@@ -63,6 +72,7 @@ public class ImageController {
         String city = cityService.getCity(image.getCityCode());
         map.put("country", country);
         map.put("city", city);
+        // need login
         try {
             TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             // is favor or not
