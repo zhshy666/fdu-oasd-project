@@ -16,6 +16,7 @@ public class Comment {
     private String content;
     private String time;
     private int heat;
+    private boolean isFavor;
 
     public Comment() {
     }
@@ -66,5 +67,13 @@ public class Comment {
 
     public void setHeat(int heat) {
         this.heat = heat;
+    }
+
+    public boolean isFavor() {
+        return isFavor;
+    }
+
+    public void setFavor(boolean favor) {
+        isFavor = favor;
     }
 }

@@ -1,6 +1,7 @@
 package com.oasd.backend.service;
 
 import com.oasd.backend.domain.Comment;
+import com.oasd.backend.repository.CommentFavorRepo;
 import com.oasd.backend.repository.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ import java.util.List;
 @Service
 public class CommentService {
     private CommentRepo commentRepo;
+    private CommentFavorRepo commentFavorRepo;
 
     @Autowired
-    public CommentService(CommentRepo commentRepo) {
+    public CommentService(CommentRepo commentRepo, CommentFavorRepo commentFavorRepo) {
         this.commentRepo = commentRepo;
+        this.commentFavorRepo = commentFavorRepo;
     }
 
     public List<Comment> getComments(int imageId) {
@@ -33,5 +36,21 @@ public class CommentService {
         comment.setHeat(0);
         comment.setContent(content);
         commentRepo.insertComment(comment);
+    }
+
+    public boolean isFavor(int userId, int commentId) {
+        return commentFavorRepo.findCommentFavor(userId, commentId);
+    }
+
+    public String removeFavor(int userId, int commentId) {
+        return commentFavorRepo.deleteFavorByUserIdAndCommentId(userId, commentId);
+    }
+
+    public void modifyHeat(int commentId, int i) {
+        commentRepo.updateHeatByCommentId(commentId, i);
+    }
+
+    public String addFavor(int userId, int commentId) {
+        return commentFavorRepo.addFavorByUserIdAndCommentId(userId, commentId);
     }
 }

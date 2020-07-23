@@ -18,12 +18,16 @@
                             <br>
                             <div v-if="comment.heat <= 999" style="text-align: left; color: gray; font-size: small">
                                 {{comment.time}}&nbsp;&nbsp;&nbsp;&nbsp;
-                                <el-link :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-if="!isLogin" disabled :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-else-if="comment.favor" :underline="false" class="layui-icon layui-icon-praise" style="color: red" v-on:click="cancelLike(comment)"></el-link>
+                                <el-link v-else :underline="false" class="layui-icon layui-icon-praise" v-on:click="addLike(comment)"></el-link>
                                 &nbsp;{{comment.heat}}
                             </div>
                             <div v-else style="text-align: left; color: gray; font-size: small">
                                 {{comment.time}}&nbsp;&nbsp;&nbsp;&nbsp;
-                                <el-link :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-if="!isLogin" disabled :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-else-if="comment.favor" :underline="false" class="layui-icon layui-icon-praise" style="color: red" v-on:click="cancelLike(comment)"></el-link>
+                                <el-link v-else :underline="false" class="layui-icon layui-icon-praise" v-on:click="addLike(comment)"></el-link>
                                 &nbsp;999+
                             </div>
                         </el-card>
@@ -61,12 +65,16 @@
                             <br>
                             <div v-if="comment.heat <= 999" style="text-align: left; color: gray; font-size: small">
                                 {{comment.time}}&nbsp;&nbsp;&nbsp;&nbsp;
-                                <el-link :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-if="!isLogin" disabled :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-else-if="comment.favor" :underline="false" class="layui-icon layui-icon-praise" style="color: red" v-on:click="cancelLike(comment)"></el-link>
+                                <el-link v-else :underline="false" class="layui-icon layui-icon-praise" v-on:click="addLike(comment)"></el-link>
                                 &nbsp;{{comment.heat}}
                             </div>
                             <div v-else style="text-align: left; color: gray; font-size: small">
                                 {{comment.time}}&nbsp;&nbsp;&nbsp;&nbsp;
-                                <el-link :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-if="!isLogin" disabled :underline="false" class="layui-icon layui-icon-praise"></el-link>
+                                <el-link v-else-if="comment.favor" :underline="false" class="layui-icon layui-icon-praise" style="color: red" v-on:click="cancelLike(comment)"></el-link>
+                                <el-link v-else :underline="false" class="layui-icon layui-icon-praise" v-on:click="addLike(comment)"></el-link>
                                 &nbsp;999+
                             </div>
                         </el-card>
@@ -116,7 +124,8 @@ export default {
         }
         this.$axios
             .post("/getComments", {
-                imageId: this.$route.params.imageId
+                imageId: this.$route.params.imageId,
+                login: this.isLogin,
             })
             .then(resp => {
                 if(resp.status === 200){
@@ -160,7 +169,42 @@ export default {
                 return ((x < y) ? 1 : (x > y) ? -1 : 0)
             })
         },
-
+        cancelLike(comment){
+              this.$axios
+                .post("/cancelLike",{
+                  commentId: comment.commentId,
+                })
+                .then(resp => {
+                  if(resp.status === 200){
+                      this.reload();
+                  }
+                  else{
+                      this.errorNotification();
+                  }
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorNotification();
+                });
+        },
+        addLike(comment){
+            this.$axios
+                .post("/addLike",{
+                  commentId: comment.commentId,
+                })
+                .then(resp => {
+                  if(resp.status === 200){
+                      this.reload();
+                  }
+                  else{
+                      this.errorNotification();
+                  }
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.errorNotification();
+                });
+        },
         errorNotification(){
             this.$notify({
             type:'error',

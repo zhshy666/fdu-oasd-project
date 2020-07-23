@@ -99,5 +99,4 @@ public class TravelImageRepo {
         String sql2 = "update travelimage set Heat = ? where ImageID = ?";
         jdbcTemplate.update(sql2, heat, imageId);
     }
-
 }
