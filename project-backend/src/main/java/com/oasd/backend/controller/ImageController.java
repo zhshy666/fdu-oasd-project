@@ -52,11 +52,10 @@ public class ImageController {
     public ResponseEntity<?> imageDetail(@RequestBody ImageDetailRequest request){
         Map<String, Object> map = new HashMap<>();
         TravelImage image = imageService.getImageDetail(request.getImageId());
-        TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (image == null) {
             return new ResponseEntity<>("The image does not exist.", HttpStatus.NOT_FOUND);
         }
-        if (image.getDescription() == null || image.getDescription().equals("")){
+        if (image.getDescription() == null || image.getDescription().equals("")) {
             image.setDescription("The author does not fill the description");
         }
         map.put("image", image);
@@ -64,11 +63,15 @@ public class ImageController {
         String city = cityService.getCity(image.getCityCode());
         map.put("country", country);
         map.put("city", city);
-        // is favor or not
-        boolean isFavor = favorService.isFavor(request.getImageId(), user.getId());
-        map.put("favor", isFavor);
-        // store history
-        historyService.storeHistory(request.getImageId());
+        try {
+            TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            // is favor or not
+            boolean isFavor = favorService.isFavor(request.getImageId(), user.getId());
+            map.put("favor", isFavor);
+            // store history
+            historyService.storeHistory(request.getImageId());
+        }catch (ClassCastException ignored){ }
+
         return ResponseEntity.ok(map);
     }
 

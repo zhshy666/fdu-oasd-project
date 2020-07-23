@@ -3,7 +3,7 @@
     <navbar></navbar>
     <el-container>
       <el-main>
-        <el-col :span="9" :offset="0">
+        <el-col :span="9" :offset="titleOffset">
             <span class="mySpan">{{image.title}} </span> &nbsp;&nbsp;&nbsp;
             <span style="font-size: small">  @ {{image.username}}</span>
         </el-col>
@@ -89,6 +89,7 @@ export default {
           imgInfo: {},
           styleModel: {},
           offset: 1,
+          titleOffset: 0,
           span: 12
         };
     },
@@ -104,6 +105,9 @@ export default {
               this.city = resp.data.city;
               this.path = "/static/travel-images/medium/" + resp.data.image.path;
               this.getImgInfo();
+              if(this.image.title.length > 5){
+                this.titleOffset = 1;
+              }
 
               // not log in
               if(!this.$store.state.token){

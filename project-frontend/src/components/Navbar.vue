@@ -34,8 +34,8 @@
             </el-menu-item>           
             <el-menu-item index="/upload" class="myItem">Upload</el-menu-item>
             <el-menu-item index="/message" class="myItem">
-              <el-badge :is-dot="hasNewMessage" class="item"></el-badge>&nbsp;&nbsp;
-                Message<i v-if="hasNewMessage">&nbsp;&nbsp;</i>
+              <el-badge :is-dot="hasNewMessage" class="item"></el-badge>&nbsp;
+                Message<i v-if="hasNewMessage">&nbsp;</i>
             </el-menu-item>
             <el-menu-item index="/" @click="logout" class="myItem"> Logout</el-menu-item>
         </el-submenu>
@@ -55,7 +55,7 @@
         input: '',
         beforeLogin: true,
         username: this.$store.state.cur_user,
-        hasNewMessage: true
+        hasNewMessage: false
       };
     },
     methods: {
@@ -102,7 +102,7 @@
 <style scoped>
 .myLogo{
     color: #009688;
-    font-size: larger;
+    font-size: x-large;
     margin-left: 20px;
 }
 .myMenu{
