@@ -105,7 +105,7 @@
                         tooltip-effect="dark"
                         :row-key="getRowKeys"
                         style="width: 100%"
-                        >
+                    >
                         <el-table-column
                         prop="username"
                         label="Username"
@@ -137,7 +137,7 @@
                 </el-dialog>
             </el-col>
 
-            <el-col :span="13" v-if="hasFriend" :offset="2">
+            <el-col :span="14" v-if="hasFriend" :offset="2">
                 <el-table
                     :data="friends.slice((currentPage-1)*10,currentPage*10)"
                     stripe
@@ -162,6 +162,10 @@
                     prop="dateJoined"
                     label="Date joined"
                     width="170">
+                    </el-table-column>
+
+                    <el-table-column>
+                        <el-link :underline="false"><i class="el-icon-chat-dot-round"></i></el-link>
                     </el-table-column>
                 </el-table>
 

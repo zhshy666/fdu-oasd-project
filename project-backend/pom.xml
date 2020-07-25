@@ -86,7 +86,7 @@
             <version>1.9</version>
         </dependency>
 
-        <!-- From file to multipartfile -->
+        <!-- From file to multi part file -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -103,6 +103,19 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.9</version>
         </dependency>
+
+        <!--websocket依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- Gson依赖 -->
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

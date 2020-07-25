@@ -68,7 +68,7 @@ public class FriendController {
         for (int userId : userIds){
             List<Message> messages = messageService.findMessage(userId);
             for(Message message : messages){
-                if (message.getContent().equals(content)){
+                if (message.getContent().equals(content) && message.getStatus()!=2){
                     remove.add(userId);
                 }
             }
