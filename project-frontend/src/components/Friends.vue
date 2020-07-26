@@ -176,6 +176,7 @@
                             >
                                 <div style="height:240px;overflow-y:auto; margin-bottom:10%">
                                     <div v-for="(value,key,index) in messageList" :key="index">
+                                        <div v-if="isSelf(value)">
                                         <i v-if="value.name==name" class="chatNameR">me</i>
                                         <br v-if="value.name==name">
                                         <el-tag v-if="value.name==name" type="success" style="float:right; margin-right: 10%;">{{value.msg}}</el-tag>
@@ -185,6 +186,7 @@
                                         <br v-if="value.name!=name">
                                         <el-tag v-if="value.name!=name" style="float:left; margin-left: 5%">{{value.msg}}</el-tag>
                                         <br/>
+                                        </div>
                                     </div>
                                 </div>
                                 <el-row>
@@ -378,9 +380,6 @@ export default {
         getRowKeys(row){
             return row.id;
         },
-        title(scope){
-            return scope.row.username;
-        },
         chat(scope){
             this.form3Visible = true;
             this.connectWebSocket();
@@ -398,20 +397,18 @@ export default {
             }
 
             this.websocket.onerror = function() {
-                console.log("error");
             };
             
             //success
             this.websocket.onopen = function(event) {
-                console.log("connect success");
             };
 
             //message
+            var that = this;
             this.websocket.onmessage = function(event) {
-                console.log(event.data);
                 var object = eval("(" + event.data + ")");
                 if(object.false){
-                    this.$message.error('Sorry, the user is not online now. Please send messages later');
+                    that.$message.error('Sorry, the user is not online now. Please send messages later');
                 }
                 else{
                     if (object.type == 0) {
@@ -419,19 +416,17 @@ export default {
                     }
                     if (object.type == 1) {
                         console.log("message");
-                        this.messageList.push(object);
+                        that.messageList.push(object);
                     }
                 }
             };
 
             this.websocket.onclose = function() {
-                console.log("close");
             };
 
             window.onbeforeunload = function() {
                 this.websocket.close();
             };
-        
         },
         sendMessage: function() {
             var socketMsg = { msg: this.chatForm.messageValue, toUser: this.aisle };
@@ -444,6 +439,10 @@ export default {
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+        },
+        isSelf(value){
+            return (value.name != this.name && this.aisle == value.name)
+            ||(value.name == this.name && this.aisle == value.to);
         },
         errorNotification(){
             this.$message.error('Requset error, please try again');

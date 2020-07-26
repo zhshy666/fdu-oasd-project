@@ -84,10 +84,6 @@ export default {
             })
     },
     methods: {
-        goto(row){
-            console.log(row);
-            // this.$router.replace({ path: "/imageDetail/"+image.imageId });
-        },
         errorNotification(){
             this.$message.error('Requset error, please try again');
         },

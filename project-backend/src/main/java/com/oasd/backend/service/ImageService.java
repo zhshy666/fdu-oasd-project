@@ -2,6 +2,7 @@ package com.oasd.backend.service;
 
 import com.oasd.backend.domain.City;
 import com.oasd.backend.domain.Comment;
+import com.oasd.backend.domain.History;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.repository.*;
 import org.springframework.stereotype.Service;
@@ -22,16 +23,25 @@ public class ImageService {
     private CountryRepo countryRepo;
     private CityRepo cityRepo;
     private FavorRepo favorRepo;
+    private HistoryRepo historyRepo;
+    private CommentRepo commentRepo;
+    private CommentFavorRepo commentFavorRepo;
 
     public ImageService(
             TravelImageRepo travelImageRepo,
             CountryRepo countryRepo,
             CityRepo cityRepo,
-            FavorRepo favorRepo) {
+            FavorRepo favorRepo,
+            HistoryRepo historyRepo,
+            CommentRepo commentRepo,
+            CommentFavorRepo commentFavorRepo) {
         this.travelImageRepo = travelImageRepo;
         this.countryRepo = countryRepo;
         this.cityRepo = cityRepo;
         this.favorRepo = favorRepo;
+        this.historyRepo = historyRepo;
+        this.commentRepo = commentRepo;
+        this.commentFavorRepo = commentFavorRepo;
     }
 
     public List<TravelImage> getPopularImages() {
@@ -149,6 +159,15 @@ public class ImageService {
         travelImageRepo.deleteImgById(imageId);
         // remove the image from favors list
         favorRepo.removeFavorsByImageId(imageId);
+        // remove the image from history
+        historyRepo.deleteHistoryByImageId(imageId);
+        // remove comment favors
+        List<Comment> comments = commentRepo.findCommentsByImageId(imageId);
+        for(Comment comment : comments){
+            commentFavorRepo.deleteFavorByCommentId(comment.getCommentId());
+        }
+        // remove comments
+        commentRepo.deleteCommentsByImageId(imageId);
     }
 
     public void modifyHeat(int imageId, int step) {

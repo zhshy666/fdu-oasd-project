@@ -101,7 +101,7 @@
     margin-left: 20px;
 }
 .myMenu{
-  margin-left: 70%;
+  margin-left: 65%;
 }
 .myItem{
   text-align: center;

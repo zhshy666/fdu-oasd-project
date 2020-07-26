@@ -24,6 +24,7 @@ public class WebSocketService {
     //store WebSocketService
     private static CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<>();
     private static Map<String, String> usersMap = new HashMap<>();
+    private static Map<Session, Session> sessionMap = new HashMap<>();
     private Session session;
 
     /**
@@ -37,7 +38,7 @@ public class WebSocketService {
         usersMap.put(nickname, session.getId());
         webSocketSet.add(this);
 
-        System.out.println("New connection: " + nickname + ",current people:" + webSocketSet.size());
+        System.out.println("New connection: " + nickname + ", id: " + session.getId() + ",current people:" + webSocketSet.size());
         message.put("type",0); // 0-connect success，1-message
         message.put("people",webSocketSet.size());
         message.put("name",nickname);
@@ -85,6 +86,7 @@ public class WebSocketService {
                 if(toSession != null){
                     Map<String,Object> m= new HashMap<>();
                     m.put("type",1);
+                    m.put("to", username);
                     m.put("name",nickname);
                     m.put("msg",socketMsg.getMsg());
                     fromSession.getAsyncRemote().sendText(new Gson().toJson(m));

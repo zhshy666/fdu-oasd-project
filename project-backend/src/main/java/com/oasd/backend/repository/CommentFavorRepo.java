@@ -30,4 +30,9 @@ public class CommentFavorRepo {
         jdbcTemplate.update(sql, commentId, userId);
         return "success";
     }
+
+    public void deleteFavorByCommentId(int commentId) {
+        String sql = "delete from commentfavor where commentId = ?";
+        jdbcTemplate.update(sql, commentId);
+    }
 }

@@ -80,7 +80,7 @@
               trigger="focus"
             >
               <div style="font-size:small" >
-                <p>· <span class="myFontSpan">6</span> and <span class="mySpan">12</span> characters in length</p>
+                <p>· <span class="myFontSpan">6</span> and <span class="myFontSpan">12</span> characters in length</p>
                 <p>· eg: pAs3s?wOrd</p>
                 <p>· Password strength</p>
                 <p>

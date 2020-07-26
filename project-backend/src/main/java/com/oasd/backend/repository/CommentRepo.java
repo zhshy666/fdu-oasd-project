@@ -53,4 +53,10 @@ public class CommentRepo {
         String sql2 = "update comment set Heat = ? where commentId = ?";
         jdbcTemplate.update(sql2, heat, commentId);
     }
+
+    public void deleteCommentsByImageId(int imageId) {
+        String sql = "delete from comment where ImageID = '" +
+                imageId + "'";
+        jdbcTemplate.update(sql);
+    }
 }
