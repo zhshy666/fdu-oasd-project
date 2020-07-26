@@ -67,7 +67,7 @@ public class TravelUserRepo {
                 "', '" + state +
                 "', '" + dateJoined +
                 "', '" + dateJoined +
-                "')";
+                "','1')";
         jdbcTemplate.update(sql);
     }
 

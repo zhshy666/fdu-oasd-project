@@ -350,11 +350,9 @@ import {Encrypt} from '../tools/AESUtils'
             if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
               // login automatically after register
               this.$store.commit("login", resp.data);
-              this.$notify({
-                dangerouslyUseHTMLString: true,
-                type:'success',
-                title: 'Register success',
-                message: '<strong style="color:teal">Register successfully</strong>',
+              this.$message({
+                type: "success",
+                message: 'Register successfully',
               });
               this.$router.replace({ path: "/" });              
             } else {
@@ -383,20 +381,10 @@ import {Encrypt} from '../tools/AESUtils'
       },
       errorNotification(message){
         if(message === "username"){
-          this.$notify({
-            type:'error',
-            dangerouslyUseHTMLString: true,
-            title: 'Register error',
-            message: '<strong style="color:teal">The username has been used. Please try another one</strong>'
-          });
+          this.$message.error('The username has been used. Please try another one');
         }
         else{
-          this.$notify({
-            type:'error',
-            dangerouslyUseHTMLString: true,
-            title: 'Register error',
-            message: '<strong style="color:teal">The email has been used. Please try another one</strong>'
-          });
+          this.$message.error('The email has been used. Please try another one');
         }
       },
 			randomNum(min, max) {

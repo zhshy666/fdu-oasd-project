@@ -105,13 +105,7 @@ export default {
                     .then(resp => {
                         if(resp.status === 200){
                             this.reload();
-                            this.$notify({
-                                type: "success",
-                                dangerouslyUseHTMLString: true,
-                                title: "Delete success",
-                                message:
-                                    "<strong style='color:teal'>Delete successfully!</strong>"
-                            });
+                            this.$message('Delete successfully');
                         }
                     })
                     .catch(error => {
@@ -124,12 +118,7 @@ export default {
             this.$router.push({name: 'Upload', params: {imageId: image.imageId}})
         },
         errorNotification(){
-            this.$notify({
-            type:'error',
-            dangerouslyUseHTMLString: true,
-            title: 'Request error',
-            message: '<strong style="color:teal">Requset error, please try again.</strong>'
-            });
+            this.$message.error('Requset error, please try again');
         },
     }
 }

@@ -141,11 +141,9 @@ export default {
                     .then(resp => {
                         if(resp.status === 200){
                             this.reload();
-                            this.$notify({
-                                type:'success',
-                                dangerouslyUseHTMLString: true,
-                                title: 'Change status success',
-                                message: '<strong style="color:teal">Change status successfully!</strong>'
+                            this.$message({
+                                type: "success",
+                                message: 'Change status successfully !',
                             });
                         }else{
                             this.errorNotification();
@@ -169,24 +167,13 @@ export default {
                 .then(resp => {
                   if(resp.status === 200){
                       this.reload();
-                      this.$notify({
-                        type: "success",
-                        dangerouslyUseHTMLString: true,
-                        title: "Remove success",
-                        message:
-                          "<strong style='color:teal'>Remove successfully.</strong>"
-                      });
+                      this.$message('Remove successfully.');
                   }
                 })
             })
         },
         errorNotification(){
-            this.$notify({
-                type:'error',
-                dangerouslyUseHTMLString: true,
-                title: 'Request error',
-                message: '<strong style="color:teal">Requset error, please try again.</strong>'
-            });
+            this.$message.error('Requset error, please try again');
         },
     }
 }

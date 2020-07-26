@@ -70,12 +70,7 @@
         .then(() => {
           this.$store.commit("logout");
           this.reload();
-          this.$notify({
-            type:'info',
-            dangerouslyUseHTMLString: true,
-            title: 'Log out success',
-            message: '<strong style="color:teal">Log out successfully</strong>',
-          });
+          this.$message('Log out successfully');
         })
         .catch(error => {});
       }

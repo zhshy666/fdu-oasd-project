@@ -9,7 +9,6 @@ import Upload from '@/pages/Upload'
 import Home from '@/pages/Home'
 import Message from '@/pages/Message'
 import Favor from '@/pages/Favor'
-import Test from '@/pages/Test'
 
 Vue.use(Router)
 
@@ -68,11 +67,6 @@ export default new Router({
       path: '/favor/:username',
       name: 'Favor',
       component: Favor,
-    },
-    {
-      path: '/test',
-      name: 'Test',
-      component: Test,
     },
   ]
 })

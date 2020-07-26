@@ -85,13 +85,7 @@ export default {
     created(){
         if(!this.$store.state.token){
             this.$router.replace("/login");
-            this.$notify({
-                type:'error',
-                dangerouslyUseHTMLString: true,
-                title: 'Request error',
-                message: '<strong style="color:teal">Please login to view your messages.</strong>'
-            });
-            this.$router.replace("/login");
+            this.$message.error('Please login to view your messages');
         }
         this.$axios
             .get("/getMessages",{})
@@ -125,11 +119,9 @@ export default {
                 .then(resp => {
                     if(resp.status === 200){
                         this.reload();
-                        this.$notify({
-                            type:'success',
-                            dangerouslyUseHTMLString: true,
-                            title: 'Accept success',
-                            message: '<strong style="color:teal">You have accept the friend invitation.</strong>'
+                        this.$message({
+                            type: "success",
+                            message: 'Accept friend request successfully',
                         });
                     }
                     else {
@@ -150,12 +142,7 @@ export default {
                 .then(resp => {
                     if(resp.status === 200){
                         this.reload();
-                        this.$notify({
-                            type:'success',
-                            dangerouslyUseHTMLString: true,
-                            title: 'Reject success',
-                            message: '<strong style="color:teal">You have reject the friend invitation.</strong>'
-                        });
+                        this.$message('Reject friend request successfully');
                     }
                     else {
                         this.errorNotification();
@@ -200,13 +187,8 @@ export default {
                 });
         },
         errorNotification(){
-        this.$notify({
-          type:'error',
-          dangerouslyUseHTMLString: true,
-          title: 'Request error',
-          message: '<strong style="color:teal">Requset error, please try again.</strong>'
-        });
-      },
+            this.$message.error('Requset error, please try again');
+        },
     },
     computed: {
 

@@ -172,12 +172,7 @@ export default {
           this.currentPage = val;
       },
       errorNotification(){
-        this.$notify({
-          type:'error',
-          dangerouslyUseHTMLString: true,
-          title: 'Request error',
-          message: '<strong style="color:teal">Requset error, please try again.</strong>'
-        });
+        this.$message.error('Requset error, please try again');
       },
     }
 }

@@ -254,12 +254,7 @@ export default {
         // get login info
         if(!this.$store.state.token){
             this.$router.replace("/login");
-            this.$notify({
-                type:'error',
-                dangerouslyUseHTMLString: true,
-                title: 'Request error',
-                message: '<strong style="color:teal">Please login to upload your photos</strong>'
-            });
+            this.$message.error('Please login to upload images');
         };
         if(this.$route.params.imageId){
             console.log(this.$route.params.imageId);
@@ -305,13 +300,7 @@ export default {
             // First contribution but no image
             if (valid) {
                 if(!this.isModify && !this.file){
-                    this.$notify({
-                        type: "warning",
-                        dangerouslyUseHTMLString: true,
-                        title: 'Upload fail',
-                        message:
-                        "<strong style='color:teal'>Image is required.</strong>"
-                    });
+                    this.$message.error('Image is required');
                     return;
                 }
                 this.$confirm("Are you sure to submit?", "Upload confirm", {
@@ -351,21 +340,15 @@ export default {
                             if(resp.status === 200){
                                 this.reload();
                                 if(this.isModify){
-                                    this.$notify({
+                                    this.$message({
                                         type: "success",
-                                        dangerouslyUseHTMLString: true,
-                                        title: "Modify success",
-                                        message:
-                                        "<strong style='color:teal'>Modify successfully!</strong>"
+                                        message: 'Modify successfully',
                                     });
                                     this.$router.replace("/home");
                                 }else{
-                                    this.$notify({
+                                    this.$message({
                                         type: "success",
-                                        dangerouslyUseHTMLString: true,
-                                        title: "Upload success",
-                                        message:
-                                        "<strong style='color:teal'>Upload successfully!</strong>"
+                                        message: 'Upload successfully',
                                     });
                                 }
                                 this.reload();
@@ -385,12 +368,7 @@ export default {
       },
       
       handleExceed() {
-        this.$notify({
-          dangerouslyUseHTMLString: true,
-            type:'warning',
-            title: 'Upload fail',
-            message: '<strong style="color:teal">Only 1 file is required.</strong>',
-        });
+        this.$message.error('Only 1 file is required');
       },
       handleChange(file){
           this.file = file;
@@ -401,12 +379,7 @@ export default {
         return;
       },
       errorNotification(){
-        this.$notify({
-          type:'error',
-          dangerouslyUseHTMLString: true,
-          title: 'Request error',
-          message: '<strong style="color:teal">Requset error, please try again.</strong>'
-        });
+        this.$message.error('Requset error, please try again');
       },
     },
     mounted() {

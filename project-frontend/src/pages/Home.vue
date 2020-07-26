@@ -44,12 +44,7 @@ export default {
         // get login info
         if(!this.$store.state.token){
             this.$router.replace("/login");
-            this.$notify({
-                type:'error',
-                dangerouslyUseHTMLString: true,
-                title: 'Request error',
-                message: '<strong style="color:teal">Please login to visit your home page.</strong>'
-            });
+            this.$message.error('Please login to visit your home page');
         }else{
             this.username = this.$store.state.cur_user;
         }

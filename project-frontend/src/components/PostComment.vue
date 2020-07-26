@@ -112,11 +112,9 @@ export default {
                     if(resp.status === 200){
                         this.loading = false;
                         this.reload();
-                        this.$notify({
-                            dangerouslyUseHTMLString: true,
-                            type:'success',
-                            title: 'Comment success',
-                            message: '<strong style="color:teal">Comment successfully!</strong>',
+                        this.$message({
+                            type: "success",
+                            message: 'Comment successfully',
                         });
                     }
                     else {
@@ -131,12 +129,7 @@ export default {
                 });
         },
         errorNotification(){
-            this.$notify({
-            type:'error',
-            dangerouslyUseHTMLString: true,
-            title: 'Request error',
-            message: '<strong style="color:teal">Request error, please try again later.</strong>'
-            });
+            this.$message.error('Requset error, please try again');
         },
     }
 }

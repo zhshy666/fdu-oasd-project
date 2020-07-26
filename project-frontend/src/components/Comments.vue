@@ -206,12 +206,7 @@ export default {
                 });
         },
         errorNotification(){
-            this.$notify({
-            type:'error',
-            dangerouslyUseHTMLString: true,
-            title: 'Request error',
-            message: '<strong style="color:teal">Request error, please try again later.</strong>'
-            });
+            this.$message.error('Requset error, please try again');
         },
     }
 }

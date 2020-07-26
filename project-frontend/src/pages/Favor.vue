@@ -40,12 +40,7 @@ export default {
         }
         if(!this.$store.state.token){
             this.$router.replace("/login");
-            this.$notify({
-                type:'error',
-                dangerouslyUseHTMLString: true,
-                title: 'Request error',
-                message: '<strong style="color:teal">Please login to visit favors of your friends.</strong>'
-            });
+            this.$message.error('Please login to visit favors of your friends');
         }
         if(this.username !== this.$store.state.cur_user){
             this.$axios
@@ -56,12 +51,7 @@ export default {
                     if(resp.status === 200){
                         if(resp.data === 'false'){
                             this.$router.replace("/home");
-                            this.$notify({
-                                type:'error',
-                                dangerouslyUseHTMLString: true,
-                                title: 'Request error',
-                                message: '<strong style="color:teal">You are not friends yet.</strong>'
-                            });
+                            this.$message.error('You are not friends yet');
                         }
                     }
                 })

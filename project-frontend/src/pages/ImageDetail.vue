@@ -170,13 +170,7 @@ export default {
                     .then(resp => {
                         if(resp.status === 200){
                             this.$router.replace("/");
-                            this.$notify({
-                                type: "success",
-                                dangerouslyUseHTMLString: true,
-                                title: "Delete success",
-                                message:
-                                    "<strong style='color:teal'>Delete successfully.</strong>"
-                            });
+                            this.$message('Delete successfully');
                         }
                     })
                     .catch(error => {
@@ -186,6 +180,7 @@ export default {
             })
       },
       removeFavor(image){
+        console.log("delete");
         this.$confirm("Are you sure to remove this image from your favors?", "Remove confirm", {
                 confirmButtonText: "Yes",
                 cancelButtonText: "No"
@@ -198,13 +193,8 @@ export default {
                 .then(resp => {
                   if(resp.status === 200){
                       this.reload();
-                      this.$notify({
-                        type: "success",
-                        dangerouslyUseHTMLString: true,
-                        title: "Remove success",
-                        message:
-                          "<strong style='color:teal'>Remove successfully.</strong>"
-                      });
+                      console.log("delete");
+                      this.$message('Remove favor successfully');
                   }
                 })
             })
@@ -217,23 +207,15 @@ export default {
             .then(resp => {
               if(resp.status === 200){
                   this.reload();
-                  this.$notify({
+                  this.$message({
                     type: "success",
-                    dangerouslyUseHTMLString: true,
-                    title: "Add success",
-                    message:
-                      "<strong style='color:teal'>Add favor successfully.</strong>"
+                    message: 'Add favor successfully',
                   });
                 }
             })
       },
       errorNotification(){
-        this.$notify({
-          type:'error',
-          dangerouslyUseHTMLString: true,
-          title: 'Request error',
-          message: '<strong style="color:teal">Requset error, please try again.</strong>'
-        });
+        this.$message.error('Requset error, please try again');
       },
     },
 }

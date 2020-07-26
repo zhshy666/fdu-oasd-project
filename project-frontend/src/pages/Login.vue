@@ -168,12 +168,9 @@ import {Encrypt} from '../tools/AESUtils'
             if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
               //Save token
               this.$store.commit("login", resp.data);
-              this.$notify({
-                offset: 50,
-                dangerouslyUseHTMLString: true,
-                type:'success',
-                title: 'Login success',
-                message: '<strong style="color:teal">'+this.$store.state.cur_user+', welcome back</strong>',
+              this.$message({
+                  type: "success",
+                  message: this.$store.state.cur_user+', welcome back',
               });
               this.$router.replace({ path: "/" });
             } else {
@@ -194,12 +191,7 @@ import {Encrypt} from '../tools/AESUtils'
         this.$refs[formName].resetFields();
       },
       errorNotification(){
-        this.$notify({
-          type:'error',
-          dangerouslyUseHTMLString: true,
-          title: 'Login error',
-          message: '<strong style="color:teal">Please check your username / email and password or try again later!</strong>'
-        });
+        this.$message.error('Please check your account and password or try again later');
       },
       randomNum(min, max) {
 				return Math.floor(Math.random() * (max - min) + min)

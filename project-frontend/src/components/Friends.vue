@@ -353,12 +353,9 @@ export default {
                 .then(resp => {
                     if(resp.status === 200){
                         this.reload();
-                        this.$notify({
-                            type:'success',
-                            dangerouslyUseHTMLString: true,
-                            title: 'Send request success',
-                            message: 
-                            '<strong style="color:teal">Send request successfully!</strong>'
+                        this.$message({
+                            type: "success",
+                            message: 'Send request successfully',
                         });
                     }
                     else {
@@ -410,27 +407,19 @@ export default {
             };
 
             //message
-            var that = this;
             this.websocket.onmessage = function(event) {
                 console.log(event.data);
                 var object = eval("(" + event.data + ")");
                 if(object.false){
-                    console.log("not online");
-                    that.$notify({
-                        type:'error',
-                        dangerouslyUseHTMLString: true,
-                        title: 'Not online',
-                        message: '<strong style="color:teal">Sorry, the user is not online now. Please send messages later.</strong>'
-                    });
+                    this.$message.error('Sorry, the user is not online now. Please send messages later');
                 }
                 else{
                     if (object.type == 0) {
                         console.log("success");
-                        // that.showInfo(object.people, object.aisle);
                     }
                     if (object.type == 1) {
                         console.log("message");
-                        that.messageList.push(object);
+                        this.messageList.push(object);
                     }
                 }
             };
@@ -450,13 +439,6 @@ export default {
             this.websocket.send(JSON.stringify(socketMsg));
             this.chatForm.messageValue = "";
         },
-        showInfo: function(people, aisle) {
-            this.$notify({
-                title: "当前在线人数：" + people,
-                message: "您的频道号：" + aisle,
-                duration: 0
-            });
-        },
         closeDialog(){
             this.websocket.close();
         },
@@ -464,12 +446,7 @@ export default {
             this.$refs[formName].resetFields();
         },
         errorNotification(){
-            this.$notify({
-                type:'error',
-                dangerouslyUseHTMLString: true,
-                title: 'Request error',
-                message: '<strong style="color:teal">Requset error, please try again.</strong>'
-            });
+            this.$message.error('Requset error, please try again');
         },
     },
     computed: {
