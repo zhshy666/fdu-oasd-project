@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.oasd.backend.domain.SocketMsg;
+import com.sun.org.apache.xml.internal.dtm.ref.sax2dtm.SAX2RTFDTM;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -27,8 +28,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class WebSocketService {
     //用来存放每个客户端对应的MyWebSocket对象
     //用来记录sessionId和该session进行绑定
-    private static Map<String,Session> map = new HashMap<String, Session>();
+    private static Map<String,Session> map = new HashMap<>();
     private static CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<>();
+    private static Map<String, String> usersMap = new HashMap<>();
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
     private String nickname;
@@ -42,6 +44,7 @@ public class WebSocketService {
         this.session = session;
         this.nickname = nickname;
         map.put(session.getId(), session);
+        usersMap.put(nickname, session.getId());
         webSocketSet.add(this);
 
         System.out.println("有新连接加入:" + nickname + ",当前在线人数为" + webSocketSet.size());
@@ -57,6 +60,13 @@ public class WebSocketService {
     @OnClose
     public void onClose() {
         webSocketSet.remove(this);  //从set中删除
+        map.remove(this.session.getId());
+        for (Map.Entry<String, String> entry : usersMap.entrySet()){
+            if (entry.getValue().equals(this.session.getId())){
+                usersMap.remove(entry.getKey());
+                break;
+            }
+        }
         System.out.println("有一连接关闭！当前在线人数为" + webSocketSet.size());
     }
     /**
@@ -76,14 +86,13 @@ public class WebSocketService {
         try {
             socketMsg = objectMapper.readValue(message, SocketMsg.class);
             if(socketMsg.getType() == 1){
-                //单聊.需要找到发送者和接受者.
-
-                socketMsg.setFromUser(session.getId());//发送者.
+                socketMsg.setFromUser(session.getId());
                 Session fromSession = map.get(socketMsg.getFromUser());
-                Session toSession = map.get(socketMsg.getToUser());
-                //发送给接受者.
+                String username = socketMsg.getToUser();
+                String id = usersMap.get(username);
+                Session toSession = map.get(id);
+
                 if(toSession != null){
-                    //发送给发送者
                     Map<String,Object> m= new HashMap<>();
                     m.put("type",1);
                     m.put("name",nickname);
@@ -92,11 +101,12 @@ public class WebSocketService {
                     toSession.getAsyncRemote().sendText(new Gson().toJson(m));
 
                 }else{
-                    //发送给发送者
-                    fromSession.getAsyncRemote().sendText("系统消息：对方不在线或者您输入的频道号不对");
+                    Map<String, String> map = new HashMap<>();
+                    map.put("false", "false");
+                    map.put("msg", "系统消息：对方不在线或者您输入的频道号不对");
+                    fromSession.getAsyncRemote().sendText(new Gson().toJson(map));
                 }
             }else{
-                //群发消息
                 broadcast(nickname+": "+socketMsg.getMsg());
             }
         } catch (IOException e) {

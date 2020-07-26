@@ -169,6 +169,7 @@ import {Encrypt} from '../tools/AESUtils'
               //Save token
               this.$store.commit("login", resp.data);
               this.$notify({
+                offset: 50,
                 dangerouslyUseHTMLString: true,
                 type:'success',
                 title: 'Login success',
@@ -213,7 +214,7 @@ import {Encrypt} from '../tools/AESUtils'
 				for (let i = 0; i < l; i++) {
 					this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
 				}
-			}
+      },
     }
   }
 </script>
