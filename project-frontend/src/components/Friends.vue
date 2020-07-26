@@ -202,7 +202,7 @@
                                             :autosize="{ minRows: 3, maxRows: 4}"
                                             placeholder="Say something here..."
                                             prefix-icon="el-icon-s-promotion"
-                                            maxlength="15"
+                                            maxlength="20"
                                             show-word-limit
                                             v-model="chatForm.messageValue">
                                         </el-input>
@@ -436,7 +436,7 @@ export default {
             };
 
             this.websocket.onclose = function() {
-                console.log("Loc MSG:关闭连接");
+                console.log("close");
             };
 
             window.onbeforeunload = function() {
@@ -446,13 +446,7 @@ export default {
         },
         sendMessage: function() {
             var socketMsg = { msg: this.chatForm.messageValue, toUser: this.aisle };
-            if (this.aisle == "") {
-                //群聊
-                socketMsg.type = 0;
-            } else {
-                //单聊
-                socketMsg.type = 1;
-            }
+            socketMsg.type = 1;
             this.websocket.send(JSON.stringify(socketMsg));
             this.chatForm.messageValue = "";
         },
