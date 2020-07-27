@@ -111,7 +111,7 @@
 
 <script>
 import navbar from "../components/Navbar"
-import footerbar from "../components/footer"
+import footerbar from "../components/Footer"
 
 export default {
     components: {navbar, footerbar},

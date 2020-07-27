@@ -25,7 +25,7 @@
 
 <script>
 import navbar from "../components/Navbar"
-import footerbar from "../components/footer"
+import footerbar from "../components/Footer"
 import uploads from "../components/Uploads"
 import favors from "../components/Favors"
 import history from '../components/History'

@@ -11,7 +11,7 @@
 import navbar from "../components/Navbar"
 import carousel from "../components/Carousel"
 import newestImages from "../components/NewestImages"
-import footerbar from "../components/footer"
+import footerbar from "../components/Footer"
 
 export default {
   components: {navbar, carousel, newestImages, footerbar},
