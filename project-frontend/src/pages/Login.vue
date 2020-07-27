@@ -143,7 +143,13 @@ import {Encrypt} from '../tools/AESUtils'
 			// init
 			this.identifyCode = ''
 			this.makeCode(this.identifyCodes, 4)
-		},
+    },
+    created(){
+        if(this.$store.state.token){
+          this.$message.error('You have already login');
+          this.goToIndex();
+        }
+    },
     computed:{
       isDisabled(){
         return !(this.loginForm.usernameOrEmail && this.loginForm.password

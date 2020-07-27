@@ -74,7 +74,7 @@
                 <div class=" layui-col-md3 card layui-col-md-offset3" 
                 v-for="(image,i) in images.slice((currentPage-1)*6,currentPage*6)" :key="i">
                     <router-link
-                    :to="'imageDetail/'+image.imageId">
+                    :to="'../../../imageDetail/'+image.imageId">
                     <img :src="baseURL + image.path" class=" newImg" />
                     <div>
                         <br>
@@ -115,6 +115,7 @@ import footerbar from "../components/Footer"
 
 export default {
     components: {navbar, footerbar},
+    inject: ['reload'],
     name: 'Search',
     data(){
         return{
@@ -124,6 +125,7 @@ export default {
                 rule: 'heat'
             },
             images: [],
+            input: ' ',
             baseURL: '/static/travel-images/medium/',
             afterSearch: false,
             isEmpty: false,
@@ -133,8 +135,14 @@ export default {
             currentPage: 1,
         }
     },
-    methods: {
-      search(){
+    created(){
+        this.searchForm.input = this.$route.params.input;
+        if(this.searchForm.input==" "){
+            this.searchForm.input = ""
+        }
+        this.searchForm.scope = this.$route.params.scope;
+        this.searchForm.rule = this.$route.params.rule;
+
         this.loading = true;
         this.$axios
           .post("/search", {
@@ -167,6 +175,16 @@ export default {
               this.errorNotification();
               this.loading = false;
            });
+
+    },
+    methods: {
+      search(){
+        if(!this.searchForm.input){
+           this.searchForm.input = " ";
+        }
+        this.$router.replace("/search/"+this.searchForm.input+"/"+this.searchForm.scope
+            +"/"+this.searchForm.rule);
+        this.reload();
       },
       handleCurrentChange(val){
           this.currentPage = val;

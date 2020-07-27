@@ -241,7 +241,7 @@ import {Encrypt} from '../tools/AESUtils'
           ],
           email: [
             {required: true,message:"Email is required",blur:"change"},
-            {pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, message:"Invalid email", trigger:"change"},
+            {pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, message:"Invalid email", blur:"change"},
           ],
           password: [
             {required:true, message:"Password is required", blur:"change"},
@@ -267,7 +267,7 @@ import {Encrypt} from '../tools/AESUtils'
                 callback();
               },
               message:"Confirm password doesn\'t equals password",
-              trigger:"change"
+              blur:"change"
             },
             {pattern:/^[\w\W]{6,12}$/, message:"Invalid confirm password",blur:"change"},
           ],
@@ -281,7 +281,7 @@ import {Encrypt} from '../tools/AESUtils'
                 callback();
               },
               message:"Wrong verify code",
-              trigger:"change"
+              blur:"change"
             }
           ],
         },
@@ -292,7 +292,13 @@ import {Encrypt} from '../tools/AESUtils'
 			// init
 			this.identifyCode = ''
 			this.makeCode(this.identifyCodes, 4)
-		},
+    },
+    created(){
+      if(this.$store.state.token){
+        this.$message.error('You have already login');
+        this.goToIndex();
+      }
+    },
     computed:{
       isDisabled(){
           return !(/^[\w]{4,15}$/.test(this.registerForm.username)

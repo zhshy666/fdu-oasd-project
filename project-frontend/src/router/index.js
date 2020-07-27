@@ -4,6 +4,7 @@ import Index from '@/pages/Index'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import ImageDetail from'@/pages/ImageDetail'
+import SearchInit from '@/pages/SearchInit'
 import Search from '@/pages/Search'
 import Upload from '@/pages/Upload'
 import Home from '@/pages/Home'
@@ -36,6 +37,11 @@ export default new Router({
     },
     {
       path: '/search',
+      name: 'SearchInit',
+      component: SearchInit
+    },
+    {
+      path: '/search/:input/:scope/:rule',
       name: 'Search',
       component: Search
     },

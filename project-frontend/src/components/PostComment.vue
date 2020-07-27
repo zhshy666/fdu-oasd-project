@@ -44,11 +44,22 @@
                         <el-button
                         type="primary"
                         native-type="submit"
+                        v-if="isLogin"
                         :disabled="isDisabled"
                         size="medium"
                         style="width:15%"
                         class="btn"
                         v-on:click="post">
+                            Post
+                        </el-button>
+                        <el-button
+                        type="primary"
+                        native-type="submit"
+                        v-else
+                        disabled
+                        size="medium"
+                        style="width:15%; margin-left: -63%"
+                        class="btn">
                             Post
                         </el-button>
                         <el-button 
