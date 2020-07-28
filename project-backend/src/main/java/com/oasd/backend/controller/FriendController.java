@@ -62,22 +62,32 @@ public class FriendController {
         TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int[] userIds = request.getSendUsers();
         String content = user.getUsername() + " wants to be a friend of yours.";
-        List<Integer> remove = new LinkedList<>();
+        Set<Integer> remove = new LinkedHashSet<>();
 
         // remove if duplicated
-        for (int userId : userIds){
+        List<Message> myMessages = messageService.findMessage(user.getId());
+        a: for (int userId : userIds){
             List<Message> messages = messageService.findMessage(userId);
             for(Message message : messages){
                 if (message.getContent().equals(content) && message.getStatus()!=2){
                     remove.add(userId);
+                    continue a;
+                }
+            }
+            TravelUser userToSent = authService.findUserById(userId);
+            String str = userToSent.getUsername() + " wants to be a friend of yours.";
+            for(Message message : myMessages){
+                if (message.getContent().equals(str) && message.getStatus() != 2){
+                    remove.add(userId);
+                    continue a;
                 }
             }
         }
 
         // send message
         for (int userId : userIds){
+            TravelUser userToSent = authService.findUserById(userId);
             if(!remove.contains(userId)) {
-                TravelUser userToSent = authService.findUserById(userId);
                 messageService.sendAddFriendRequest(user, userToSent);
             }
         }

@@ -177,15 +177,15 @@
                                 <div style="height:240px;overflow-y:auto; margin-bottom:10%">
                                     <div v-for="(value,key,index) in messageList" :key="index">
                                         <div v-if="isSelf(value)">
-                                        <i v-if="value.name==name" class="chatNameR">me</i>
-                                        <br v-if="value.name==name">
-                                        <el-tag v-if="value.name==name" type="success" style="float:right; margin-right: 10%;">{{value.msg}}</el-tag>
-                                        <br/>
-                                        
-                                        <i v-if="value.name!=name" class="chatNameL">{{value.name}}</i>
-                                        <br v-if="value.name!=name">
-                                        <el-tag v-if="value.name!=name" style="float:left; margin-left: 5%">{{value.msg}}</el-tag>
-                                        <br/>
+                                            <i v-if="value.name==name" class="chatNameR">me</i>
+                                            <br v-if="value.name==name">
+                                            <el-tag v-if="value.name==name" type="success" style="float:right; margin-right: 10%;">{{value.msg}}</el-tag>
+                                            <br/>
+                                            
+                                            <i v-if="value.name!=name" class="chatNameL">{{value.name}}</i>
+                                            <br v-if="value.name!=name">
+                                            <el-tag v-if="value.name!=name" style="float:left; margin-left: 5%">{{value.msg}}</el-tag>
+                                            <br/>
                                         </div>
                                     </div>
                                 </div>
