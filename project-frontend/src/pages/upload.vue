@@ -187,6 +187,7 @@ export default {
             fileChange: false,
             timeout:  null,
             heat: '',
+            flag: false,
             uploadForm: {
                 title: '',
                 author: '',
@@ -228,6 +229,9 @@ export default {
         },
         calCities(){
             if(this.uploadForm.country){
+                if(!this.flag){
+                    this.uploadForm.city = null;
+                }
                 this.cityLoading = true;
                 this.$axios
                     .post("/getCities",{
@@ -247,6 +251,7 @@ export default {
                     this.errorNotification();
                     this.cityLoading = false;
                 });
+                this.flag = false;
             }
       },
     },
@@ -257,7 +262,6 @@ export default {
             this.$message.error('Please login to upload images');
         };
         if(this.$route.params.imageId){
-            console.log(this.$route.params.imageId);
             this.$axios
                 .post("/imageDetail", {
                     imageId: this.$route.params.imageId
@@ -274,12 +278,18 @@ export default {
                         this.uploadForm.city = resp.data.city;
                         this.files[0].name = this.uploadForm.title;
                         this.files[0].url = "/static/travel-images/medium/" + resp.data.image.path;
+                        this.cities = resp.data.cities;
                     }
                 })
+                .catch(error => {
+                    console.log(error);
+                    this.errorNotification();
+                });
         }
         else{
             this.uploadForm.author = this.$store.state.cur_user;
-            this.$axios
+        }
+        this.$axios
             .get("/getCountries",{})
             .then(resp => {
                 if(resp.status === 200){
@@ -292,7 +302,7 @@ export default {
                 console.log(error);
                 this.errorNotification();
             });
-        }
+            this.flag = true;
     },
     methods: {
       submitForm(formName){

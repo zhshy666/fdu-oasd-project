@@ -3,6 +3,7 @@ package com.oasd.backend.controller;
 import com.oasd.backend.controller.request.DeleteImgRequest;
 import com.oasd.backend.controller.request.ImageDetailRequest;
 import com.oasd.backend.controller.request.SearchImagesRequest;
+import com.oasd.backend.domain.City;
 import com.oasd.backend.domain.Comment;
 import com.oasd.backend.domain.TravelImage;
 import com.oasd.backend.domain.TravelUser;
@@ -72,6 +73,9 @@ public class ImageController {
         String city = cityService.getCity(image.getCityCode());
         map.put("country", country);
         map.put("city", city);
+        String ISO = countryService.getISO(country);
+        List<City> cities = cityService.getCities(ISO);
+        map.put("cities", cities);
         // need login
         try {
             TravelUser user = (TravelUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -104,9 +108,6 @@ public class ImageController {
     public ResponseEntity<?> deleteImg(@RequestBody DeleteImgRequest request){
         // delete image
         imageService.deleteImg(request.getImageId(), request.getUrl());
-
-        // TODO : send message to related users
-
         return ResponseEntity.ok("success");
     }
 

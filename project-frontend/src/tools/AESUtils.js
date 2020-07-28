@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js/crypto-js'
  
-// 默认的 KEY 与 iv 如果没有给
+// default KEY and iv
 const KEY = CryptoJS.enc.Utf8.parse("_aes_secret_key_");
 const IV = CryptoJS.enc.Utf8.parse('_aes_secret_iv__');
  
@@ -22,7 +22,6 @@ export function Encrypt(word, keyStr, ivStr) {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.ZeroPadding
   });
-  // console.log("-=-=-=-", encrypted.ciphertext)
   return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
  
 }
