@@ -1,11 +1,8 @@
 package com.oasd.backend.service;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.oasd.backend.domain.SocketMsg;
-import com.sun.org.apache.xml.internal.dtm.ref.sax2dtm.SAX2RTFDTM;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -24,7 +21,6 @@ public class WebSocketService {
     //store WebSocketService
     private static CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<>();
     private static Map<String, String> usersMap = new HashMap<>();
-    private static Map<Session, Session> sessionMap = new HashMap<>();
     private Session session;
 
     /**
@@ -67,10 +63,6 @@ public class WebSocketService {
      */
     @OnMessage
     public void onMessage(String message, Session session,@PathParam("nickname") String nickname) {
-        System.out.println("来自客户端的消息-->"+nickname+": " + message);
-
-        // 从客户端传过来的数据是json数据，所以这里使用jackson进行转换为SocketMsg对象，
-        // 然后通过socketMsg的type进行判断是单聊还是群聊，进行相应的处理:
         ObjectMapper objectMapper = new ObjectMapper();
         SocketMsg socketMsg;
 
@@ -91,7 +83,6 @@ public class WebSocketService {
                     m.put("msg",socketMsg.getMsg());
                     fromSession.getAsyncRemote().sendText(new Gson().toJson(m));
                     toSession.getAsyncRemote().sendText(new Gson().toJson(m));
-
                 }else{
                     Map<String, String> map = new HashMap<>();
                     map.put("false", "false");
@@ -106,7 +97,6 @@ public class WebSocketService {
 
     @OnError
     public void onError(Session session, Throwable error) {
-        System.out.println("error");
         error.printStackTrace();
     }
 }
